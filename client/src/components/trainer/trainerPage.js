@@ -3,7 +3,10 @@ import {Navbar, NavDropdown, Nav} from "react-bootstrap";
 import TrainerClients from './trainerClients'
 import NewClient from "./newClient";
 import Schedule from "../schedule";
+import { Calendar } from "@fullcalendar/core";
 
+
+import CalendarComponent from '../calendar'
 const TrainerPage = () => {
     const [display, setDisplay] = useState(null);
     
@@ -25,6 +28,7 @@ const TrainerPage = () => {
                         </NavDropdown>
                         <NavDropdown title="Schedule" id="basic-nav-dropdown">
                             <NavDropdown.Item onClick={() =>setDisplay(<Schedule/>)}>My Schedule</NavDropdown.Item>
+                            <NavDropdown.Item onClick={() =>setDisplay(<CalendarComponent/>)}>Calendar</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
                 </Navbar.Collapse>
