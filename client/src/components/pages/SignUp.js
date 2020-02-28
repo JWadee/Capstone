@@ -48,22 +48,31 @@ const SignUp = () => {
                 </Form.Group>
                 <Form.Group as={Row}>
                     <Col sm={{ span: 6, offset: 3  }}>
-                        <span className="Gender">
-                            <label>
-                                <input type="radio" value="1" checked={true} />Male
-                            </label>
-                        </span>
-                        <span className="Gender">
-                            <label>
-                                <input type="radio" value="2" />Female
-                            </label>
-                        </span>
+                        <Form.Check 
+                            inline
+                            type="radio"
+                            label="Male"
+                            name="gender"
+                            value="1"
+                        />
+                        <Form.Check
+                            inline
+                            type="radio"
+                            label="Female"
+                            name="gender"
+                            value="2"
+                        />
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
                     <Col sm={{ span: 6, offset: 3  }}>
-                        <Button onClick={()=> alert("Creating Account")} type="submit">Create Account</Button>
+                        <Button primary onClick={()=> alert("Creating Account")} type="submit">Create Account</Button>
                     </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Col sm={{ span: 6, offset: 3  }}>
+                    <Button href="/login" variant="outline-primary">Or Log In</Button>
+                     </Col>
                 </Form.Group>
             </Form>
             

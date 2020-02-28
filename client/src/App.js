@@ -1,17 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Router, Route, Switch } from "react-router-dom";
+import history from "./utils/history";
+
+//CSS
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
 //Components
 import TrainerPage from './components/pages/trainer/TrainerPage';
-import SignUp from './components/SignUp';
+import LandingPage from './components/pages/LandingPage';
+import SignUp from './components/pages/SignUp';
+import LogIn from './components/pages/LogIn';
+
+
 function App() {
   return (
     <div className="App">
-      <SignUp />
-      {/* <TrainerPage /> */}
+      <Router history={history}>
+        <Switch>
+          <Route exact path="/" component={LandingPage} />
+          <Route exact path="/signup" component={SignUp} />
+          <Route exact path="/login" component={LogIn} />
+          <Route path="/trainer" component={TrainerPage} />
+          <Route path="/client"/>
+        </Switch>
+      </Router>
     </div>
   );
 }
