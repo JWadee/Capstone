@@ -11,13 +11,8 @@ function createAccount(req, res){
     }
     console.log("connected as id: " + connection.threadId);
 
-<<<<<<< Updated upstream
-    let accountSql = "INSERT INTO accounts (strFirstName, strLastName, strUsername, strEmail, intAccountStatusID) "+
-              "VALUES (?,?,?,?,1)";
-=======
     let accountSql = "INSERT INTO accounts (strFirstName, strLastName, strUsername, strEmail, intGenderID, intAccountStatusID) "+
               "VALUES (?,?,?,?,?,1)";
->>>>>>> Stashed changes
 
     let accountPassSql = "INSERT INTO accountpasswords (intAccountID, strPassword) "+
                          "VALUES (last_insert_id(), ?)";
@@ -26,12 +21,8 @@ function createAccount(req, res){
       req.body.firstname,
       req.body.lastname,
       req.body.username,
-<<<<<<< Updated upstream
-      req.body.email
-=======
       req.body.email, 
       req.body.gender
->>>>>>> Stashed changes
     ];
     
     let pass = req.body.pass;
@@ -47,20 +38,41 @@ function createAccount(req, res){
             console.log(err);
           }else{
             connection.release();
-            res.json({
-<<<<<<< Updated upstream
-              accRes,
-              accPassRes
-=======
-              accRes: accRes,
-              accPassRes: accPassRes
->>>>>>> Stashed changes
-            })
           }
         })
       }
     });    
     
+    connection.on('error', function(err){
+      res.json({"code": 100, "status": "Error in database connection"});
+    })
+  })
+}
+
+function login(req, res){
+  pool.getConnection(function(err, connection){
+    if(err) {
+      connection.release();
+      res.json({"code": 100, "status": "Error in database connection"});
+      return;
+    }
+    console.log("connected as id: " + connection.threadId);
+
+    let sql = "SELECT strPassword FROM accountpasswords WHERE intAccountID = ? ";
+    let ID = req.body.ID;
+    
+    connection.query(sql, ID, function(err, row) {
+      connection.release();
+      if(!err) {
+        if(row[0].strPassword == req.body.pass){
+          res.json = (1)
+        }else(
+          res.json = (0)
+        )
+      }
+    });    
+
+
     connection.on('error', function(err){
       res.json({"code": 100, "status": "Error in database connection"});
     })
@@ -100,20 +112,17 @@ function getByEmail(req,res){
     }
     console.log("connected as id: " + connection.threadId);
 
-<<<<<<< Updated upstream
-    let sql = "SELECT COUNT(*) FROM accounts WHERE strEmail = ?"
-=======
-    let sql = "SELECT COUNT(*) AS 'exists' FROM accounts WHERE strEmail = ?"
->>>>>>> Stashed changes
+    let sql = "SELECT COUNT(*) AS 'exists', intAccountID FROM accounts WHERE strEmail = ?"
     let email = req.query.email;
     connection.query(sql, email, function(err, row) {
       connection.release();
       if(!err) {
-<<<<<<< Updated upstream
-        res.json(row)
-=======
-        res.json(row[0].exists)
->>>>>>> Stashed changes
+        if(row[0].exists == 0 ){
+          res.json(row[0].exists)
+
+        }else{
+          res.json(row[0].intAccountID)
+        }
       }
     });    
     
@@ -132,15 +141,6 @@ function getByUsername(req,res){
     }
     console.log("connected as id: " + connection.threadId);
 
-<<<<<<< Updated upstream
-    let sql = "SELECT COUNT(*) FROM accounts WHERE strUsername = ?"
-    let email = req.query.username;
-
-    connection.query(sql, function(err, row) {
-      connection.release();
-      if(!err) {
-        res.json(row)
-=======
     let sql = "SELECT COUNT(*) AS 'exists' FROM accounts WHERE strUsername = ?"
     let username = req.query.username;
 
@@ -150,7 +150,6 @@ function getByUsername(req,res){
         console.log(err)
       }else {
         res.json(row[0].exists)
->>>>>>> Stashed changes
       }
     });    
     
@@ -160,9 +159,13 @@ function getByUsername(req,res){
   })
 }
 
-router.post(('/create'), function(req, res){
-    createAccount(req);
+router.post(('/create'), function(req){
+  createAccount(req);
 });
+
+router.post(('/login')), function(req, res){
+  login(req, res);
+}
 
 router.get('/types', function(req, res) { 
     getTypes(req, res);
