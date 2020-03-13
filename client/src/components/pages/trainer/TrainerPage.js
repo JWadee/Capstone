@@ -7,6 +7,7 @@ import TrainerClients from './TrainerClients'
 import NewClient from "./NewClient";
 import Schedule from "../../Schedule";
 import CalendarComponent from '../../Calendar'
+import NewTeam from "./NewTeam";
 const TrainerPage = () => {
     const [display, setDisplay] = useState(null);
     
@@ -29,6 +30,10 @@ const TrainerPage = () => {
                         <NavDropdown title="Schedule" id="basic-nav-dropdown">
                             <NavDropdown.Item onClick={() =>setDisplay(<Schedule/>)}>My Schedule</NavDropdown.Item>
                             <NavDropdown.Item onClick={() =>setDisplay(<CalendarComponent/>)}>Calendar</NavDropdown.Item>
+                        </NavDropdown>
+                        <NavDropdown title="Teams" id="basic-nav-dropdown">
+                            <NavDropdown.Item onClick={() =>setDisplay(<NewTeam/>)}>Add a Team</NavDropdown.Item>
+                            <NavDropdown.Item>Manage Team</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
                 </Navbar.Collapse>

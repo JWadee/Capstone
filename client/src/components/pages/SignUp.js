@@ -117,7 +117,6 @@ const SignUp = () => {
                         {usernameError}
                     </Col>
                 </Form.Group>
-            
                 <Form.Group as={Row} >
                     <Form.Label column sm={{span:3, offset:2}}>Email Address</Form.Label>
                     <Col sm={10} md={4} lg={3}>
@@ -149,6 +148,35 @@ const SignUp = () => {
                             label="Female"
                             name="gender"
                             value="2"
+                            onChange={(e)=>setGender(e.target.value)}
+                        />
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Col sm={{ span: 6, offset: 3  }}>
+                        <Form.Check 
+                            inline
+                            type="radio"
+                            required
+                            label="Trainer"
+                            name="type"
+                            value="1"
+                            onChange={(e)=>setGender(e.target.value)}
+                        />
+                        <Form.Check 
+                            inline
+                            type="radio"
+                            label="Client"
+                            name="type"
+                            value="2"
+                            onChange={(e)=>setGender(e.target.value)}
+                        />
+                        <Form.Check 
+                            inline
+                            type="radio"
+                            label="Personal"
+                            name="type"
+                            value="3"
                             onChange={(e)=>setGender(e.target.value)}
                         />
                     </Col>

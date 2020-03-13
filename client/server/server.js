@@ -5,7 +5,11 @@ const { join } = require("path");
 
 
 //routes 
-const accountRouter = require('./routes/account');
+const accountsRouter = require('./routes/accounts');
+const exercisesRouter = require('./routes/exercises');
+const exerciseTypesRouter = require('./routes/exerciseTypes');
+const muscleGroupsRouter = require('./routes/muscleGroups');
+const musclesRouter = require('./routes/muscles');
 
 const app = express();
 
@@ -33,7 +37,10 @@ app.use(bodyParser.json());
 app.use(express.static(join(__dirname, "build")));
 
 //use routes 
-app.use('/account', accountRouter);
-
+app.use('/accounts', accountsRouter);
+app.use('/exercises', exercisesRouter);
+app.use('/exerciseTypes', exerciseTypesRouter);
+app.use('/muscleGroups', muscleGroupsRouter);
+app.use('/muscles', musclesRouter);
 
 module.exports = app;

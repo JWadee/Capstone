@@ -11,7 +11,7 @@ import TrainerPage from './components/pages/trainer/TrainerPage';
 import LandingPage from './components/pages/LandingPage';
 import SignUp from './components/pages/SignUp';
 import LogIn from './components/pages/LogIn';
-
+import Test from './components/pages/Test';
 
 function App() {
   return (
@@ -19,6 +19,7 @@ function App() {
       <Router history={history}>
         <Switch>
           <Route exact path="/" component={LandingPage} />
+          <Route exact path="/test" component={Test} />
           <Route exact path="/signup" component={SignUp} />
           <Route exact path="/login" component={LogIn} />
           <Route path="/trainer" component={TrainerPage} />

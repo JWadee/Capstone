@@ -14,7 +14,7 @@ const LogIn = () => {
             .catch((error) => console.log(error))
         //wait for response and store json (if email exists response will = 1 if not then 0)
         const data = await response.json();   
-        return data;      
+        return data.intAccountID;      
     }
 
     async function loginAttempt(ID){
@@ -34,10 +34,10 @@ const LogIn = () => {
             body: JSON.stringify(body)
         }
         //call api
-        const response = await fetch(url, options)
-            .catch(error=>console.log(error))            
-        const data = await response.json();
-        return data;
+        fetch(url, options)
+            .then(response=> {
+                return response.json();
+        }).catch(error=>console.log(error))
  
     }
 
@@ -46,22 +46,24 @@ const LogIn = () => {
         //prevent form from clearing 
         event.preventDefault();
         //if email input is not a valid email set error
-        if(!validator.isEmail(email)|| pass.length < 8){
-            setError(<Alert variant="danger">Invalid Email or Password.</Alert>)
+        if(!validator.isEmail(email) || pass.length < 8){
+            setError(<Alert variant="danger">not valid email</Alert>)
         //if valid input, check for account
         }else{
             //function will get accountID or return 0 if none exists
-            let ID = checkEmail();          
+            let ID = checkEmail();    
+            console.log(ID)      
+            console.log(ID)
             //if no account exists, display error
-            if(ID == 1){
-                setError(<Alert variant="danger">Invalid Email or Password.</Alert>)
+            if(ID == 0){
+                setError(<Alert variant="danger">No account with email.</Alert>)
             //if account exists, attempt to login
             }else{
                 //check login attempt 
                 let login = loginAttempt(ID);
                 //if login attempt failed, display error 
                 if(login == 0){
-                    setError(<Alert variant="danger">Invalid Email or Password.</Alert>)
+                    setError(<Alert variant="danger">password wrong.</Alert>)
                 //else display success
                 }else{
                     setError(<Alert variant="success">Successful Login</Alert>)
@@ -95,7 +97,7 @@ const LogIn = () => {
                 </Row>
                 <Form.Group as={Row}>
                     <Col sm={{ span: 6, offset: 3  }}>
-                        <Button primary type="submit">Log In</Button>
+                        <Button variant="primary" type="submit">Log In</Button>
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row}>

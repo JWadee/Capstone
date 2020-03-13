@@ -27,12 +27,12 @@ function createAccount(req, res){
     
     let pass = req.body.pass;
 
-    connection.query(accountSql, accountValues, function(err, accRes) {
+    connection.query(accountSql, accountValues, function(err) {
       if(err) {
         connection.release();
         console.log(err);
       }else{
-        connection.query(accountPassSql, pass, function(err, accPassRes){
+        connection.query(accountPassSql, pass, function(err){
           if(err) {
             connection.release();
             console.log(err);
@@ -60,15 +60,20 @@ function login(req, res){
 
     let sql = "SELECT strPassword FROM accountpasswords WHERE intAccountID = ? ";
     let ID = req.body.ID;
-    
+  
     connection.query(sql, ID, function(err, row) {
       connection.release();
       if(!err) {
+        console.log(row[0].strPassword)
+        console.log(req.body.pass)
+        console.log(row)
         if(row[0].strPassword == req.body.pass){
+          console.log("yes")
           res.json = (1)
-        }else(
+        }else{
+          console.log("no")
           res.json = (0)
-        )
+        }
       }
     });    
 
@@ -88,7 +93,7 @@ function getTypes(req,res){
     }
     console.log("connected as id: " + connection.threadId);
 
-    let sql = "SELECT * FROM accounttypes"
+    let sql = "SELECT * FROM account_types";
 
     connection.query(sql, function(err, rows) {
       connection.release();
@@ -112,14 +117,13 @@ function getByEmail(req,res){
     }
     console.log("connected as id: " + connection.threadId);
 
-    let sql = "SELECT COUNT(*) AS 'exists', intAccountID FROM accounts WHERE strEmail = ?"
+    let sql = "SELECT COUNT(*) AS 'exists', intAccountID FROM accounts WHERE strEmail = ?";
     let email = req.query.email;
     connection.query(sql, email, function(err, row) {
       connection.release();
       if(!err) {
         if(row[0].exists == 0 ){
-          res.json(row[0].exists)
-
+          res.json({intAccountID: 0})
         }else{
           res.json(row[0].intAccountID)
         }
@@ -141,7 +145,7 @@ function getByUsername(req,res){
     }
     console.log("connected as id: " + connection.threadId);
 
-    let sql = "SELECT COUNT(*) AS 'exists' FROM accounts WHERE strUsername = ?"
+    let sql = "SELECT COUNT(*) AS 'exists' FROM accounts WHERE strUsername = ?";
     let username = req.query.username;
 
     connection.query(sql, username, function(err, row) {
@@ -163,9 +167,10 @@ router.post(('/create'), function(req){
   createAccount(req);
 });
 
-router.post(('/login')), function(req, res){
+router.post(('/login'), function(req, res){
+  console.log(req.body)
   login(req, res);
-}
+});
 
 router.get('/types', function(req, res) { 
     getTypes(req, res);
