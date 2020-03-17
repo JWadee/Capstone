@@ -140,7 +140,6 @@ function getByExerciseType(req,res){
     })
 }
 
-
 router.post(('/add'), function(req, res){
     addExercise(req, res);
 });

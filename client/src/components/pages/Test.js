@@ -1,14 +1,11 @@
-import React from 'react'
+import React from "react"
 
-
-import CreateExercise from '../shared/CreateExercise';
+import CreateExercise from '../shared/CreateExerciseComp/CreateExercise';
 
 const Test = () => {
-    
     return (
-        <CreateExercise />  
+       <CreateExercise />  
     )
-
 }
 
 export default Test
