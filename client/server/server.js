@@ -15,6 +15,8 @@ const racesRouter = require('./routes/races');
 const workoutsRouter = require('./routes/workouts');
 const workoutExercisesRouter = require('./routes/workoutExercises');
 const workoutTypesRouter = require('./routes/workoutTypes');
+const routinesRouter = require('./routes/routines');
+const routineWorkoutsRouter = require('./routes/routineWorkouts');
 
 const app = express();
 
@@ -52,5 +54,7 @@ app.use('/races', racesRouter);
 app.use('/workouts', workoutsRouter);
 app.use('/workoutExercises', workoutExercisesRouter);
 app.use('/workoutTypes', workoutTypesRouter);
+app.use('/routines', routinesRouter);
+app.use('/routineWorkouts', routineWorkoutsRouter);
 
 module.exports = app;
