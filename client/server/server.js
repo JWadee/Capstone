@@ -17,6 +17,10 @@ const workoutExercisesRouter = require('./routes/workoutExercises');
 const workoutTypesRouter = require('./routes/workoutTypes');
 const routinesRouter = require('./routes/routines');
 const routineWorkoutsRouter = require('./routes/routineWorkouts');
+const teamsRouter = require('./routes/teams');
+const teamMembersRouter = require('./routes/teamMembers');
+const teamTrainersRouter = require('./routes/teamTrainers');
+const teamTypesRouter = require('./routes/teamTypes');
 
 const app = express();
 
@@ -56,5 +60,9 @@ app.use('/workoutExercises', workoutExercisesRouter);
 app.use('/workoutTypes', workoutTypesRouter);
 app.use('/routines', routinesRouter);
 app.use('/routineWorkouts', routineWorkoutsRouter);
+app.use('/teams', teamsRouter);
+app.use('/teamMembers', teamMembersRouter);
+app.use('/teamTrainers', teamTrainersRouter);
+app.use('/teamTypes', teamTypesRouter);
 
 module.exports = app;
