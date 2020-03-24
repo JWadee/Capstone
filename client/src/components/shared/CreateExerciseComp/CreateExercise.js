@@ -74,7 +74,7 @@ const CreateExercise = () => {
         fetch_musclegroups();
     }, [exerciseTypeID])
  
-    //Run when muscl group ID changes
+    //Run when muscle group ID changes
     useEffect(()=>{
 
         //function to fetch muscles by group 

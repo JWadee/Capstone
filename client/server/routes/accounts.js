@@ -11,18 +11,22 @@ function createAccount(req, res){
     }
     console.log("connected as id: " + connection.threadId);
 
-    let accountSql = "INSERT INTO accounts (strFirstName, strLastName, strUsername, strEmail, intGenderID, intAccountStatusID) "+
-              "VALUES (?,?,?,?,?,1)";
+    let accountSql = "INSERT INTO accounts (strFirstName, strLastName, strEmail, decWeight, decHeight, intRaceID, intBodyTypeID, intGenderID, intAccountTypeID, intAccountStatusID) "+
+              "VALUES (?,?,?,?,?,?,?,?,?,1)";
 
-    let accountPassSql = "INSERT INTO accountpasswords (intAccountID, strPassword) "+
+    let accountPassSql = "INSERT INTO account_passwords (intAccountID, strPassword) "+
                          "VALUES (last_insert_id(), ?)";
 
     let accountValues = [
       req.body.firstname,
       req.body.lastname,
-      req.body.username,
       req.body.email, 
-      req.body.gender
+      req.body.weight,
+      req.body.height, 
+      req.body.raceID,
+      req.body.bodyID,
+      req.body.genderID,
+      req.body.accountTypeID
     ];
     
     let pass = req.body.pass;

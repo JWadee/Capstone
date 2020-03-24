@@ -6,12 +6,14 @@ const { join } = require("path");
 
 //routes 
 const accountsRouter = require('./routes/accounts');
+const bodyTypesRouter = require('./routes/bodyTypes');
 const exercisesRouter = require('./routes/exercises');
 const exerciseTypesRouter = require('./routes/exerciseTypes');
-const muscleGroupsRouter = require('./routes/muscleGroups');
+const gendersRouter = require('./routes/genders');
 const musclesRouter = require('./routes/muscles');
-const sessionsRouter = require('./routes/sessions');
+const muscleGroupsRouter = require('./routes/muscleGroups');
 const racesRouter = require('./routes/races');
+const sessionsRouter = require('./routes/sessions');
 
 const app = express();
 
@@ -40,11 +42,13 @@ app.use(express.static(join(__dirname, "build")));
 
 //use routes 
 app.use('/accounts', accountsRouter);
+app.use('/bodyTypes', bodyTypesRouter);
 app.use('/exercises', exercisesRouter);
 app.use('/exerciseTypes', exerciseTypesRouter);
-app.use('/muscleGroups', muscleGroupsRouter);
+app.use('/genders', gendersRouter);
 app.use('/muscles', musclesRouter);
-app.use('/sessions', sessionsRouter);
+app.use('/muscleGroups', muscleGroupsRouter);
 app.use('/races', racesRouter);
+app.use('/sessions', sessionsRouter);
 
 module.exports = app;

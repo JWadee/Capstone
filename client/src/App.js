@@ -9,7 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 //Components
 import TrainerPage from './components/pages/trainer/TrainerPage';
 import LandingPage from './components/pages/LandingPage';
-import SignUp from './components/pages/SignUp';
+import SignUp from './components/pages/signup/SignUp';
 import LogIn from './components/pages/LogIn';
 import Test from './components/pages/Test';
 

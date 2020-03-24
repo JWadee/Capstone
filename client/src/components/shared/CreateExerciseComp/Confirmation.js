@@ -85,7 +85,6 @@ const Confirmation = (props) => {
             let muscle = values.muscles.find(function(item, i){
                 if(item.intMuscleID === values.muscleID){
                     muscleIndex = i;
-                    muscleIndex = i;
                     return item;
                 }
             });
