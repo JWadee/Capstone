@@ -88,57 +88,48 @@ const SignUp = (props) => {
 
 
     return(
-        <form>
-            <table> 
-                <tbody> 
-                    <tr> 
-                        <td> 
-                            <label>First Name:</label>
-                        </td>
-                        <td>
-                            <input type="text" onChange={props.handleChange('firstName')} value={values.firstName} />
-                            {firstNameError}
-                        </td>
-                    </tr>
-                    <tr> 
-                        <td> 
-                            <label>Last Name:</label>
-                        </td>
-                        <td>
-                            <input type="text" onChange={props.handleChange('lastName')} value={values.lastName} />
-                            {lastNameError}
-                        </td>
-                    </tr>  
-                    <tr> 
-                        <td> 
-                            <label>Email:</label>
-                        </td>
-                        <td>
-                            <input type="email" onChange={props.handleChange('email')} value={values.email} />
-                            {emailError}
-                        </td>
-                    </tr>  
-                </tbody>
-                <tr> 
-                        <td> 
-                            <label>Password:</label>
-                        </td>
-                        <td>
-                            <input type="password" onChange={props.handleChange('pass')} value={values.pass} />
-                            {passError}
-                        </td>
-                    </tr>  
-                    <tr>       
-                        <td> 
-                            <button onClick={(e)=> back(e)}>Back</button>
-                        </td>              
-                        <td> 
-                            <button disabled={disabled} onClick={(e)=> saveAndContinue(e)}>Save and Continue</button>
-                        </td>
-                    </tr>    
-            </table>
-
-        </form>
+        <Jumbotron>
+            <h2>Personal Information</h2><br />
+            <hr></hr>
+            <Form>
+                <Form.Group as={Row}>
+                    <Form.Label column sm={{span:3, offset:2}}>First Name:</Form.Label>
+                    <Col sm={10} md={4} lg={3}>
+                        <Form.Control type="text" onChange={props.handleChange('firstName')} value={values.firstName} />
+                        {firstNameError}
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Form.Label column sm={{span:3, offset:2}}>Last Name:</Form.Label>
+                    <Col sm={10} md={4} lg={3}>
+                        <Form.Control type="text" onChange={props.handleChange('lastName')} value={values.lastName} />
+                        {lastNameError}
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Form.Label column sm={{span:3, offset:2}}>Email:</Form.Label>
+                    <Col sm={10} md={4} lg={3}>
+                        <Form.Control type="email" onChange={props.handleChange('email')} value={values.email} />
+                        {emailError}
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Form.Label column sm={{span:3, offset:2}}>Password:</Form.Label>
+                    <Col sm={10} md={4} lg={3}>
+                        <Form.Control type="password" onChange={props.handleChange('pass')} value={values.pass} />
+                        {passError}
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Col sm={{ span: 3, offset: 3  }}>
+                        <Button onClick={(e)=> back(e)}>Back</Button>
+                    </Col>
+                    <Col sm={{ span: 3  }}>
+                        <Button disabled={disabled} onClick={(e)=> saveAndContinue(e)}>Save and Continue</Button>
+                    </Col>
+                </Form.Group>     
+            </Form>
+        </Jumbotron>
     );
 };
 

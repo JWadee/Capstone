@@ -7,7 +7,7 @@ import Confirmation from './Confirmation';
 
 const SignUp = () => {
     const [step, setStep] = useState(1);
-    const [accountTypeID, setAccountTypeID] = useState();
+    const [accountTypeID, setAccountTypeID] = useState(0);
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
