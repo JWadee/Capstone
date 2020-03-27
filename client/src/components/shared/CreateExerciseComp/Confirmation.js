@@ -43,7 +43,14 @@ const Confirmation = (props) => {
         }
 
         //call api
-        fetch(url, options)
+        .catch(error=>{
+            console.log(error)
+            setMainDisp(
+                <div>
+                    <h4>There was an error on our end. Please try again.</h4>
+                </div>
+            )
+        }).fetch(url, options)
             .then(response=> {
                 setMainDisp(
                     <div>
@@ -51,13 +58,6 @@ const Confirmation = (props) => {
                     </div>
                 )
                 return response.json();
-            }).catch(error=>{
-                console.log(error)
-                setMainDisp(
-                    <div>
-                        <h4>There was an error on our end. Please try again.</h4>
-                    </div>
-                )
             })
     }
 

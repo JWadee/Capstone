@@ -124,7 +124,7 @@ const SignUp = () => {
 
     // Run when feet or inches change, calculate total inches of height
     useEffect(()=>{
-        let totalInches = (feet*12)+inches;
+        let totalInches = parseInt(feet)*12+parseInt(inches);
         setHeight(totalInches);
     },[feet, inches])
 

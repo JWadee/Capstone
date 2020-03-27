@@ -24,7 +24,7 @@ function createAccount(req, res){
       req.body.weight,
       req.body.height, 
       req.body.raceID,
-      req.body.bodyID,
+      req.body.bodyTypeID,
       req.body.genderID,
       req.body.accountTypeID
     ];
@@ -42,6 +42,7 @@ function createAccount(req, res){
             console.log(err);
           }else{
             connection.release();
+            res.json("success");
           }
         })
       }
@@ -56,31 +57,31 @@ function createAccount(req, res){
 function login(req, res){
   pool.getConnection(function(err, connection){
     if(err) {
+      console.log(err)
       connection.release();
       res.json({"code": 100, "status": "Error in database connection"});
       return;
     }
     console.log("connected as id: " + connection.threadId);
 
-    let sql = "SELECT strPassword FROM accountpasswords WHERE intAccountID = ? ";
+    let sql = "SELECT strPassword FROM account_passwords WHERE intAccountID = ? ";
     let ID = req.body.ID;
   
-    connection.query(sql, ID, function(err, row) {
-      connection.release();
-      if(!err) {
-        console.log(row[0].strPassword)
-        console.log(req.body.pass)
-        console.log(row)
-        if(row[0].strPassword == req.body.pass){
-          console.log("yes")
-          res.json = (1)
-        }else{
-          console.log("no")
-          res.json = (0)
-        }
-      }
-    });    
-
+    if(ID > 0){ 
+      connection.query(sql, ID, function(err, row) {
+        connection.release();
+        if(!err) {
+          console.log(row[0].strPassword)
+          console.log(req.body.pass)
+          console.log(row)
+          if(row[0].strPassword == req.body.pass){
+            res.json(1)
+          }else{
+            res.json(0)
+          }
+        }else console.log(err)
+      });    
+    }
 
     connection.on('error', function(err){
       res.json({"code": 100, "status": "Error in database connection"});
@@ -124,12 +125,15 @@ function getByEmail(req,res){
     let sql = "SELECT COUNT(*) AS 'exists', intAccountID FROM accounts WHERE strEmail = ?";
     let email = req.query.email;
     connection.query(sql, email, function(err, row) {
+      console.log(row)
       connection.release();
       if(!err) {
         if(row[0].exists == 0 ){
-          res.json({intAccountID: 0})
+          console.log('no account');
+          res.json({ID:0})
         }else{
-          res.json(row[0].intAccountID)
+          console.log(' account');
+          res.json({ID:row[0].intAccountID})
         }
       }
     });    
@@ -140,35 +144,8 @@ function getByEmail(req,res){
   })
 }
 
-function getByUsername(req,res){
-  pool.getConnection(function(err, connection){
-    if(err) {
-      connection.release();
-      res.json({"code": 100, "status": "Error in database connection"});
-      return;
-    }
-    console.log("connected as id: " + connection.threadId);
-
-    let sql = "SELECT COUNT(*) AS 'exists' FROM accounts WHERE strUsername = ?";
-    let username = req.query.username;
-
-    connection.query(sql, username, function(err, row) {
-      connection.release();
-      if(err){
-        console.log(err)
-      }else {
-        res.json(row[0].exists)
-      }
-    });    
-    
-    connection.on('error', function(err){
-      res.json({"code": 100, "status": "Error in database connection"});
-    })
-  })
-}
-
-router.post(('/create'), function(req){
-  createAccount(req);
+router.post(('/create'), function(req, res){
+  createAccount(req, res);
 });
 
 router.post(('/login'), function(req, res){

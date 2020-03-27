@@ -10,9 +10,7 @@ const Confirmation = (props) => {
 
     const values = props.values;
 
-    const submit = (e) => {
-        e.preventDefault();
-
+    const submit = () => {
         const data =  {
             firstname: values.firstName,
             lastname: values.lastName,
@@ -22,7 +20,8 @@ const Confirmation = (props) => {
             raceID: values.raceID, 
             genderID: values.genderID,
             bodyTypeID: values.bodyTypeID,
-            accountTypeID: values.accountTypeID
+            accountTypeID: values.accountTypeID,
+            pass: values.pass
         }
 
         //api parameters to create game
@@ -35,22 +34,29 @@ const Confirmation = (props) => {
                     body: JSON.stringify(data)
         }
 
+        
+
         //call api
         fetch(url, options)
-            .then(response=> {
-                setMainDisp(
-                    <div>
-                        <h4>Account created successfully</h4>
-                    </div>
-                )
-                return response.json();
-            }).catch(error=>{
+            .catch(error=>{
                 console.log(error)
                 setMainDisp(
                     <div>
                         <h4>There was an error on our end. Please try again.</h4>
                     </div>
                 )
+                return;
+            }).then(()=> {
+                    setMainDisp(
+                    <div>
+                        <h4>Account created successfully</h4>
+                            <Row>  
+                                <Col xs md={{span:2, offset:5}}>
+                                    <Button href="/LogIn" variant="primary" block>LOG IN</Button>
+                                </Col>
+                        </Row>
+                    </div>
+                    )
             })
     }
 
@@ -110,7 +116,7 @@ const Confirmation = (props) => {
                         <Button onClick={(e)=> back(e)}>Back</Button>
                     </Col>
                     <Col sm={{ span: 3 }}>
-                        <Button onClick={(e)=> submit(e)}>Confirm</Button>
+                        <Button onClick={()=> submit()}>Confirm</Button>
                     </Col>
                 </Row>
             </Jumbotron>)
