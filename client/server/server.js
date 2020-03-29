@@ -59,3 +59,17 @@ app.use('/genders', gendersRouter);
 app.use('/muscles', musclesRouter);
 app.use('/muscleGroups', muscleGroupsRouter);
 app.use('/races', racesRouter);
+app.use('/workouts', workoutsRouter);
+app.use('/workoutExercises', workoutExercisesRouter);
+app.use('/workoutTypes', workoutTypesRouter);
+app.use('/routines', routinesRouter);
+app.use('/routineWorkouts', routineWorkoutsRouter);
+app.use('/teams', teamsRouter);
+app.use('/teamMembers', teamMembersRouter);
+app.use('/teamTrainers', teamTrainersRouter);
+app.use('/teamTypes', teamTypesRouter);
+app.use('/sessionExercises', sessionExercisesRouter);
+app.use('/sessionResults', sessionResultsRouter);
+
+
+module.exports = app;
