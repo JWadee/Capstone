@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from "react";
-import {Jumbotron, Form, Row, Col, Button, Alert} from 'react-bootstrap'
+import {Jumbotron, Form, Row, Col, Button, Alert, Image} from 'react-bootstrap'
+
 
 const AccountType = (props) => {
-    const [disabled, setDisabled] = useState(true);
+    const [disabled, setDisabled] = useState();
 
     const saveAndContinue = (e) => {
         e.preventDefault()
@@ -18,36 +19,29 @@ const AccountType = (props) => {
     },[props.values]) 
 
     return(
-        <form>
-            <table> 
-                <tbody> 
-                    <tr> 
-                        <td> 
-                            <label>Account Type:</label>
-                        </td>
-                        <td>
-                            {props.values.accountTypes.map(type =>{
+        <Jumbotron>
+            <h2>Account Type</h2><br />
+            <hr></hr>
+            <Form>
+                <Form.Group as={Row}>
+                    <Col sm={12}>
+                    {props.values.accountTypes.map(type =>{
                                 //Don't display admin account
                                 if(type.strAccountType != 'Admin'){
                                     return(
-                                        <div>
-                                            <input type="radio" name="type" checked={props.values.accountTypeID == type.intAccountTypeID} value={type.intAccountTypeID} onChange={props.handleChange('accountType')}/>
-                                            <label>{type.strAccountType}</label>
-                                        </div>
+                                        <Form.Check inline label={type.strAccountType} type="radio" name="type" checked={props.values.accountTypeID == type.intAccountTypeID} value={type.intAccountTypeID} onChange={props.handleChange('accountType')}/>
                                     )
                                 }
                             })}
-                        </td>
-                    </tr>
-                    <tr>                     
-                        <td> 
-                            <button disabled={disabled} onClick={(e)=> saveAndContinue(e)}>Save and Continue</button>
-                        </td>
-                    </tr>      
-                </tbody>
-            </table>
-
-        </form>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Col sm={{ span: 12 }}>
+                        <Button disabled={disabled} onClick={(e)=> saveAndContinue(e)}>Save and Continue</Button>
+                    </Col>
+                </Form.Group>  
+            </Form>
+        </Jumbotron>
     );
 };
 

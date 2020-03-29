@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import {Jumbotron, Form, Row, Col, Button} from 'react-bootstrap';
 
 const NameAndType = (props) => {
     const [disabled, setDisabled] = useState(true)
@@ -28,35 +29,33 @@ const NameAndType = (props) => {
     })
 
     return (
-        <form> 
-            <table> 
-                <tr> 
-                    <td> 
-                        <label>Exercise Name</label>
-                    </td>
-                    <td> 
-                        <input onChange={props.handleChange('name')} defaultValue={values.name} />
-                    </td>
-                </tr>
-                <tr> 
-                    <td> 
-                        <label>Type</label>
-                    </td>
-                    <td> 
-                        <select onChange={props.handleChange('type')}>
+
+        <Jumbotron>
+            <h2>Exercise Information</h2><br />
+            <hr></hr>
+            <Form>
+                <Form.Group as={Row}>
+                    <Form.Label column sm={{span:3, offset:2}}>Exercise Name:</Form.Label>
+                    <Col sm={10} md={4} lg={3}>
+                        <Form.Control type="text" onChange={props.handleChange('name')} defaultValue={values.name} />
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Form.Label column sm={{span:3, offset:2}}>Body Type:</Form.Label>
+                    <Col sm={10} md={4} lg={3}>
+                        <Form.Control as="select" onChange={props.handleChange('type')} value={values.exerciseTypeID}>
                             <option selected disabled hidden>Choose a Type</option>
                             {types}
-                        </select>
-                    </td>
-                </tr>
-                <tr> 
-                    <td></td>
-                    <td> 
-                        <button disabled={disabled} onClick={(e)=> saveAndContinue(e)}>Save and Continue</button>
-                    </td>
-                </tr>               
-            </table>
-        </form>
+                        </Form.Control>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Col sm={{ span: 12 }}>
+                        <Button disabled={disabled} onClick={(e)=> saveAndContinue(e)}>Save and Continue</Button>
+                    </Col>
+                </Form.Group>  
+            </Form>
+        </Jumbotron>    
     );
 };
 

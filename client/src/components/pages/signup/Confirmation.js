@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {ListGroup} from "react-bootstrap";
+import {ListGroup, Jumbotron, Button, Col, Row} from "react-bootstrap";
 
 const Confirmation = (props) => {
     const [mainDisp, setMainDisp] = useState()
@@ -10,9 +10,7 @@ const Confirmation = (props) => {
 
     const values = props.values;
 
-    const submit = (e) => {
-        e.preventDefault();
-
+    const submit = () => {
         const data =  {
             firstname: values.firstName,
             lastname: values.lastName,
@@ -22,7 +20,8 @@ const Confirmation = (props) => {
             raceID: values.raceID, 
             genderID: values.genderID,
             bodyTypeID: values.bodyTypeID,
-            accountTypeID: values.accountTypeID
+            accountTypeID: values.accountTypeID,
+            pass: values.pass
         }
 
         //api parameters to create game
@@ -35,22 +34,29 @@ const Confirmation = (props) => {
                     body: JSON.stringify(data)
         }
 
+        
+
         //call api
         fetch(url, options)
-            .then(response=> {
-                setMainDisp(
-                    <div>
-                        <h4>Account created successfully</h4>
-                    </div>
-                )
-                return response.json();
-            }).catch(error=>{
+            .catch(error=>{
                 console.log(error)
                 setMainDisp(
                     <div>
                         <h4>There was an error on our end. Please try again.</h4>
                     </div>
                 )
+                return;
+            }).then(()=> {
+                    setMainDisp(
+                    <div>
+                        <h4>Account created successfully</h4>
+                            <Row>  
+                                <Col xs md={{span:2, offset:5}}>
+                                    <Button href="/LogIn" variant="primary" block>LOG IN</Button>
+                                </Col>
+                        </Row>
+                    </div>
+                    )
             })
     }
 
@@ -91,7 +97,9 @@ const Confirmation = (props) => {
     
     useEffect(()=>{
         setMainDisp(
-            <div>
+            <Jumbotron>
+                <h2>Confirmation</h2><br />
+                <hr></hr>
                 <ListGroup>
                     {typeDisp}
                     <ListGroup.Item>First Name: {values.firstName}</ListGroup.Item>
@@ -103,11 +111,15 @@ const Confirmation = (props) => {
                     {raceDisp}
                     {genderDisp}
                 </ListGroup>
-                <span>
-                <button onClick={(e)=> back(e)}>Back</button>
-                    <button onClick={(e)=> submit(e)}>Confirm</button>
-                </span>
-            </div>)
+                <Row>
+                    <Col sm={{ span: 3, offset: 3  }}>
+                        <Button onClick={(e)=> back(e)}>Back</Button>
+                    </Col>
+                    <Col sm={{ span: 3 }}>
+                        <Button onClick={()=> submit()}>Confirm</Button>
+                    </Col>
+                </Row>
+            </Jumbotron>)
         }, [typeDisp, bodyDisp, raceDisp, genderDisp])
 
     return (

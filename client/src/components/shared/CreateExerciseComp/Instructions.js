@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-
+import {Jumbotron, Form, Row, Col, Button} from 'react-bootstrap';
 
 const Instructions = (props) => {
     const [disabled, setDisabled] = useState();
@@ -25,26 +25,25 @@ const Instructions = (props) => {
     },[values])
 
     return (
-        <form> 
-            <table> 
-                <tr> 
-                    <td> 
-                        <label>Instructions</label>
-                    </td>
-                    <td> 
-                        <textarea onChange={props.handleChange('desc')} defaultValue={values.desc} />
-                    </td>
-                </tr>
-                <tr>                     
-                    <td>
-                        <button onClick={(e)=> back(e)}>Back</button>
-                    </td>
-                    <td> 
-                        <button disabled={disabled} onClick={(e)=> saveAndContinue(e)}>Save and Continue</button>
-                    </td>
-                </tr>               
-            </table>
-        </form>
+        
+        <Jumbotron>
+            <h2>Exercise Instructions</h2><br />
+            <hr></hr>
+            <Form>
+                <Form.Group >
+                    <Form.Label>Instructions:</Form.Label>
+                    <Form.Control as="textarea" rows="2" onChange={props.handleChange('desc')} defaultValue={values.desc} />
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Col sm={{ span: 3, offset: 3  }}>
+                        <Button onClick={(e)=> back(e)}>Back</Button>
+                    </Col>
+                    <Col sm={{ span: 3 }}>
+                        <Button disabled={disabled} onClick={(e)=> saveAndContinue(e)}>Save and Continue</Button>
+                    </Col>
+                </Form.Group>   
+            </Form>
+        </Jumbotron>    
     );
 };
 

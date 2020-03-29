@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import {Jumbotron, Form, Row, Col, Button} from 'react-bootstrap';
 
 
 const MuscleAndGroup = (props) => {
@@ -45,10 +46,10 @@ const MuscleAndGroup = (props) => {
         
         //Load muscle groups
         setMuscles(
-            <select onLoad={props.handleChange('muscle')} onChange={props.handleChange('muscle')}>
+            <Form.Control as="select" onLoad={props.handleChange('muscle')} onChange={props.handleChange('muscle')}>
                 <option selected disabled hidden>Choose a Muscle</option>
                 {muscleOpts}
-            </select>
+            </Form.Control>
         )
     },[values])
 
@@ -56,10 +57,10 @@ const MuscleAndGroup = (props) => {
        Reload muscle dropdown*/
     useEffect(()=> {    
         setMuscles(
-            <select onChange={props.handleChange('muscle')}>
+            <Form.Control as="select" onChange={props.handleChange('muscle')}>
                 {muscleOpts}
                 <option selected disabled hidden>Choose a Muscle</option>
-            </select>
+            </Form.Control>
         )
     },[values.muscleGroupID])
 
@@ -67,37 +68,37 @@ const MuscleAndGroup = (props) => {
 
 
     return (
-        <form> 
-            <table> 
-                <tr> 
-                    <td> 
-                        <label>Muscle Group</label>
-                    </td>
-                    <td> 
-                        <select onChange={props.handleChange('muscleGroup')}>
+
+        
+        <Jumbotron>
+            <h2>Exercise Details</h2><br />
+            <hr></hr>
+            <Form>
+                <Form.Group as={Row}>
+                    <Form.Label column sm={{span:3, offset:2}}>Muscle Group:</Form.Label>
+                    <Col sm={10} md={4} lg={3}>
+                        <Form.Control as="select" onChange={props.handleChange('muscleGroup')} value={values.raceID}>
                             <option selected disabled hidden>Choose a Group</option>
                             {groups}
-                        </select>
-                    </td>
-                </tr>
-                <tr> 
-                    <td> 
-                        <label>Muscle</label>
-                    </td>
-                    <td> 
+                        </Form.Control>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Form.Label column sm={{span:3, offset:2}}>Muscles:</Form.Label>
+                    <Col sm={10} md={4} lg={3}>
                         {muscles}
-                    </td>
-                </tr>
-                <tr> 
-                    <td>
-                        <button onClick={(e)=> back(e)}>Back</button>
-                    </td>
-                    <td> 
-                        <button disabled={disabled} onClick={(e)=> saveAndContinue(e)}>Save and Continue</button>
-                    </td>
-                </tr>               
-            </table>
-        </form>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Col sm={{ span: 3, offset: 3  }}>
+                        <Button onClick={(e)=> back(e)}>Back</Button>
+                    </Col>
+                    <Col sm={{ span: 3 }}>
+                        <Button disabled={disabled} onClick={(e)=> saveAndContinue(e)}>Save and Continue</Button>
+                    </Col>
+                </Form.Group>   
+            </Form>
+        </Jumbotron>    
     );
 };
 
