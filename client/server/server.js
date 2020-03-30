@@ -23,6 +23,7 @@ const teamsRouter = require('./routes/teams');
 const teamMembersRouter = require('./routes/teamMembers');
 const teamTrainersRouter = require('./routes/teamTrainers');
 const teamTypesRouter = require('./routes/teamTypes');
+const trainerClientsRouter = require('./routes/trainerClients');
 const sessionExercisesRouter = require('./routes/sessionExercises');
 const sessionResultsRouter = require('./routes/sessionResults');
 
@@ -70,6 +71,7 @@ app.use('/teams', teamsRouter);
 app.use('/teamMembers', teamMembersRouter);
 app.use('/teamTrainers', teamTrainersRouter);
 app.use('/teamTypes', teamTypesRouter);
+app.use('/trainerClients', trainerClientsRouter);
 app.use('/sessionExercises', sessionExercisesRouter);
 app.use('/sessionResults', sessionResultsRouter);
 

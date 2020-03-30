@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from "react";
 import {Jumbotron, Form, Row, Col, Button, Alert} from 'react-bootstrap'
 import { useHistory } from "react-router-dom";
+import { connect } from 'react-redux';
 
 const validator = require('validator');
 
-const LogIn = () => {
+const LogIn = (props) => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const [res, setRes] = useState();
@@ -82,6 +83,11 @@ const LogIn = () => {
     }
 
     
+    const getType = async () =>{
+        const response = await fetch('/accounts/byID?ID='+ID);
+        const data = await response.json();
+        props.setAccountType(data[0].intAccountTypeID);
+    }
 
     useEffect(()=>{
         if(ID > 0){
@@ -91,10 +97,15 @@ const LogIn = () => {
         }
     },[ID])
 
-    
     useEffect(()=>{
+        const setReduxVars = async () => {
+            props.setAccountID(ID)
+            await getType();
+            history.push("/home")
+        }
+
         if(attempt > 0){
-            history.push("/trainer")
+            setReduxVars();
         }else if(attempt == 0){
             setRes(<Alert variant="danger">Wrong Email or Password</Alert>);
         }
@@ -113,10 +124,6 @@ const LogIn = () => {
             //function will get accountID or return 0 if none exists
             await checkEmail(loginAttempt);  
         }
-    }
-
-    const submit = () => {
-
     }
     
     return (
@@ -157,4 +164,16 @@ const LogIn = () => {
     );
 };
 
-export default LogIn;
+const mapStateToProps = (state) => {
+    return {
+        ID: state.account.ID    }
+}
+  
+  const mapDispatchToProps = ( dispatch ) => {
+    return{
+      setAccountID: (ID) => { dispatch({type: 'SET_ACCOUNT_ID', ID: ID})},
+      setAccountType: (accountType) => { dispatch({type: 'SET_TYPE', accountType: accountType})}
+    }
+  }
+
+export default  connect(mapStateToProps, mapDispatchToProps)(LogIn);

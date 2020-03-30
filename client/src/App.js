@@ -7,7 +7,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 //Components
-import TrainerPage from './components/pages/trainer/TrainerPage';
+import HomePage from './components/pages/HomePage';
 import LandingPage from './components/pages/LandingPage';
 import SignUp from './components/pages/signup/SignUp';
 import LogIn from './components/pages/LogIn';
@@ -22,8 +22,7 @@ function App() {
           <Route exact path="/test" component={Test} />
           <Route exact path="/signup" component={SignUp} />
           <Route exact path="/login" component={LogIn} />
-          <Route path="/trainer" component={TrainerPage} />
-          <Route path="/client"/>
+          <Route path="/home" component={HomePage} />
         </Switch>
       </Router>
     </div>

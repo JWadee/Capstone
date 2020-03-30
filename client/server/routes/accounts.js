@@ -71,9 +71,6 @@ function login(req, res){
       connection.query(sql, ID, function(err, row) {
         connection.release();
         if(!err) {
-          console.log(row[0].strPassword)
-          console.log(req.body.pass)
-          console.log(row)
           if(row[0].strPassword == req.body.pass){
             res.json(1)
           }else{
@@ -125,16 +122,39 @@ function getByEmail(req,res){
     let sql = "SELECT COUNT(*) AS 'exists', intAccountID FROM accounts WHERE strEmail = ?";
     let email = req.query.email;
     connection.query(sql, email, function(err, row) {
-      console.log(row)
       connection.release();
       if(!err) {
         if(row[0].exists == 0 ){
-          console.log('no account');
           res.json({ID:0})
         }else{
-          console.log(' account');
           res.json({ID:row[0].intAccountID})
         }
+      }
+    });    
+    
+    connection.on('error', function(err){
+      res.json({"code": 100, "status": "Error in database connection"});
+    })
+  })
+}
+
+function getByID(req, res){
+  pool.getConnection(function(err, connection){
+    if(err) {
+      connection.release();
+      res.json({"code": 100, "status": "Error in database connection"});
+      return;
+    }
+    console.log("connected as id: " + connection.threadId);
+
+    let sql = "SELECT * FROM accounts WHERE intAccountID = ?";
+    let ID = req.query.ID
+    connection.query(sql, ID, function(err, row) {
+      connection.release();
+      if(!err) {
+        res.json(row)   
+      }else{
+        console.log(err)
       }
     });    
     
@@ -161,8 +181,8 @@ router.get('/byEmail', function(req, res) {
   getByEmail(req, res);
 });
 
-router.get('/byUsername', function(req, res) { 
-  getByUsername(req, res);
+router.get('/byID', function(req, res) { 
+  getByID(req, res);
 });
 
 module.exports = router;

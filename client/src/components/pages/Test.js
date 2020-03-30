@@ -1,10 +1,10 @@
 import React from "react"
 
-import CreateExercise from '../shared/CreateExerciseComp/CreateExercise';
+import TrainerPage from '../pages/trainer/TrainerPage';
 
 const Test = () => {
     return (
-       <CreateExercise />  
+       <TrainerPage />  
     )
 }
 
