@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\client",
+    "\\client\\server",
+    "\\client\\server\\routes",
+    "\\client\\src",
+    "\\client\\src\\components",
+    "\\client\\src\\components\\pages",
+    "\\client\\src\\components\\pages\\signup",
+    "\\client\\src\\components\\shared",
+    "\\client\\src\\components\\shared\\CreateExerciseComp"
+  ],
+  "SelectedNode": "\\client\\src\\components\\shared\\CreateExerciseComp\\Confirmation.js",
+  "PreviewInSolutionExplorer": false
+}
