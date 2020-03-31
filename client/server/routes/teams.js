@@ -17,13 +17,31 @@ function addTeam(req, res) {
             "VALUES (?, ?)";
         let values = [req.body.name, req.body.typeid];
 
+        let trainerSql = "INSERT INTO team_trainers ( intAccountID, intTeamID) " +
+            "VALUES (?, last_insert_id())";
+
+        let id = req.body.id;
+
         connection.query(sql, values, function (err, result) {
-            connection.release();
+
             if (!err) {
                 console.log(result)
-                res.json("Success")
+                
+
+                connection.query(trainerSql, id, function (err, result) {
+                    if (err) {
+                        connection.release();
+                        console.log(err);
+                    }
+                    else {
+                        connection.release();
+                        res.json("Success")
+                    }
+
+                });
+
             }
-            console.log(err)
+
 
         });
         connection.on('error', function (err) {
