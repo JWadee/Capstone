@@ -8,9 +8,10 @@
     "\\client\\src\\components",
     "\\client\\src\\components\\pages",
     "\\client\\src\\components\\pages\\signup",
+    "\\client\\src\\components\\pages\\trainer",
     "\\client\\src\\components\\shared",
     "\\client\\src\\components\\shared\\CreateExerciseComp"
   ],
-  "SelectedNode": "\\client\\src\\components\\shared\\CreateExerciseComp\\Confirmation.js",
+  "SelectedNode": "\\client\\src\\components\\pages\\trainer\\NewTeam.js",
   "PreviewInSolutionExplorer": false
 }

@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from "react";
-import {Jumbotron, Form, Row, Col, Button, Alert} from 'react-bootstrap'
+import { Jumbotron, Form, Row, Col, Button, Alert } from 'react-bootstrap'
+import { connect } from 'react-redux';
 
-const NewTeam = () => {
-    const [mainDisp, setMainDisp] = useState()
+const NewTeam = (props) => {
     const [name, setName] = useState("");
     const [typeid, setTypeID] = useState(Number);
     const [types, setTypes] = useState([]);
     const [nameError, setNameError] = useState();
+    const [submitError, setSubmitError] = useState();
 
 
     useEffect(() => {
@@ -26,15 +27,33 @@ const NewTeam = () => {
     function Submit(e) {
         e.preventDefault();
 
+        let id = props.ID
+
         fetch('/teams/add', {
             method: 'POST',
+             body: JSON.stringify({ name, typeid, id }),
             headers: {
                 'Content-Type': 'application/json;charset=UTF-8'
             }, 
-            body: JSON.stringify({ name, typeid }),
+
+        }).then(
+            (response) => (response.json())
+        ).then((response) => {
+            if (response.status === 'failed') {
+                setSubmitError(
+                    <Alert variant="danger">
+                        Something went wrong on our end
+                        </Alert>
+                )
+            }
+            else setSubmitError(
+                <Alert variant="success">
+                    Team created successfully
+                    </Alert>
+
+            )
 
         })
-
 
         if (name.length <= 4) {
             setNameError(
@@ -78,7 +97,7 @@ const NewTeam = () => {
                 <Form.Group as={Row}>
                     <Col sm={{ span: 6, offset: 3  }}>
                         <Button type="submit" onClick={(e) => Submit(e)}>Add Team</Button>
-
+                        {submitError}
                     </Col>
                 </Form.Group>
             </Form>
@@ -87,4 +106,11 @@ const NewTeam = () => {
     );
 };
 
-export default NewTeam;
+
+const mapStateToProps = (state) => {
+    return {
+        ID: state.account.ID
+    }
+}
+
+export default connect(mapStateToProps)(NewTeam);
