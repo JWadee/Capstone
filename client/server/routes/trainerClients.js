@@ -1,10 +1,9 @@
-
 var express = require('express');
 var router = express.Router();
 let pool = require('../db/db');
 
 
-function addTeam(req, res) {
+function addTrainerClient(req, res) {
     pool.getConnection(function (err, connection) {
         if (err) {
             connection.release();
@@ -13,35 +12,17 @@ function addTeam(req, res) {
         }
         console.log("connected as id: " + connection.threadId);
 
-        let sql = "INSERT INTO teams (strTeamName, intTeamTypeID) " +
-            "VALUES (?, ?)";
-        let values = [req.body.name, req.body.typeid];
-
-        let trainerSql = "INSERT INTO team_trainers ( intAccountID, intTeamID) " +
-            "VALUES (?, last_insert_id())";
-
-        let id = req.body.id;
+        let sql = "INSERT INTO trainer_clients (intTrainerID, intClientID, intTrainerClientStatusID) " +
+                  "VALUES (?, ?, 1)";
+        let values = [req.body.trainerID, req.body.clientID];
 
         connection.query(sql, values, function (err, result) {
-
+            connection.release();
             if (!err) {
                 console.log(result)
-                
-
-                connection.query(trainerSql, id, function (err, result) {
-                    if (err) {
-                        connection.release();
-                        console.log(err);
-                    }
-                    else {
-                        connection.release();
-                        res.json("Success")
-                    }
-
-                });
-
+                res.json("Success")
             }
-
+            console.log(err)
 
         });
         connection.on('error', function (err) {
@@ -50,7 +31,7 @@ function addTeam(req, res) {
     })
 }
 
-function getTeams(req, res) {
+function getTrainerClients(req, res) {
     pool.getConnection(function (err, connection) {
         if (err) {
             connection.release();
@@ -59,9 +40,10 @@ function getTeams(req, res) {
         }
         console.log("connected as id: " + connection.threadId);
 
-        let sql = "SELECT * FROM teams";
+        let sql = "SELECT * FROM trainer_clients WHERE intTrainerID = ?";
+        let ID = req.query.ID
 
-        connection.query(sql, function (err, rows) {
+        connection.query(sql, ID, function (err, rows) {
             connection.release();
             if (!err) {
                 res.json(rows)
@@ -75,11 +57,11 @@ function getTeams(req, res) {
 }
 
 router.post(('/add'), function (req, res) {
-    addTeam(req, res);
+    addTrainerClient(req, res);
 });
 
-router.get(('/'), function (req, res) {
-    getTeams(req, res);
+router.get(('/byTrainer'), function (req, res) {
+    getTrainerClients(req, res);
 });
 
 module.exports = router;

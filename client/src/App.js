@@ -12,6 +12,7 @@ import LandingPage from './components/pages/LandingPage';
 import SignUp from './components/pages/signup/SignUp';
 import LogIn from './components/pages/LogIn';
 import Test from './components/pages/Test';
+import JesseTest from './components/pages/JesseTest';
 
 function App() {
   return (
@@ -23,7 +24,6 @@ function App() {
           <Route exact path="/signup" component={SignUp} />
           <Route exact path="/login" component={LogIn} />
           <Route path="/trainer" component={TrainerPage} />
-          <Route path="/client"/>
         </Switch>
       </Router>
     </div>
