@@ -43,7 +43,7 @@ function getTrainerClients(req, res) {
         let sql = "SELECT * FROM trainer_clients WHERE intTrainerID = ?";
         let ID = req.query.ID
 
-        connection.query(sql, function (err, rows) {
+        connection.query(sql, ID, function (err, rows) {
             connection.release();
             if (!err) {
                 res.json(rows)

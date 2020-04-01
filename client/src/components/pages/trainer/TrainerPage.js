@@ -1,16 +1,19 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 import {Navbar, NavDropdown, Nav} from "react-bootstrap";
-import { Calendar } from "@fullcalendar/core";
+import { Route, Switch, useRouteMatch } from "react-router-dom";
+import { connect } from 'react-redux';
 
-//Component
-import TrainerClients from './TrainerClients'
+
+//Components
+import TrainerClients from './TrainerClients/TrainerClients'
 import NewClient from "./NewClient";
 import Schedule from "../../Schedule";
 import CalendarComponent from '../../Calendar'
 import NewTeam from "./NewTeam";
+import ClientPage from "../client/ClientPage";
+
 const TrainerPage = () => {
-    const [display, setDisplay] = useState(null);
-    
+    const match = useRouteMatch();
 
     return (
         <div>
@@ -20,28 +23,44 @@ const TrainerPage = () => {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
                         <NavDropdown title="Clients" id="basic-nav-dropdown">
-                            <NavDropdown.Item onClick={() =>setDisplay(<TrainerClients />)}>My Clients</NavDropdown.Item>
-                            <NavDropdown.Item onClick={() =>setDisplay(<NewClient />)}>Add a Client</NavDropdown.Item>
+                            <NavDropdown.Item href={match.url+"/my-clients"}>My Clients</NavDropdown.Item>
+                            <NavDropdown.Item href={match.url+"/new-client"}>Add a Client</NavDropdown.Item>
                         </NavDropdown>
                         <NavDropdown title="Training" id="basic-nav-dropdown">
-                            <NavDropdown.Item onClick={() =>setDisplay()}>My Programs</NavDropdown.Item>
-                            <NavDropdown.Item onClick={() =>setDisplay()}>Create a Program</NavDropdown.Item>
+                            <NavDropdown.Item >My Programs</NavDropdown.Item>
+                            <NavDropdown.Item >Create a Program</NavDropdown.Item>
                         </NavDropdown>
                         <NavDropdown title="Schedule" id="basic-nav-dropdown">
-                            <NavDropdown.Item onClick={() =>setDisplay(<Schedule/>)}>My Schedule</NavDropdown.Item>
-                            <NavDropdown.Item onClick={() =>setDisplay(<CalendarComponent/>)}>Calendar</NavDropdown.Item>
+                            <NavDropdown.Item >My Schedule</NavDropdown.Item>
+                            <NavDropdown.Item >Calendar</NavDropdown.Item>
                         </NavDropdown>
                         <NavDropdown title="Teams" id="basic-nav-dropdown">
-                            <NavDropdown.Item onClick={() =>setDisplay(<NewTeam/>)}>Add a Team</NavDropdown.Item>
+                            <NavDropdown.Item href={match.url+"/new-team"}>Add a Team</NavDropdown.Item>
                             <NavDropdown.Item>Manage Team</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>
             
-            {display}
+            <Switch>
+                <Route path={match.url + "/new-client"} exact component={NewClient} />
+                <Route path={match.url + "/my-clients"} exact component={TrainerClients} />
+                <Route path={match.url+ "/my-clients/client/ID=:ID"} exact component={ClientPage}/>
+                <Route path={match.url+ "/new-team"} exact component={NewTeam}/>
+
+            </Switch>
+
+            {/* {display} */}
         </div>
     );
 };
 
-export default TrainerPage;
+const mapStateToProps = (state) => {
+    return {
+        ID: state.account.ID,
+        accountType: state.account.accountType
+    }
+}
+
+
+export default  connect(mapStateToProps)(TrainerPage);

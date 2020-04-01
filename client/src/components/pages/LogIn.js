@@ -101,7 +101,6 @@ const LogIn = (props) => {
         const setReduxVars = async () => {
             props.setAccountID(ID)
             await getType();
-            history.push("/home")
         }
 
         if(attempt > 0){
@@ -125,6 +124,12 @@ const LogIn = (props) => {
             await checkEmail(loginAttempt);  
         }
     }
+
+    useEffect(()=>{
+        if(props.accountType === 1){
+            history.push("/trainer")
+        }
+    },[props.accountType])
     
     return (
         <Jumbotron>
@@ -166,7 +171,9 @@ const LogIn = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        ID: state.account.ID    }
+        ID: state.account.ID,
+        accountType: state.account.accountType
+    }
 }
   
   const mapDispatchToProps = ( dispatch ) => {
