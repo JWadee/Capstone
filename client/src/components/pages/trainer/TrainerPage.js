@@ -11,7 +11,7 @@ import Schedule from "../../Schedule";
 import CalendarComponent from '../../Calendar'
 import NewTeam from "./NewTeam";
 import ClientPage from "../client/ClientPage";
-
+import CreateExercise from '../../shared/CreateExerciseComp/CreateExercise';
 const TrainerPage = () => {
     const match = useRouteMatch();
 
@@ -27,8 +27,10 @@ const TrainerPage = () => {
                             <NavDropdown.Item href={match.url+"/new-client"}>Add a Client</NavDropdown.Item>
                         </NavDropdown>
                         <NavDropdown title="Training" id="basic-nav-dropdown">
-                            <NavDropdown.Item >My Programs</NavDropdown.Item>
-                            <NavDropdown.Item >Create a Program</NavDropdown.Item>
+                            <NavDropdown.Item >My Routines</NavDropdown.Item>
+                            <NavDropdown.Item >Create a Routine</NavDropdown.Item>
+                            <NavDropdown.Item href={match.url+"/add-exercise"}>Add an Exercise</NavDropdown.Item>
+
                         </NavDropdown>
                         <NavDropdown title="Schedule" id="basic-nav-dropdown">
                             <NavDropdown.Item >My Schedule</NavDropdown.Item>
@@ -47,6 +49,8 @@ const TrainerPage = () => {
                 <Route path={match.url + "/my-clients"} exact component={TrainerClients} />
                 <Route path={match.url+ "/my-clients/client/ID=:ID"} exact component={ClientPage}/>
                 <Route path={match.url+ "/new-team"} exact component={NewTeam}/>
+                <Route path={match.url+ "/add-exercise"} exact component={CreateExercise}/>
+
 
             </Switch>
 

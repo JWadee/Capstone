@@ -41,7 +41,7 @@ const NameAndType = (props) => {
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
-                    <Form.Label column sm={{span:3, offset:2}}>Body Type:</Form.Label>
+                    <Form.Label column sm={{span:3, offset:2}}>Type:</Form.Label>
                     <Col sm={10} md={4} lg={3}>
                         <Form.Control as="select" onChange={props.handleChange('type')} value={values.exerciseTypeID}>
                             <option selected disabled hidden>Choose a Type</option>
