@@ -1,12 +1,12 @@
 import React from 'react';
-import NewWorkout from '../components/NewWorkout';
+import CreateWorkout from '../components/shared/CreateWorkoutComp/CreateWorkout';
 
 
 
 const JesseTest = () => {
 
     return (
-        <NewWorkout />
+        <CreateWorkout />
     )
 
 }
