@@ -1,11 +1,12 @@
 import React from 'react';
-import NewTeam from '../pages/trainer/NewTeam';
+import NewWorkout from '../components/NewWorkout';
+
 
 
 const JesseTest = () => {
 
     return (
-        <NewTeam />
+        <NewWorkout />
     )
 
 }
