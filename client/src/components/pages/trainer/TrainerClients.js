@@ -3,9 +3,6 @@ import {ListGroup, Jumbotron, Nav, Row, Col} from 'react-bootstrap'
 import { connect } from 'react-redux';
 import { Route, useRouteMatch } from "react-router-dom";
 
-//Components 
-import TrainerClient from './TrainerClient';
-
 const TrainerClients = (props) => {
     const [clients, setClients] = useState([]);
     const match = useRouteMatch();
@@ -19,8 +16,7 @@ const TrainerClients = (props) => {
         }
 
         get_clients();
-    },[])   
-    
+    },[])
     
     return (
         <div>
@@ -28,12 +24,13 @@ const TrainerClients = (props) => {
             <h2>My Clients</h2><br />
             <hr />
             <ListGroup as={Row}>
-                {clients.map(client =>{
-                    return(
-                        <TrainerClient ID={client.intClientID} key={client.intClientID}/>
-                    ) 
-                })}
-
+                <Col sm={{span:4, offset:4}}>
+                    {clients.map(client =>{
+                        return(
+                            <ListGroup.Item action href={match.url+"/client/ID="+client.intAccountID}>{client.strFirstName +" "+client.strLastName}</ListGroup.Item>
+                        ) 
+                    })}
+                </Col>
             </ListGroup>
         </Jumbotron>
 

@@ -1,10 +1,10 @@
 import React from "react"
 
-import TrainerPage from '../pages/trainer/TrainerPage';
+import CreateSession from '../shared/CreateSession/CreateSession';
 
 const Test = () => {
     return (
-       <TrainerPage />  
+       <CreateSession />  
     )
 }
 
