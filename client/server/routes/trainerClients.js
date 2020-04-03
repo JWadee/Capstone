@@ -2,36 +2,41 @@ var express = require('express');
 var router = express.Router();
 let pool = require('../db/db');
 
+function addTrainerClientNote(req,res){
+    pool.getConnection(function(err, connection){
+      if(err) {
+        connection.release();
+        res.json({"code": 100, "status": "Error in database connection"});
+        return;
+      }
+      console.log("connected as id: " + connection.threadId);
+  
+      let sql = "INSERT INTO Trainer_Client_Notes (intTrainerClientID, strNote) "+
+                "VALUES (?,?)";
 
-function addTrainerClient(req, res) {
-    pool.getConnection(function (err, connection) {
-        if (err) {
-            connection.release();
-            res.json({ "code": 100, "status": "Error in database connection" });
-            return;
+      let values =[
+
+       req.body.intTrainerClientID,
+       req.body.strNote,
+       
+      ];
+      connection.query(sql, value, function(err, result) {
+        connection.release();
+        if(!err) {
+            console.log(result)
+            res.json("Success")
         }
-        console.log("connected as id: " + connection.threadId);
+        console.log(err)
 
-        let sql = "INSERT INTO trainer_clients (intTrainerID, intClientID, intTrainerClientStatusID) " +
-                  "VALUES (?, ?, 1)";
-        let values = [req.body.trainerID, req.body.clientID];
-
-        connection.query(sql, values, function (err, result) {
-            connection.release();
-            if (!err) {
-                console.log(result)
-                res.json("Success")
-            }
-            console.log(err)
-
-        });
-        connection.on('error', function (err) {
-            res.json({ "code": 100, "status": "Error in database connection" });
-        })
+      });    
+      connection.on('error', function(err){
+        res.json({"code": 100, "status": "Error in database connection"});
+      })
     })
 }
 
-function getTrainerClients(req, res) {
+
+function getTrainerClientStatuses(req, res) {
     pool.getConnection(function (err, connection) {
         if (err) {
             connection.release();
@@ -45,7 +50,7 @@ function getTrainerClients(req, res) {
         
         let ID = req.query.ID
 
-        connection.query(sql, ID, function (err, rows) {
+        connection.query(sql, function (err, rows) {
             connection.release();
             if (!err) {
                 res.json(rows)
@@ -58,12 +63,47 @@ function getTrainerClients(req, res) {
     })
 }
 
+
+
+function getTrainerClientNotesByClient(req,res){
+    pool.getConnection(function(err, connection){
+      if(err) {
+        connection.release();
+        res.json({"code": 100, "status": "Error in database connection"});
+        return;
+      }
+      console.log("connected as id: " + connection.threadId);
+  
+      let sql = "SELECT * FROM Trainer_Client_Notes WHERE intTrainerClientID = ?";
+
+      let id = req.query.id;
+  
+      connection.query(sql, id, function(err, rows) {
+        connection.release();
+        if(!err) {
+          res.json(rows);
+        }
+      });    
+      
+      connection.on('error', function(err){
+        res.json({"code": 100, "status": "Error in database connection"});
+      })
+    })
+}
+
+  
+
 router.post(('/add'), function (req, res) {
-    addTrainerClient(req, res);
+    addTrainerClientNote(req, res);
 });
 
-router.get(('/byTrainer'), function (req, res) {
-    getTrainerClients(req, res);
+router.get(('/'), function (req, res) {
+    getTrainerClientStatuses(req, res);
+});
+
+
+  router.get('/ByClient', function(req, res) { 
+    getTrainerClientNotesByClient(req, res);
 });
 
 module.exports = router;
