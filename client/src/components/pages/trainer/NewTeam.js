@@ -91,7 +91,6 @@ const NewTeam = (props) => {
                                     )
                             })}
                         </Form.Control>
-
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row}>

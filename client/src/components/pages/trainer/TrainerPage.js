@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 
 //Components
-import TrainerClients from './TrainerClients/TrainerClients'
+import TrainerClients from './TrainerClients'
 import NewClient from "./NewClient";
 import Schedule from "../../Schedule";
 import CalendarComponent from '../../Calendar'

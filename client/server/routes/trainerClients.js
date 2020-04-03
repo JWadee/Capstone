@@ -40,7 +40,9 @@ function getTrainerClients(req, res) {
         }
         console.log("connected as id: " + connection.threadId);
 
-        let sql = "SELECT * FROM trainer_clients WHERE intTrainerID = ?";
+        let sql = "SELECT * FROM accounts WHERE intAccountID IN "+
+        "(SELECT intClientID FROM trainer_clients WHERE intTrainerID = ?)"  
+        
         let ID = req.query.ID
 
         connection.query(sql, ID, function (err, rows) {

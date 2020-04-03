@@ -74,12 +74,42 @@ function getTeams(req, res) {
     })
 }
 
+function getByTrainer(req, res) {
+    pool.getConnection(function (err, connection) {
+        if (err) {
+            connection.release();
+            res.json({ "code": 100, "status": "Error in database connection" });
+            return;
+        }
+        console.log("connected as id: " + connection.threadId);
+
+        let sql = "SELECT * FROM teams WHERE intTeamID IN "+
+                 "(SELECT intTeamID FROM team_trainers WHERE intAccountID = ?)"                
+
+        let ID = req.query.ID; 
+        connection.query(sql, ID, function (err, rows) {
+            connection.release();
+            if (!err) {
+                res.json(rows)
+            }
+        });
+
+        connection.on('error', function (err) {
+            res.json({ "code": 100, "status": "Error in database connection" });
+        })
+    })
+}
+
 router.post(('/add'), function (req, res) {
     addTeam(req, res);
 });
 
 router.get(('/'), function (req, res) {
     getTeams(req, res);
+});
+
+router.get(('/byTrainer'), function (req, res) {
+    getByTrainer(req, res);
 });
 
 module.exports = router;
