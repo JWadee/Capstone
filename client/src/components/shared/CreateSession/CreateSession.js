@@ -3,17 +3,29 @@ import { connect } from 'react-redux';
 
 import SessionDetails from './SessionDetails';
 import DateAndTime from './DateAndTime';
+import SessionWorkout from './SessionWorkout';
+import Confirmation from './Confirmation';
 
 const CreateSession = (props) => {
     const [step, setStep] = useState(1);
-    const [typeID, setTypeID] = useState();
-    const [teamID, setTeamID] = useState();
-    const [clientID, setClientID] = useState();
-    const [workoutID, setWorkoutID] = useState();
-    const [date, setDate] = useState();
+    const [typeID, setTypeID] = useState(null);
+    const [teamID, setTeamID] = useState(null);
+    const [clientID, setClientID] = useState(null);
+    const [workoutID, setWorkoutID] = useState(null);
+    const [date, setDate] = useState('');
     const [startTime, setStartTime] = useState();
     const [endTime, setEndTime] = useState();
+    const [startHour, setStartHour] = useState('1');
+    const [startMinute, setStartMinute] = useState('00');
+    const [startAMPM, setStartAMPM] = useState('AM');
+    const [endHour, setEndHour] = useState('1');
+    const [endMinute, setEndMinute] = useState('00');
+    const [endAMPM, setEndAMPM] = useState('AM');
     const [types, setTypes] = useState([]);
+    const [teams, setTeams] = useState([]);
+    const [clients, setClients] = useState([]);
+    const [workouts, setWorkouts] = useState([]);
+
     let ID = props.ID;
 
     //Method to go to next step
@@ -37,14 +49,22 @@ const CreateSession = (props) => {
             return;
             case 'date': setDate(event.target.value);
             return;
-            case 'start': setStartTime(event.target.value);
+            case 'startHour': setStartHour(event.target.value);
             return;
-            case 'end': setEndTime(event.target.value);
+            case 'startMinute': setStartMinute(event.target.value);
+            return;
+            case 'startAMPM': setStartAMPM(event.target.value);
+            return;
+            case 'endHour': setEndHour(event.target.value);
+            return;
+            case 'endMinute': setEndMinute(event.target.value);
+            return;
+            case 'endAMPM': setEndAMPM(event.target.value);
             return;
         };
     }
 
-    //Run on initial render to load exercise types
+    //Run on initial render to load session types, clients, teams, and workouts
     useEffect(()=>{
         //function to fetch exercise types 
         async function fetch_sessiontypes(){
@@ -57,7 +77,27 @@ const CreateSession = (props) => {
             //set exerciseTypes State variable to data 
             setTypes(data);
         }
+        const fetch_teams = async () => {
+            const response = await fetch('/teams/byTrainer?ID='+values.ID);
+            const data = await response.json();
+            setTeams(data)
+        }
 
+        const fetch_clients = async () => {
+            const response = await fetch('/trainerClients/byTrainer?ID='+values.ID);
+            const data = await response.json();
+            setClients(data)
+        }
+
+        const fetch_workouts = async () => {
+            const response = await fetch('/workouts/byTrainer?ID='+values.ID);
+            const data = await response.json();
+            setWorkouts(data)
+        }
+
+        fetch_workouts();
+        fetch_teams();
+        fetch_clients();
         fetch_sessiontypes();
     }, [])
 
@@ -65,16 +105,46 @@ const CreateSession = (props) => {
     //Reset Team and Client ID based on selection of session type
     useEffect(()=>{
         if(typeID == 1){
-            setTeamID();
-            setClientID(); 
+            setTeamID(null);
+            setClientID(null); 
         }else if(typeID == 2){
-            setClientID();
+            setClientID(null);
         }else if(typeID == 3){
-            setTeamID();
+            setTeamID(null);
         }
     },[typeID])
 
-    let values = {typeID, teamID, clientID, workoutID, date, startTime, endTime, types, ID }
+
+    //Change start time
+    useEffect(()=>{
+        if(startAMPM ==='PM'){
+            let hour = parseInt(startHour)+12;
+            setStartTime(
+                hour+":"+startMinute
+            )
+        }else{
+            setStartTime(
+                startHour+":"+startMinute
+            )
+        }
+    },[startMinute, startHour, startAMPM])
+
+    //Change end time
+    useEffect(()=>{
+        if(endAMPM === 'PM'){
+            let hour = parseInt(endHour)+12;
+            setEndTime(
+                hour+":"+endMinute
+            )
+        }else{
+            setEndTime(
+                endHour+":"+endMinute
+            )
+        }
+    },[endHour, endMinute, endAMPM])
+    
+    
+    let values = {typeID, teamID, clientID, workoutID, date, startTime, endTime, types, ID, startHour, startMinute, endHour, endMinute, startAMPM, endAMPM, teams, clients, workouts}
 
     switch(step){
         case 1:
@@ -84,6 +154,14 @@ const CreateSession = (props) => {
         case 2:
             return (
                 <DateAndTime nextStep={()=>nextStep()} prevStep={()=>prevStep()} handleChange={handleChange} values={values} />
+            )
+        case 3:
+            return (
+                <SessionWorkout nextStep={()=>nextStep()} prevStep={()=>prevStep()} handleChange={handleChange} values={values} />
+            )
+        case 4:
+            return (
+                <Confirmation prevStep={()=>prevStep()} values={values} />
             )
     }
 }

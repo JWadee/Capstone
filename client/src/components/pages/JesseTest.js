@@ -1,6 +1,5 @@
 import React from 'react';
-import CreateWorkout from '../components/shared/CreateWorkoutComp/CreateWorkout';
-
+import CreateWorkout from '../shared/CreateWorkoutComp/CreateWorkout';
 
 
 const JesseTest = () => {
