@@ -100,6 +100,33 @@ function getByTrainer(req, res) {
     })
 }
 
+
+function getByID(req, res) {
+    pool.getConnection(function (err, connection) {
+        if (err) {
+            connection.release();
+            res.json({ "code": 100, "status": "Error in database connection" });
+            return;
+        }
+        console.log("connected as id: " + connection.threadId);
+
+        let sql = "SELECT * FROM teams WHERE intTeamID = ?";                
+
+        let ID = req.query.ID; 
+        
+        connection.query(sql, ID, function (err, rows) {
+            connection.release();
+            if (!err) {
+                res.json(rows)
+            }
+        });
+
+        connection.on('error', function (err) {
+            res.json({ "code": 100, "status": "Error in database connection" });
+        })
+    })
+}
+
 router.post(('/add'), function (req, res) {
     addTeam(req, res);
 });
@@ -110,6 +137,10 @@ router.get(('/'), function (req, res) {
 
 router.get(('/byTrainer'), function (req, res) {
     getByTrainer(req, res);
+});
+
+router.get(('/byID'), function (req, res) {
+    getByID(req, res);
 });
 
 module.exports = router;

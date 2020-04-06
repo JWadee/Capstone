@@ -5,14 +5,15 @@ import { connect } from 'react-redux';
 
 
 //Components
-import TrainerClients from './TrainerClients'
+import TrainerClients from './TrainerClients';
 import NewClient from "./NewClient";
-import Schedule from "../../Schedule";
+import Session from "../../shared/Session";
 import CalendarComponent from '../../Calendar'
 import NewTeam from "./NewTeam";
 import ClientPage from "../client/ClientPage";
 import CreateExercise from '../../shared/CreateExerciseComp/CreateExercise';
 import CreateSession from '../../shared/CreateSession/CreateSession';
+import TrainerSessions from './TrainerSessions';
 
 const TrainerPage = () => {
     const match = useRouteMatch();
@@ -35,7 +36,7 @@ const TrainerPage = () => {
 
                         </NavDropdown>
                         <NavDropdown title="Schedule" id="basic-nav-dropdown">
-                            <NavDropdown.Item >My Schedule</NavDropdown.Item>
+                            <NavDropdown.Item href={match.url+"/sessions"}>My Schedule</NavDropdown.Item>
                             <NavDropdown.Item >Calendar</NavDropdown.Item>
                             <NavDropdown.Item href={match.url+"/add-session"}>Add a Session</NavDropdown.Item>
                         </NavDropdown>
@@ -54,6 +55,10 @@ const TrainerPage = () => {
                 <Route path={match.url+ "/new-team"} exact component={NewTeam}/>
                 <Route path={match.url+ "/add-exercise"} exact component={CreateExercise}/>
                 <Route path={match.url+ "/add-session"} exact component={CreateSession}/>
+                <Route path={match.url+ "/sessions"} exact component={TrainerSessions}/>
+                <Route path={match.url+ "/sessions/session/ID=:ID"} exact component={Session}/>
+
+
             </Switch>
 
             {/* {display} */}
