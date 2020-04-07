@@ -1,22 +1,21 @@
 import React, {useState} from "react";
 import {Navbar, NavDropdown, Nav} from "react-bootstrap";
-import { Route, Switch, useRouteMatch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { connect } from 'react-redux';
 
 
 //Components
 import TrainerClients from './TrainerClients';
 import NewClient from "./NewClient";
-import Session from "../../shared/Session";
-import CalendarComponent from '../../Calendar'
+import Session from "../../shared/Session/Session";
 import NewTeam from "./NewTeam";
 import ClientPage from "../client/ClientPage";
 import CreateExercise from '../../shared/CreateExerciseComp/CreateExercise';
 import CreateSession from '../../shared/CreateSession/CreateSession';
 import TrainerSessions from './TrainerSessions';
+import EditSession from '../../shared/Session/EditSession';
 
-const TrainerPage = () => {
-    const match = useRouteMatch();
+const TrainerPage = ({match}) => {
 
     return (
         <div>
@@ -37,7 +36,6 @@ const TrainerPage = () => {
                         </NavDropdown>
                         <NavDropdown title="Schedule" id="basic-nav-dropdown">
                             <NavDropdown.Item href={match.url+"/sessions"}>My Schedule</NavDropdown.Item>
-                            <NavDropdown.Item >Calendar</NavDropdown.Item>
                             <NavDropdown.Item href={match.url+"/add-session"}>Add a Session</NavDropdown.Item>
                         </NavDropdown>
                         <NavDropdown title="Teams" id="basic-nav-dropdown">
@@ -49,16 +47,14 @@ const TrainerPage = () => {
             </Navbar>
             
             <Switch>
-                <Route path={match.url + "/new-client"} exact component={NewClient} />
-                <Route path={match.url + "/my-clients"} exact component={TrainerClients} />
-                <Route path={match.url+ "/my-clients/client/ID=:ID"} exact component={ClientPage}/>
-                <Route path={match.url+ "/new-team"} exact component={NewTeam}/>
-                <Route path={match.url+ "/add-exercise"} exact component={CreateExercise}/>
-                <Route path={match.url+ "/add-session"} exact component={CreateSession}/>
-                <Route path={match.url+ "/sessions"} exact component={TrainerSessions}/>
-                <Route path={match.url+ "/sessions/session/ID=:ID"} exact component={Session}/>
-
-
+                <Route path={"/trainer/new-client"} exact component={NewClient} />
+                <Route path={"/trainer/my-clients"} exact component={TrainerClients} />
+                <Route path={"/trainer/my-clients/client/:ID"} exact component={ClientPage}/>
+                <Route path={"/trainer/new-team"} exact component={NewTeam}/>
+                <Route path={"/trainer/add-exercise"} exact component={CreateExercise}/>
+                <Route path={"/trainer/add-session"} exact component={CreateSession}/>
+                <Route path={"/trainer/sessions"} exact component={TrainerSessions}/>
+                <Route path={"/trainer/sessions/session/:ID"} exact component={Session}/>
             </Switch>
 
             {/* {display} */}

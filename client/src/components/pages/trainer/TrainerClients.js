@@ -1,11 +1,14 @@
 import React, {useState, useEffect} from "react";
 import {ListGroup, Jumbotron, Nav, Row, Col} from 'react-bootstrap'
 import { connect } from 'react-redux';
-import { Route, useRouteMatch } from "react-router-dom";
+import { Route, Link } from "react-router-dom";
+
+import ClientPage from "../client/ClientPage";
 
 const TrainerClients = (props) => {
     const [clients, setClients] = useState([]);
-    const match = useRouteMatch();
+    // const match = useRouteMatch();
+    const match = props.match;
 
     useEffect(()=>{
         const get_clients = async() => {
@@ -19,7 +22,6 @@ const TrainerClients = (props) => {
     },[])
     
     return (
-        <div>
         <Jumbotron>
             <h2>My Clients</h2><br />
             <hr />
@@ -27,14 +29,12 @@ const TrainerClients = (props) => {
                 <Col sm={{span:4, offset:4}}>
                     {clients.map(client =>{
                         return(
-                            <ListGroup.Item action href={match.url+"/client/ID="+client.intAccountID}>{client.strFirstName +" "+client.strLastName}</ListGroup.Item>
+                            <ListGroup.Item key={client.intAccountID} action href={match.url+"/client/"+client.intAccountID}>{client.strFirstName +" "+client.strLastName}</ListGroup.Item>
                         ) 
                     })}
                 </Col>
             </ListGroup>
         </Jumbotron>
-
-        </div>
     );
 };
 

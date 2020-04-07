@@ -72,10 +72,10 @@ const SessionType = (props) => {
         }
     },[values.typeID, values.clientID, values.teamID])
 
-    //Options for exercise types drop down (map function runs for each object in the values.exerciseTypes array)
+    //Options for session types drop down (map function runs for each object in the values.types array)
     let types = values.types.map(type => {
             //if the ID of the dropdown is == state value then set that option to selected
-            if(type.intSessionTypeID == values.exerciseTypeID){
+            if(type.intSessionTypeID == values.typeID){
                 return <option selected key={type.intSessionTypeID} value={type.intSessionTypeID}>{type.strSessionType}</option>
             }else{
                 return <option  key={type.intSessionTypeID} value={type.intSessionTypeID}>{type.strSessionType}</option>

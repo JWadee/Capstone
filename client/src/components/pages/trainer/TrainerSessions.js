@@ -82,8 +82,8 @@ const TrainerSessions = (props) => {
                     let team =  fetch_team(session);
 
                     return(
-                    <Col sm={{span:4, offset:4}}>
-                        <ListGroup.Item action href={match.url+"/session/ID="+session.intSessionID}>
+                    <Col sm={{span:4, offset:4}} key={session.int}>
+                        <ListGroup.Item action key={session.intSessionID} href={match.url+"/session/"+session.intSessionID}>
                             <div>
                                 <p>{strDay +", "+formatted_date}</p>
                             </div>

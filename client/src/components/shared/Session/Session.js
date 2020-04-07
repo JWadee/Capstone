@@ -1,21 +1,29 @@
 import React, {useEffect, useState} from "react";
 import {Jumbotron, Button, Row, Col, Modal} from 'react-bootstrap';
-import { Route, useRouteMatch } from "react-router-dom";
 
-const Session = () => {
+//Components 
+import EditSession from './EditSession';
+
+const Session = (props) => {
+    //Component Variables
     const [session, setSession] = useState(null);
     const [condDisp, setCondDisp] = useState(null);
     const [client, setClient] = useState(null);
-    const [team, setTeam] = useState(null);
+    const [team, setTeam] = useState(null);    
+    const [workout, setWorkout] = useState(null);
     const [day, setDay] = useState();
     const [date, setDate] = useState();
     const [mainDisp, setMainDisp] = useState();
     const [show, setShow] = useState(false);
-    const match = useRouteMatch();
+    const [start, setStart] = useState(false);
+    const [end, setEnd] = useState(false);
+    const match = props.match;
 
+    //Functions to handle to opening and closing of Modal (delete confirmation)
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    //Function to delete session
     const deleteSession = async() =>{
         fetch('/sessions/delete?ID='+session.intSessionID, { method: 'delete'}) 
             .then(response =>{
@@ -27,6 +35,35 @@ const Session = () => {
             })
     }
 
+    //Function to cancel edit 
+    const cancelEdit = () => {
+        setMainDisp(
+            <div>
+                <h2>Session Details</h2><br />
+                <hr />
+                <div>
+                    <div><p>When: {day}, {date} </p></div>
+                </div>
+                <div>
+                    <div><p>From: {start.hours+":"+start.minutes+start.AMPM+" - "+end.hours+":"+end.minutes+end.AMPM}</p></div>
+                </div> 
+                {workout != null ?                 
+                    <div>
+                        <div><p>Workout: {workout[0].strWorkoutName}</p></div>
+                    </div> : <></>
+                }
+                {condDisp}
+                <Row>
+                    <Col>
+                        <Button>Start Workout</Button>
+                        <Button onClick={()=>{setMainDisp(<EditSession session={session} start={start} end={end} />)}}>Edit Session</Button>
+                        <Button onClick={()=>handleShow()}>Delete Session</Button>
+                    </Col>
+                </Row>
+            </div>
+        )
+    }
+    //Variable containing the Modal
     const modal = (
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
@@ -43,6 +80,7 @@ const Session = () => {
         </Modal>
     )
 
+    //Function to get the day of the week
     const getDay = () =>{
         const date = new Date(session.dtmDate);
         const day = date.getDay();
@@ -73,13 +111,54 @@ const Session = () => {
 
     }
 
+    //Function to format date as dd-mm
     const formatDate = () => {
         const date = new Date(session.dtmDate);
         const formatted_date = (date.getMonth() + 1)+ "-" + date.getDate();
         setDate(formatted_date);
     }
 
+    const format_time = (time) =>{
+        //split string into hours and minutes
+        const split = time.split(":", 2)
+        let hours = split[0];
+        const minutes = split[1];
+        
+        /** CHECK HOURS FOR AM OR PM TIME */
 
+        //if hours has leading zero, remove and set to AM
+        if(hours.startsWith("0")){
+            hours = hours.substring(1,2)
+            const result = {
+                hours: hours,
+                minutes: minutes,
+                AMPM: 'AM'
+            }
+            return result;
+        //else check if > 12, subtract 12 and set to PM
+        }else{
+            hours = parseInt(hours);
+            if(hours > 12){
+                hours = hours - 12 ;
+                const result = {
+                    hours: hours,
+                    minutes: minutes,
+                    AMPM: 'PM'
+                }
+                return result;
+            }else if(hours <= 12){
+                const result = {
+                    hours: hours,
+                    minutes: minutes,
+                    AMPM: 'AM'
+                }
+                return result;
+            }
+        }
+        
+    }
+
+    //Run on initial render to fetch the session by ID
     useEffect(()=>{
         const fetch_session = async() =>{
             const response = await fetch('/sessions/byID?ID='+match.params.ID);
@@ -90,6 +169,7 @@ const Session = () => {
         fetch_session()
     },[])
 
+    //Run when session is set, if ! null fetch workout, get day, format date, format times, and conditionally client or team
     useEffect(()=>{
         const fetch_client = async ()=>{
             const response = await fetch('/accounts/byID?ID='+session.intClientID);
@@ -101,11 +181,24 @@ const Session = () => {
             const response = await fetch('/teams/byID?ID='+session.intTeamID);
             const data = await response.json();
             setTeam(data);
+        }        
+        
+        const fetch_workout = async ()=>{
+            const response = await fetch('/workouts/byID?ID='+session.intWorkoutID);
+            const data = await response.json();
+            setWorkout(data);
         }
 
         if(session != null){
             getDay();
             formatDate();
+            fetch_workout();
+            
+            let start = format_time(session.tmStartTime);
+            setStart(start);
+            let end = format_time(session.tmEndTime);
+            setEnd(end);
+            
             
             if(session.intSessionTypeID === 3){
                 fetch_client();
@@ -118,6 +211,7 @@ const Session = () => {
         }    
     },[session])
 
+    //Run when client or team is set, check if ! null show set conditional display if client or team contains record
     useEffect(()=>{
         if(client != null){
             setCondDisp(
@@ -131,6 +225,7 @@ const Session = () => {
         }
     },[client, team])
 
+    //Run when condDisp, day, date, workout, or session changes. setMainDisp so that component will reflect changes.
     useEffect(()=>{
         if(session != null){
         setMainDisp(
@@ -141,21 +236,25 @@ const Session = () => {
                     <div><p>When: {day}, {date} </p></div>
                 </div>
                 <div>
-                    <div><p>From: {session.tmStartTime+" - "+session.tmEndTime}</p></div>
+                    <div><p>From: {start.hours+":"+start.minutes+start.AMPM+" - "+end.hours+":"+end.minutes+end.AMPM}</p></div>
                 </div> 
+                {workout != null ?                 
+                    <div>
+                        <div><p>Workout: {workout[0].strWorkoutName}</p></div>
+                    </div> : <></>
+                }
                 {condDisp}
                 <Row>
                     <Col>
-                        <Button float="right">Start Workout</Button>
-                        <Button>Edit Session</Button>
+                        <Button>Start Workout</Button>
+                        <Button onClick={()=>{setMainDisp(<EditSession session={session} start={start} end={end} cancelEdit={cancelEdit} />)}}>Edit Session</Button>
                         <Button onClick={()=>handleShow()}>Delete Session</Button>
-
                     </Col>
                 </Row>
             </div>
             )
         }
-    },[condDisp, day, date, session])
+    },[condDisp, day, date, session, workout])
 
 
 
