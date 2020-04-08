@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import { connect } from 'react-redux';
-import {Jumbotron, Form, Row, Col, Button} from 'react-bootstrap';
-import { useRouteMatch } from "react-router-dom";
+import {Jumbotron, Form, Row, Col, Button, Modal} from 'react-bootstrap';
+import history from '../../../utils/history';
 
 const EditSession = (props) => {
     const [typeID, setTypeID] = useState(props.session.intSessionTypeID);
@@ -23,9 +23,68 @@ const EditSession = (props) => {
     const [workouts, setWorkouts] = useState([]);
     const [teamDisp, setTeamDisp] = useState();
     const [clientDisp, setClientDisp] = useState();
+    const [show, setShow] = useState(false);
+
     let minuteOpts = ['00', '15', '30', '45'];
     let hourOpts = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
-    const match = useRouteMatch();
+    
+
+    //Functions to handle to opening and closing of Modal (delete confirmation)
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+    
+    const updateSession = async() => {
+        const data = {
+            clientID : clientID,
+            teamID : teamID, 
+            typeID : typeID, 
+            workoutID : workoutID, 
+            date : date, 
+            start : startTime, 
+            end: endTime, 
+            sessionID : props.session.intSessionID
+        }
+
+        const url ='/sessions/update'
+        const options = {
+                    method:'PUT',
+                    headers:{
+                        'Content-Type': 'application/json;charset=UTF-8'
+                    }, 
+                    body: JSON.stringify(data)
+        }
+
+        //call api
+        fetch(url, options)
+            .then(()=> {
+                props.closeEdit()
+            }).catch(error=>{
+                console.log(error)
+                return(
+                    <div>
+                        <h4>There was an error on our end. Please try again.</h4>
+                    </div>
+                )
+            })
+
+    }
+   //Variable containing the Modal
+    const modal = (
+        <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+                <Modal.Title>Save your changes?</Modal.Title>
+            </Modal.Header>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={handleClose}>
+                    Close
+                </Button>
+                <Button variant="primary" onClick={updateSession}>
+                    Update Session
+                </Button>
+                </Modal.Footer>
+        </Modal>
+    )
+
     //Run on initial render to load session types, clients, teams, and workouts
     useEffect(()=>{
         //function to fetch exercise types 
@@ -147,29 +206,22 @@ const EditSession = (props) => {
         }
     },[endHour, endMinute, endAMPM])
     
-    
+
+
+
     //Options for session types drop down (map function runs for each object in the  types array)
     let typeOpts = types.map(type => {
         return <option  key={type.intSessionTypeID} value={type.intSessionTypeID}>{type.strSessionType}</option>
         
     })
-    //Options for teams drop down 
-    // let teamOpts = teams.map(team => {
-    //     return <option  key={team.intTeamID} value={team.intTeamID}>{team.strTeamName}</option>
-        
-    // })
-
-    // //Options for teams drop down 
-    // let clientOpts = clients.map(client => {
-    //     return <option  key={client.intAccountID} value={client.intAccountID}>{client.strFirstName+" "+client.strLastName}</option>
-        
-    // })
 
     let workoutOpts = workouts.map(workout => {
         return <option  key={workout.intWorkoutID} value={workout.intWorkoutID}>{workout.strWorkoutName}</option>
         
     })
+
     return (
+        <>
         <Jumbotron>
             <h2>Edit Session</h2><br />
             <hr></hr>
@@ -258,12 +310,14 @@ const EditSession = (props) => {
                 </Form.Group>
                 <Form.Group as={Row}>                
                     <Col>
-                        <Button onClick={props.cancelEdit}>Cancel</Button>
-                        <Button >Save Changes</Button>
+                        <Button onClick={props.closeEdit}>Cancel</Button>
+                        <Button onClick={()=>handleShow()}>Save Changes</Button>
                     </Col>
                 </Form.Group>  
             </Form>
         </Jumbotron>    
+        {modal}
+        </>
     )
     
 }

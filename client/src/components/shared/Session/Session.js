@@ -35,34 +35,38 @@ const Session = (props) => {
             })
     }
 
-    //Function to cancel edit 
-    const cancelEdit = () => {
-        setMainDisp(
+    //Variable to contain display for session information
+    const sessionDisp = (
+        <div>
+            <h2>Session Details</h2><br />
+            <hr />
             <div>
-                <h2>Session Details</h2><br />
-                <hr />
-                <div>
-                    <div><p>When: {day}, {date} </p></div>
-                </div>
-                <div>
-                    <div><p>From: {start.hours+":"+start.minutes+start.AMPM+" - "+end.hours+":"+end.minutes+end.AMPM}</p></div>
-                </div> 
-                {workout != null ?                 
-                    <div>
-                        <div><p>Workout: {workout[0].strWorkoutName}</p></div>
-                    </div> : <></>
-                }
-                {condDisp}
-                <Row>
-                    <Col>
-                        <Button>Start Workout</Button>
-                        <Button onClick={()=>{setMainDisp(<EditSession session={session} start={start} end={end} />)}}>Edit Session</Button>
-                        <Button onClick={()=>handleShow()}>Delete Session</Button>
-                    </Col>
-                </Row>
+                <div><p>When: {day}, {date} </p></div>
             </div>
-        )
+            <div>
+                <div><p>From: {start.hours+":"+start.minutes+start.AMPM+" - "+end.hours+":"+end.minutes+end.AMPM}</p></div>
+            </div> 
+            {workout != null ?                 
+                <div>
+                    <div><p>Workout: {workout[0].strWorkoutName}</p></div>
+                </div> : <></>
+            }
+            {condDisp}
+            <Row>
+                <Col>
+                    <Button>Start Workout</Button>
+                    <Button onClick={()=>setMainDisp(<EditSession session={session} start={start} end={end} closeEdit={()=>closeEdit()} />)}>Edit Session</Button>
+                    <Button onClick={()=>handleShow()}>Delete Session</Button>
+                </Col>
+            </Row>
+        </div>
+    )
+
+    //Function to close edit 
+    const closeEdit = () => {
+        setMainDisp(sessionDisp)
     }
+
     //Variable containing the Modal
     const modal = (
         <Modal show={show} onHide={handleClose}>
@@ -228,36 +232,9 @@ const Session = (props) => {
     //Run when condDisp, day, date, workout, or session changes. setMainDisp so that component will reflect changes.
     useEffect(()=>{
         if(session != null){
-        setMainDisp(
-            <div>
-                <h2>Session Details</h2><br />
-                <hr />
-                <div>
-                    <div><p>When: {day}, {date} </p></div>
-                </div>
-                <div>
-                    <div><p>From: {start.hours+":"+start.minutes+start.AMPM+" - "+end.hours+":"+end.minutes+end.AMPM}</p></div>
-                </div> 
-                {workout != null ?                 
-                    <div>
-                        <div><p>Workout: {workout[0].strWorkoutName}</p></div>
-                    </div> : <></>
-                }
-                {condDisp}
-                <Row>
-                    <Col>
-                        <Button>Start Workout</Button>
-                        <Button onClick={()=>{setMainDisp(<EditSession session={session} start={start} end={end} cancelEdit={cancelEdit} />)}}>Edit Session</Button>
-                        <Button onClick={()=>handleShow()}>Delete Session</Button>
-                    </Col>
-                </Row>
-            </div>
-            )
+            setMainDisp(sessionDisp)
         }
     },[condDisp, day, date, session, workout])
-
-
-
 
     return (
         <Jumbotron fluid>

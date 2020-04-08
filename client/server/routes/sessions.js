@@ -210,6 +210,40 @@ function deleteSession(req, res){
     })
   })
 }
+
+function updateSession(req, res){
+  pool.getConnection(function(err, connection){
+    if(err) {
+      connection.release();
+      res.json({"code": 100, "status": "Error in database connection"});
+      return;
+    }
+    console.log("connected as id: " + connection.threadId);
+
+    let sql = "UPDATE sessions SET "+
+              "intClientID= ?, "+
+              "intTeamID = ?, "+
+              "intSessionTypeID = ?, "+
+              "intWorkoutID = ?, "+
+              "dtmDate = ?, "+ 
+              "tmStartTime = ?, "+
+              "tmEndTime = ? WHERE intSessionID = ? ";
+    
+    let values = [req.body.clientID, req.body.teamID, req.body.typeID, req.body.workoutID, req.body.date, req.body.start, req.body.end, req.body.sessionID];
+
+    connection.query(sql, values, function(err, rows) {
+      connection.release();
+      if(!err) {
+        res.json(rows);
+      }else( console.log(err))
+    });    
+    
+    connection.on('error', function(err){
+      res.json({"code": 100, "status": "Error in database connection"});
+    })
+  })
+}
+
 router.post('/add', function(req, res) { 
   addSession(req, res);
 });
@@ -223,7 +257,7 @@ router.get('/byID', function(req, res) {
 });
 
 router.get('/active/ByOwner', function(req, res) { 
-    getActiveByOwner(req, res);
+  getActiveByOwner(req, res);
 });
 
 router.get('/active/ByClient', function(req, res) { 
@@ -240,6 +274,10 @@ router.get('/types', function(req, res) {
 
 router.delete(('/delete'), function(req, res){
   deleteSession(req, res);
+});
+
+router.put(('/update'), function(req, res){
+  updateSession(req, res);
 });
 
 module.exports = router;
