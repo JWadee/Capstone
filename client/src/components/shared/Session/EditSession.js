@@ -24,6 +24,7 @@ const EditSession = (props) => {
     const [teamDisp, setTeamDisp] = useState();
     const [clientDisp, setClientDisp] = useState();
     const [show, setShow] = useState(false);
+    const [updated, setUpdated] = useState(false);
 
     let minuteOpts = ['00', '15', '30', '45'];
     let hourOpts = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
@@ -57,7 +58,7 @@ const EditSession = (props) => {
         //call api
         fetch(url, options)
             .then(()=> {
-                props.closeEdit()
+                setUpdated(true);
             }).catch(error=>{
                 console.log(error)
                 return(
@@ -219,107 +220,113 @@ const EditSession = (props) => {
         return <option  key={workout.intWorkoutID} value={workout.intWorkoutID}>{workout.strWorkoutName}</option>
         
     })
-
-    return (
-        <>
-        <Jumbotron>
-            <h2>Edit Session</h2><br />
-            <hr></hr>
-            <Form>
-                <Form.Group as={Row}>
-                    <Form.Label column sm={{span:3, offset:2}}>Type:</Form.Label>
-                    <Col sm={10} md={4} lg={3}>
-                        <Form.Control as="select" onChange={(e)=>setTypeID(e.target.value)} value={typeID}>
-                            {typeOpts}
-                        </Form.Control>
-                    </Col>
-                </Form.Group>
-                {clientDisp}
-                {teamDisp}
-                <Form.Group as={Row}>
-                    <Form.Label column sm={{span:3, offset:2}}>Date:</Form.Label>
-                    <Col sm={10} md={4} lg={3}>
-                        <Form.Control type="date" value={ date} onChange={(e)=>setDate(e.target.value)}/>
-                    </Col>
-                </Form.Group>
-                <Form.Group>
-                <Form.Row>
-                    <Form.Label column sm={{span:3, offset:2}}>Start Time:</Form.Label>
-                    <Col sm={2}>
-                        <Form.Control as="select" value={ startHour} onChange={ (e)=>setStartHour(e.target.value)}> 
-                           {hourOpts.map(hour =>{
-                               return(
-                                   <option value={hour} key={hour}>{hour}</option>
-                               )
-                           })}
-                        </Form.Control>
-                    </Col>
-                    <Col sm={2}>
-                        <Form.Control as="select" value={ startMinute} onChange={ (e)=>setStartMinute(e.target.value)}> 
-                           {minuteOpts.map(minute =>{
-                               return(
-                                   <option value={minute} key={minute}>{minute}</option>
-                               )
-                           })}
-                        </Form.Control>
-                    </Col>
-                    <Col sm={2}>
-                        <Form.Control as="select" value={ startAMPM} onChange={ (e)=>setStartAMPM(e.target.value)}> 
-                           <option value="AM">AM</option>
-                           <option value="PM">PM</option>
-                        </Form.Control>
-                    </Col>
-                </Form.Row>
-                </Form.Group>
-                <Form.Group>
-                <Form.Row>
-                    <Form.Label column sm={{span:3, offset:2}}>End Time:</Form.Label>
-                    <Col sm={2}>
-                        <Form.Control as="select" value={endHour} onChange={ (e)=>setEndHour(e.target.value)}> 
-                           {hourOpts.map(hour =>{
-                               return(
-                                   <option value={hour} key={hour}>{hour}</option>
-                               )
-                           })}
-                        </Form.Control>
-                    </Col>
-                    <Col sm={2}>
-                        <Form.Control as="select" value={ endMinute} onChange={ (e)=>setEndMinute(e.target.value)}> 
-                           {minuteOpts.map(minute =>{
-                               return(
-                                   <option value={minute} key={minute}>{minute}</option>
-                               )
-                           })}
-                        </Form.Control>
-                    </Col>
-                    <Col sm={2}>
-                        <Form.Control as="select" value={ endAMPM} onChange={ (e)=>setEndAMPM(e.target.value)}> 
-                           <option value="AM">AM</option>
-                           <option value="PM">PM</option>
-                        </Form.Control>
-                    </Col>
-                </Form.Row>
-                </Form.Group>
-                <Form.Group as={Row}>
-                    <Form.Label column sm={{span:3, offset:2}}>Type:</Form.Label>
-                    <Col sm={10} md={4} lg={3}>
-                        <Form.Control as="select" onChange={(e)=>setWorkoutID(e.target.value)} value={workoutID}>
-                            {workoutOpts}
-                        </Form.Control>
-                    </Col>
-                </Form.Group>
-                <Form.Group as={Row}>                
-                    <Col>
-                        <Button onClick={props.closeEdit}>Cancel</Button>
-                        <Button onClick={()=>handleShow()}>Save Changes</Button>
-                    </Col>
-                </Form.Group>  
-            </Form>
-        </Jumbotron>    
-        {modal}
-        </>
-    )
     
+    
+    switch(updated){
+        case false:
+        return (
+            <>
+            <Jumbotron>
+                <h2>Edit Session</h2><br />
+                <hr></hr>
+                <Form>
+                    <Form.Group as={Row}>
+                        <Form.Label column sm={{span:3, offset:2}}>Type:</Form.Label>
+                        <Col sm={10} md={4} lg={3}>
+                            <Form.Control as="select" onChange={(e)=>setTypeID(e.target.value)} value={typeID}>
+                                {typeOpts}
+                            </Form.Control>
+                        </Col>
+                    </Form.Group>
+                    {clientDisp}
+                    {teamDisp}
+                    <Form.Group as={Row}>
+                        <Form.Label column sm={{span:3, offset:2}}>Date:</Form.Label>
+                        <Col sm={10} md={4} lg={3}>
+                            <Form.Control type="date" value={ date} onChange={(e)=>setDate(e.target.value)}/>
+                        </Col>
+                    </Form.Group>
+                    <Form.Group>
+                    <Form.Row>
+                        <Form.Label column sm={{span:3, offset:2}}>Start Time:</Form.Label>
+                        <Col sm={2}>
+                            <Form.Control as="select" value={ startHour} onChange={ (e)=>setStartHour(e.target.value)}> 
+                               {hourOpts.map(hour =>{
+                                   return(
+                                       <option value={hour} key={hour}>{hour}</option>
+                                   )
+                               })}
+                            </Form.Control>
+                        </Col>
+                        <Col sm={2}>
+                            <Form.Control as="select" value={ startMinute} onChange={ (e)=>setStartMinute(e.target.value)}> 
+                               {minuteOpts.map(minute =>{
+                                   return(
+                                       <option value={minute} key={minute}>{minute}</option>
+                                )
+                               })}
+                            </Form.Control>
+                        </Col>
+                        <Col sm={2}>
+                            <Form.Control as="select" value={ startAMPM} onChange={ (e)=>setStartAMPM(e.target.value)}> 
+                               <option value="AM">AM</option>
+                               <option value="PM">PM</option>
+                            </Form.Control>
+                        </Col>
+                    </Form.Row>
+                    </Form.Group>
+                    <Form.Group>
+                    <Form.Row>
+                        <Form.Label column sm={{span:3, offset:2}}>End Time:</Form.Label>
+                        <Col sm={2}>
+                            <Form.Control as="select" value={endHour} onChange={ (e)=>setEndHour(e.target.value)}> 
+                               {hourOpts.map(hour =>{
+                                   return(
+                                       <option value={hour} key={hour}>{hour}</option>
+                                   )
+                               })}
+                            </Form.Control>
+                        </Col>
+                        <Col sm={2}>
+                            <Form.Control as="select" value={ endMinute} onChange={ (e)=>setEndMinute(e.target.value)}> 
+                               {minuteOpts.map(minute =>{
+                                   return(
+                                       <option value={minute} key={minute}>{minute}</option>
+                                   )    
+                               })}
+                            </Form.Control>
+                        </Col>
+                        <Col sm={2}>
+                            <Form.Control as="select" value={ endAMPM} onChange={ (e)=>setEndAMPM(e.target.value)}> 
+                               <option value="AM">AM</option>
+                               <option value="PM">PM</option>
+                            </Form.Control>
+                        </Col>
+                    </Form.Row>
+                    </Form.Group>
+                    <Form.Group as={Row}>
+                        <Form.Label column sm={{span:3, offset:2}}>Type:</Form.Label>
+                        <Col sm={10} md={4} lg={3}>
+                            <Form.Control as="select" onChange={(e)=>setWorkoutID(e.target.value)} value={workoutID}>
+                                {workoutOpts}
+                            </Form.Control>
+                        </Col>
+                    </Form.Group>
+                    <Form.Group as={Row}>                
+                        <Col>
+                            <Button onClick={props.closeEdit}>Cancel</Button>
+                            <Button onClick={()=>handleShow()}>Save Changes</Button>
+                        </Col>
+                    </Form.Group>  
+                </Form>
+            </Jumbotron>    
+            {modal}
+            </>
+        )
+        case(true):
+            return (<h2>Session Updated</h2>)
+    }
+        
 }
 
 

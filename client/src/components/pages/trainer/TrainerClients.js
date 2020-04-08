@@ -1,9 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {ListGroup, Jumbotron, Nav, Row, Col} from 'react-bootstrap'
 import { connect } from 'react-redux';
-import { Route, Link } from "react-router-dom";
-
-import ClientPage from "../client/ClientPage";
 
 const TrainerClients = (props) => {
     const [clients, setClients] = useState([]);

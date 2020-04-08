@@ -13,7 +13,7 @@ import ClientPage from "../client/ClientPage";
 import CreateExercise from '../../shared/CreateExerciseComp/CreateExercise';
 import CreateSession from '../../shared/CreateSession/CreateSession';
 import TrainerSessions from './TrainerSessions';
-import EditSession from '../../shared/Session/EditSession';
+import RecordWorkout from '../../shared/Workouts/RecordWorkout'
 
 const TrainerPage = ({match}) => {
 
@@ -55,6 +55,7 @@ const TrainerPage = ({match}) => {
                 <Route path={"/trainer/add-session"} exact component={CreateSession}/>
                 <Route path={"/trainer/sessions"} exact component={TrainerSessions}/>
                 <Route path={"/trainer/sessions/session/:ID"} exact component={Session}/>
+                <Route path={"/trainer/sessions/session/:sessionid/record/workout/:workoutid"} exact component={RecordWorkout}/>
             </Switch>
 
             {/* {display} */}

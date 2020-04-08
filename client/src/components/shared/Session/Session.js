@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Jumbotron, Button, Row, Col, Modal} from 'react-bootstrap';
+import { connect } from 'react-redux';
+import history from '../../../utils/history';
 
 //Components 
 import EditSession from './EditSession';
@@ -14,24 +16,82 @@ const Session = (props) => {
     const [day, setDay] = useState();
     const [date, setDate] = useState();
     const [mainDisp, setMainDisp] = useState();
-    const [show, setShow] = useState(false);
+    const [startShow, setStartShow] = useState(false);    
+    const [deleteShow, setDeleteShow] = useState(false);
     const [start, setStart] = useState(false);
     const [end, setEnd] = useState(false);
     const match = props.match;
 
-    //Functions to handle to opening and closing of Modal (delete confirmation)
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    //Functions to handle to opening and closing of Modals (delete confirmation, and start)
+    const handleDeleteClose = () => setDeleteShow(false);
+    const handleDeleteShow = () => setDeleteShow(true);
+    const handleStartClose = () => setStartShow(false);
+    const handleStartShow = () => setStartShow(true);
 
     //Function to delete session
     const deleteSession = async() =>{
         fetch('/sessions/delete?ID='+session.intSessionID, { method: 'delete'}) 
             .then(response =>{
                 setMainDisp(<h2>Session Deleted</h2>)
-                handleClose();
+                handleDeleteClose();
             })
             .catch(err =>{
                 setMainDisp(<h2>Something went wrong, try again.</h2>)
+            })
+    }
+
+    
+    /*Function to start workout
+      Create session exercises for each workout exercise, then push to Record Workout Component
+    */
+    const startWorkout = async() =>{
+        handleStartClose();
+        //fetch workout exercises
+
+        fetch('/workoutExercises/byWorkout?ID='+session.intWorkoutID) 
+            //wait for json
+            .then((response)=>{
+                return response.json()
+            })
+            //create session exercise for each workout exercise
+            .then(json=>{
+                //set account id to client id if client session, owner if personal, or logged in account id if team session
+                let id; 
+                if(session.intSessionTypeID === 1){
+                    id = session.intOwnerID;
+                }else if(session.intSessionTypeID === 2){
+                    id = props.ID
+                }else if(session.intSessionTypeID === 3){
+                    id = session.intClientID
+                }
+
+                //Create session exercise for each workout exercise
+                for(let i=0; i < json.length; i++){
+                    let data = {
+                        sessionid: session.intSessionID,
+                        accountid: id, 
+                        exerciseid : json[i].intWorkoutExerciseID
+                    }
+                    let url = '/sessionExercises/add'
+                    const options = {
+                        method:'POST',
+                        headers:{
+                            'Content-Type': 'application/json;charset=UTF-8'
+                        }, 
+                        body: JSON.stringify(data)
+                    }
+                    fetch(url, options)
+                        .catch(error=>{
+                        console.log(error)
+                        setMainDisp(
+                            <div>
+                                <h4>There was an error on our end. Please try again.</h4>
+                            </div>
+                        )
+                    })
+                }
+                //Push to Record workout component
+                history.push('/trainer/sessions/session/'+match.params.ID+'/record/workout/'+session.intWorkoutID);
             })
     }
 
@@ -54,9 +114,9 @@ const Session = (props) => {
             {condDisp}
             <Row>
                 <Col>
-                    <Button>Start Workout</Button>
+                    <Button onClick={()=>handleStartShow()}>Start Workout</Button>
                     <Button onClick={()=>setMainDisp(<EditSession session={session} start={start} end={end} closeEdit={()=>closeEdit()} />)}>Edit Session</Button>
-                    <Button onClick={()=>handleShow()}>Delete Session</Button>
+                    <Button onClick={()=>handleDeleteShow()}>Delete Session</Button>
                 </Col>
             </Row>
         </div>
@@ -67,14 +127,14 @@ const Session = (props) => {
         setMainDisp(sessionDisp)
     }
 
-    //Variable containing the Modal
-    const modal = (
-        <Modal show={show} onHide={handleClose}>
+    //Variable containing the Delete Modal
+    const deleteModal = (
+        <Modal show={deleteShow} onHide={handleDeleteClose}>
             <Modal.Header closeButton>
                 <Modal.Title>Are you sure you want to delete this Session?</Modal.Title>
             </Modal.Header>
             <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
+                <Button variant="secondary" onClick={handleDeleteClose}>
                     Close
                 </Button>
                 <Button variant="primary" onClick={deleteSession}>
@@ -84,6 +144,22 @@ const Session = (props) => {
         </Modal>
     )
 
+        //Variable containing the Modal
+        const startModal = (
+            <Modal show={startShow} onHide={handleStartClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Start this Workout?</Modal.Title>
+                </Modal.Header>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleStartClose}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={startWorkout}>
+                        Start
+                    </Button>
+                    </Modal.Footer>
+            </Modal>
+        )
     //Function to get the day of the week
     const getDay = () =>{
         const date = new Date(session.dtmDate);
@@ -239,10 +315,17 @@ const Session = (props) => {
     return (
         <Jumbotron fluid>
             {mainDisp}
-            {modal}
+            {deleteModal}
+            {startModal}
         </Jumbotron>
     );
 };
 
-export default Session;
+const mapStateToProps = (state) => {
+    return {
+        ID: state.account.ID
+    }
+}
 
+
+export default  connect(mapStateToProps)(Session);
