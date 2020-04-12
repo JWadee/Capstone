@@ -60,16 +60,6 @@ const CreateWorkoutExercise = (props) => {
 
         })
 
-        if (sets.value < 0) {
-            setSetsError(
-                <Alert variant="danger">
-                    Number of sets must be 0 or greater!
-                    </Alert>
-
-            )
-        }
-        else setSetsError()
-
 
         }
 
@@ -81,20 +71,7 @@ const CreateWorkoutExercise = (props) => {
             <h2>Add Workout Exercise</h2><br />
             <hr></hr>
             <Form title="Add Workout Exercise" onSubmit={(e) => Submit(e)}>
-                <Form.Group as={Row} >
-                    <Form.Label column sm={{ span: 3, offset: 2 }}>Workout</Form.Label>
-                    <Col sm={10} md={4} lg={3}>
-                        <Form.Control as="select" onChange={(e) => setTypeID(e.target.value)}>
-                            <option disabled hidden selected value={0}>Select Workout</option>
-                            {types.map((type) => {
-                                return (
-                                    <option key={type.intWorkoutID} value={type.intWorkoutID}>{type.strWorkoutName}</option>
-                                )
-                            })}
-                        </Form.Control>
-
-                    </Col>
-                </Form.Group>
+              
                 <Form.Group as={Row} >
                     <Form.Label column sm={{ span: 3, offset: 2 }}>Exercise</Form.Label>
                     <Col sm={10} md={4} lg={3}>
