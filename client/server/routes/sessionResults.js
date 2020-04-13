@@ -32,7 +32,7 @@ function addSessionResults(req, res) {
     })
 }
 
-function getSessionResults(req, res) {
+function getBySessionExercise(req, res) {
     pool.getConnection(function (err, connection) {
         if (err) {
             connection.release();
@@ -41,9 +41,10 @@ function getSessionResults(req, res) {
         }
         console.log("connected as id: " + connection.threadId);
 
-        let sql = "SELECT * FROM session_exercise_results";
+        let sql = "SELECT * FROM session_exercise_results WHERE intSessionExerciseID = ?";
+        let id = req.query.exerciseid; 
 
-        connection.query(sql, function (err, rows) {
+        connection.query(sql, id, function (err, rows) {
             connection.release();
             if (!err) {
                 res.json(rows)
@@ -60,8 +61,8 @@ router.post(('/add'), function (req, res) {
     addSessionResults(req, res);
 });
 
-router.get(('/'), function (req, res) {
-    getSessionResults(req, res);
+router.get(('/byExercise'), function (req, res) {
+    getBySessionExercise(req, res);
 });
 
 module.exports = router;

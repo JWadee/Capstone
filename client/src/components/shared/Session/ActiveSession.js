@@ -6,7 +6,7 @@ import history from '../../../utils/history';
 //Components 
 import EditSession from './EditSession';
 
-const Session = (props) => {
+const ActiveSession = (props) => {
     //Component Variables
     const [session, setSession] = useState(null);
     const [condDisp, setCondDisp] = useState(null);
@@ -67,7 +67,7 @@ const Session = (props) => {
 
                 //Create session exercise for each workout exercise
                 for(let i=0; i < json.length; i++){
-                    let data = {
+                    let exercisedata = {
                         sessionid: session.intSessionID,
                         accountid: id, 
                         exerciseid : json[i].intWorkoutExerciseID
@@ -78,7 +78,7 @@ const Session = (props) => {
                         headers:{
                             'Content-Type': 'application/json;charset=UTF-8'
                         }, 
-                        body: JSON.stringify(data)
+                        body: JSON.stringify(exercisedata)
                     }
                     fetch(url, options)
                         .catch(error=>{
@@ -90,8 +90,25 @@ const Session = (props) => {
                         )
                     })
                 }
-                //Push to Record workout component
-                history.push('/trainer/sessions/session/'+match.params.ID+'/record/workout/'+session.intWorkoutID);
+
+                let statusbody = {
+                    sessionid: session.intSessionID,
+                    statusid: 3
+                }
+
+                //Set session status to 'In Progress'
+                fetch('/sessions/updateStatus',
+                    {
+                    method:"PUT",
+                    headers:{
+                        'Content-Type': 'application/json;charset=UTF-8'
+                    }, 
+                    body: JSON.stringify(statusbody)
+                    }
+                ).then(()=>{
+                    //Push to Record workout component
+                    history.push('/trainer/sessions/session/'+match.params.ID+'/record/workout/'+session.intWorkoutID);
+                })
             })
     }
 
@@ -328,4 +345,4 @@ const mapStateToProps = (state) => {
 }
 
 
-export default  connect(mapStateToProps)(Session);
+export default  connect(mapStateToProps)(ActiveSession);

@@ -135,6 +135,32 @@ function getActiveByTeam(req,res){
   })
 }
 
+function getInProgressByOwner(req,res){
+  pool.getConnection(function(err, connection){
+    if(err) {
+      connection.release();
+      res.json({"code": 100, "status": "Error in database connection"});
+      return;
+    }
+    console.log("connected as id: " + connection.threadId);
+
+    let sql = "SELECT * FROM sessions WHERE intOwnerID = ? AND intSessionStatusID = 3 ORDER BY dtmDate";
+
+    let id = req.query.ID;
+
+    connection.query(sql, id, function(err, rows) {
+      connection.release();
+      if(!err) {
+        res.json(rows);
+      }
+    });    
+    
+    connection.on('error', function(err){
+      res.json({"code": 100, "status": "Error in database connection"});
+    })
+  })
+}
+
 function getSessionTypes(req,res){
   pool.getConnection(function(err, connection){
     if(err) {
@@ -244,6 +270,35 @@ function updateSession(req, res){
   })
 }
 
+
+function updateStatus(req, res){
+  pool.getConnection(function(err, connection){
+    if(err) {
+      connection.release();
+      res.json({"code": 100, "status": "Error in database connection"});
+      return;
+    }
+    console.log("connected as id: " + connection.threadId);
+
+    let sql = "UPDATE sessions SET "+
+              "intSessionStatusID= ? "+
+              "WHERE intSessionID = ? ";
+    
+    let values = [req.body.statusid, req.body.sessionid];
+
+    connection.query(sql, values, function(err, rows) {
+      connection.release();
+      if(!err) {
+        res.json(rows);
+      }else( console.log(err))
+    });    
+    
+    connection.on('error', function(err){
+      res.json({"code": 100, "status": "Error in database connection"});
+    })
+  })
+}
+
 router.post('/add', function(req, res) { 
   addSession(req, res);
 });
@@ -268,6 +323,10 @@ router.get('/active/ByTeam', function(req, res) {
   getActiveByTeam(req, res);
 });
 
+router.get('/inProgress/ByOwner', function(req, res) { 
+  getInProgressByOwner(req, res);
+});
+
 router.get('/types', function(req, res) { 
   getSessionTypes(req, res);
 });
@@ -278,6 +337,10 @@ router.delete(('/delete'), function(req, res){
 
 router.put(('/update'), function(req, res){
   updateSession(req, res);
+});
+
+router.put('/updateStatus', function(req, res) { 
+  updateStatus(req, res);
 });
 
 module.exports = router;

@@ -3,13 +3,15 @@ import {Jumbotron, ListGroup, Row, Col} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { useRouteMatch } from "react-router-dom";
 
-const TrainerSessions = (props) => {
+const InProgressSessions = (props) => {
     const [sessions, setSessions] = useState([]);
+    const [start, setStart] = useState(false);
+    const [end, setEnd] = useState(false);
     const match = useRouteMatch();
 
     useEffect(()=>{
         const fetch_sessions = async () =>{
-            const response = await fetch('/sessions/active/byOwner?ID='+props.ID);
+            const response = await fetch('/sessions/inProgress/byOwner?ID='+props.ID);
             const data = await response.json();
             setSessions(data);
         };
@@ -47,10 +49,51 @@ const TrainerSessions = (props) => {
 
     }
 
+    //Function to format date as dd-mm
     const formatDate = (session) => {
         const date = new Date(session.dtmDate);
         const formatted_date = (date.getMonth() + 1)+ "-" + date.getDate();
-        return formatted_date
+        return formatted_date;
+    }
+
+    const format_time = (time) =>{
+        //split string into hours and minutes
+        const split = time.split(":", 2)
+        let hours = split[0];
+        const minutes = split[1];
+        
+        /** CHECK HOURS FOR AM OR PM TIME */
+
+        //if hours has leading zero, remove and set to AM
+        if(hours.startsWith("0")){
+            hours = hours.substring(1,2)
+            const result = {
+                hours: hours,
+                minutes: minutes,
+                AMPM: 'AM'
+            }
+            return result;
+        //else check if > 12, subtract 12 and set to PM
+        }else{
+            hours = parseInt(hours);
+            if(hours > 12){
+                hours = hours - 12 ;
+                const result = {
+                    hours: hours,
+                    minutes: minutes,
+                    AMPM: 'PM'
+                }
+                return result;
+            }else if(hours <= 12){
+                const result = {
+                    hours: hours,
+                    minutes: minutes,
+                    AMPM: 'AM'
+                }
+                return result;
+            }
+        }
+        
     }
 
     const fetch_client = async (session) => {
@@ -72,24 +115,26 @@ const TrainerSessions = (props) => {
 
     return (
         <Jumbotron fluid>
-            <h2>My Schedule</h2><br />
+            <h2>Sessions In Progress</h2><br />
             <hr />
         
             <ListGroup as={Row}>
                 {sessions.map((session)=>{
                     let strDay = getDay(session);
                     let formatted_date = formatDate(session);
+                    let start = format_time(session.tmStartTime);
+                    let end = format_time(session.tmEndTime)
                     let team =  fetch_team(session);
 
                     return(
                     <Col sm={{span:4, offset:4}} key={session.intSessionID}>
-                        <ListGroup.Item action key={session.intSessionID} href={match.url+"/session/"+session.intSessionID}>
+                        <ListGroup.Item action key={session.intSessionID} href={"/trainer/sessions/session/"+session.intSessionID+"/record/workout/"+session.intWorkoutID}>
                             <div>
                                 <p>{strDay +", "+formatted_date}</p>
                             </div>
                             <div>
-                                <p>{session.tmStartTime + "-" + session.tmEndTime}</p>
-                            </div>
+                                <div><p>From: {start.hours+":"+start.minutes+start.AMPM+" - "+end.hours+":"+end.minutes+end.AMPM}</p></div>
+                            </div> 
                         </ListGroup.Item>
                     </Col>
                     )
@@ -106,5 +151,5 @@ const mapStateToProps = (state) => {
 }
 
 
-export default  connect(mapStateToProps)(TrainerSessions);
+export default  connect(mapStateToProps)(InProgressSessions);
 

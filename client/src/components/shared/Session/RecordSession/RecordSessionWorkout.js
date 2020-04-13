@@ -1,11 +1,16 @@
 import React, {useState, useEffect} from "react";
-import {Navbar, NavDropdown, Nav, ListGroup, Jumbotron} from "react-bootstrap";
+import {Accordion, Card,Row, Col, Button, ListGroup, Jumbotron} from "react-bootstrap";
 import { Route, Switch, useRouteMatch} from "react-router-dom";
 import { connect } from 'react-redux';
 
-const RecordWorkout = (props) => {
+import RecordWorkoutExercise from './RecordSessionExercise';
+import SessionWorkout from './SessionWorkout';
+
+const RecordSessionWorkout = (props) => {
     const [exercises, setExercises] = useState([]);
     const match = useRouteMatch();
+    const [disp, setDisp] = useState()
+
     //Run on initial render, pull session exercises
     useEffect(()=>{
         const fetch_session_exercises = async () =>{
@@ -15,22 +20,16 @@ const RecordWorkout = (props) => {
         }
 
         fetch_session_exercises();
+        setDisp(<SessionWorkout sessionid={match.params.sessionid} change_display={change_display}/>)
     },[])
-    console.log(exercises);
     
+    const change_display = (component) => {
+        setDisp(component)
+    };
+
     return (
         <Jumbotron>
-            <h2>Record Workout</h2><br />
-            <hr />
-            {exercises.map(exercise=>{
-               return (
-                   <ListGroup.Item key={exercise.intSessionExerciseID}>
-                       <div>{exercise.strExerciseName}</div>
-                       <div>{exercise.strTargetDescription}</div>
-                   </ListGroup.Item> 
-               )
-
-            })}
+            {disp}
         </Jumbotron>
     );
 };
@@ -42,4 +41,4 @@ const mapStateToProps = (state) => {
 }
 
 
-export default  connect(mapStateToProps)(RecordWorkout);
+export default  connect(mapStateToProps)(RecordSessionWorkout);

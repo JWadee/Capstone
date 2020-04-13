@@ -7,13 +7,14 @@ import { connect } from 'react-redux';
 //Components
 import TrainerClients from './TrainerClients';
 import NewClient from "./NewClient";
-import Session from "../../shared/Session/Session";
+import ActiveSession from "../../shared/Session/ActiveSession";
 import NewTeam from "./NewTeam";
 import ClientPage from "../client/ClientPage";
 import CreateExercise from '../../shared/CreateExerciseComp/CreateExercise';
 import CreateSession from '../../shared/CreateSession/CreateSession';
 import TrainerSessions from './TrainerSessions';
-import RecordWorkout from '../../shared/Workouts/RecordWorkout'
+import RecordSessionWorkout from '../../shared/Session/RecordSession/RecordSessionWorkout';
+import InProgressSession from '../../shared/Session/InProgressSessions';
 
 const TrainerPage = ({match}) => {
 
@@ -36,6 +37,7 @@ const TrainerPage = ({match}) => {
                         </NavDropdown>
                         <NavDropdown title="Schedule" id="basic-nav-dropdown">
                             <NavDropdown.Item href={match.url+"/sessions"}>My Schedule</NavDropdown.Item>
+                            <NavDropdown.Item href={match.url+"/sessions/in-progress"}>Sessions In Progress</NavDropdown.Item>
                             <NavDropdown.Item href={match.url+"/add-session"}>Add a Session</NavDropdown.Item>
                         </NavDropdown>
                         <NavDropdown title="Teams" id="basic-nav-dropdown">
@@ -54,8 +56,9 @@ const TrainerPage = ({match}) => {
                 <Route path={"/trainer/add-exercise"} exact component={CreateExercise}/>
                 <Route path={"/trainer/add-session"} exact component={CreateSession}/>
                 <Route path={"/trainer/sessions"} exact component={TrainerSessions}/>
-                <Route path={"/trainer/sessions/session/:ID"} exact component={Session}/>
-                <Route path={"/trainer/sessions/session/:sessionid/record/workout/:workoutid"} exact component={RecordWorkout}/>
+                <Route path={"/trainer/sessions/in-progress/"} exact component={InProgressSession}/>
+                <Route path={"/trainer/sessions/session/:ID"} exact component={ActiveSession}/>
+                <Route path={"/trainer/sessions/session/:sessionid/record/workout/:workoutid"} exact component={RecordSessionWorkout}/>
             </Switch>
 
             {/* {display} */}
