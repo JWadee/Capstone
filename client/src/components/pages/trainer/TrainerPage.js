@@ -15,6 +15,10 @@ import CreateSession from '../../shared/CreateSession/CreateSession';
 import TrainerSessions from './TrainerSessions';
 import RecordSessionWorkout from '../../shared/Session/RecordSession/RecordSessionWorkout';
 import InProgressSession from '../../shared/Session/InProgressSessions';
+import CreateWorkout from '../../shared/CreateWorkoutComp/CreateWorkout';
+import TrainerWorkouts from './TrainerWorkouts';
+import Workout from '../../shared/Workout';
+import CreateWorkoutExercise from '../../shared/CreateWorkoutComp/CreateWorkoutExercise';
 
 const TrainerPage = ({match}) => {
 
@@ -30,6 +34,8 @@ const TrainerPage = ({match}) => {
                             <NavDropdown.Item href={match.url+"/new-client"}>Add a Client</NavDropdown.Item>
                         </NavDropdown>
                         <NavDropdown title="Training" id="basic-nav-dropdown">
+                            <NavDropdown.Item href={match.url+"/add-workout"} >Create a Workout</NavDropdown.Item>
+                            <NavDropdown.Item href={match.url+"/my-workouts"} >My Workouts</NavDropdown.Item>
                             <NavDropdown.Item >My Routines</NavDropdown.Item>
                             <NavDropdown.Item >Create a Routine</NavDropdown.Item>
                             <NavDropdown.Item href={match.url+"/add-exercise"}>Add an Exercise</NavDropdown.Item>
@@ -54,6 +60,10 @@ const TrainerPage = ({match}) => {
                 <Route path={"/trainer/my-clients/client/:ID"} exact component={ClientPage}/>
                 <Route path={"/trainer/new-team"} exact component={NewTeam}/>
                 <Route path={"/trainer/add-exercise"} exact component={CreateExercise}/>
+                <Route path={"/trainer/my-workouts"} exact component={TrainerWorkouts}/>
+                <Route path={"/trainer/my-workouts/workout/:ID"} exact component={Workout}/>
+                <Route path={"/trainer/my-workouts/workout/:ID/add-exercise"} exact component={CreateWorkoutExercise}/>
+                <Route path={"/trainer/add-workout"} exact component={CreateWorkout}/>
                 <Route path={"/trainer/add-session"} exact component={CreateSession}/>
                 <Route path={"/trainer/sessions"} exact component={TrainerSessions}/>
                 <Route path={"/trainer/sessions/in-progress/"} exact component={InProgressSession}/>

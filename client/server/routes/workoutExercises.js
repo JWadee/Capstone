@@ -40,7 +40,8 @@ function getByWorkout(req, res) {
         }
         console.log("connected as id: " + connection.threadId);
 
-        let sql = "SELECT * FROM workout_exercises WHERE intWorkoutID = ?";
+        let sql = "SELECT * FROM workout_exercises AS we "+
+                  "INNER JOIN exercises AS e ON we.intExerciseID = e.intExerciseID WHERE intWorkoutID = ?";
         let id = req.query.ID;
 
         connection.query(sql, id, function (err, rows) {

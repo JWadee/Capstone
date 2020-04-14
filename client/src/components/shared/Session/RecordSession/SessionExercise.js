@@ -26,8 +26,6 @@ const SessionExercise = (props) => {
         }else setCondDisp(<Button onClick={()=> props.change_display(<RecordSessionExercise exercise={exercise} change_display={props.change_display}/>)} >Enter Results</Button>)
     },[results])
 
-    // /onClick={props.change_display(<RecordSessionExercise exercise={exercise}/>)}
-
     return (    
         <>
             <Row key={exercise.intSessionExerciseID}>

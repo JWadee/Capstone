@@ -1,10 +1,9 @@
 import React from "react"
 
-import TrainerSessions from './trainer/TrainerSessions';
-
+import TestGraph from '../shared/Results/TestGraph'
 const Test = () => {
     return (
-       <TrainerSessions />  
+       <TestGraph />  
     )
 }
 
