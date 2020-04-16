@@ -57,12 +57,47 @@ function getBySessionExercise(req, res) {
     })
 }
 
+function getByClientByExercise(req, res) {
+    pool.getConnection(function (err, connection) {
+        if (err) {
+            connection.release();
+            res.json({ "code": 100, "status": "Error in database connection" });
+            return;
+        }
+        console.log("connected as id: " + connection.threadId);
+
+        let sql = "SELECT s.dtmDate, s.intSessionID, ser.* FROM sessions AS s "+
+                  "INNER JOIN session_exercises AS se ON s.intSessionID = se.intSessionID "+
+                  "INNER JOIN session_exercise_results AS ser ON se.intSessionExerciseID = ser.intSessionExerciseID "+
+                  "INNER JOIN workout_exercises AS we ON we.intWorkoutExerciseID = se.intWorkoutExerciseID "+
+                  "INNER JOIN exercises AS e on e.intExerciseID = we.intExerciseID "+
+                  "WHERE s.intClientID = ? AND e.intExerciseID = ?";
+
+        let values  = [req.query.clientid, req.query.exerciseid]; 
+
+        connection.query(sql, values, function (err, rows) {
+            connection.release();
+            if (!err) {
+                res.json(rows)
+            }else console.log(err)
+        });
+
+        connection.on('error', function (err) {
+            res.json({ "code": 100, "status": "Error in database connection" });
+        })
+    })
+}
+
 router.post(('/add'), function (req, res) {
     addSessionResults(req, res);
 });
 
 router.get(('/byExercise'), function (req, res) {
     getBySessionExercise(req, res);
+});
+
+router.get(('/byClient/byExercise'), function (req, res) {
+    getByClientByExercise(req, res);
 });
 
 module.exports = router;

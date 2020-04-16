@@ -1,9 +1,9 @@
 import React from "react"
 
-import TestGraph from '../shared/Results/TestGraph'
+import Results from '../shared/Results/Results'
 const Test = () => {
     return (
-       <TestGraph />  
+       <Results />  
     )
 }
 

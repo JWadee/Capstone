@@ -92,7 +92,7 @@ const RecordSessionExercise = (props) => {
             .catch(err => console.log(err));
             
         }else if(exercise.intTargetSets != null){
-            for(let i=0; i < exercise.intTargetSets -1; i++){
+            for(let i=0; i < exercise.intTargetSets; i++){
                 let data ={
                     exerciseid: exercise.intSessionExerciseID,
                     time: null,

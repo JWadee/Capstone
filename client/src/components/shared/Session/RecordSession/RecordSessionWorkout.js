@@ -3,7 +3,7 @@ import {Accordion, Card,Row, Col, Button, ListGroup, Jumbotron} from "react-boot
 import { Route, Switch, useRouteMatch} from "react-router-dom";
 import { connect } from 'react-redux';
 
-import RecordWorkoutExercise from './RecordSessionExercise';
+import RecordSessionExercise from './RecordSessionExercise';
 import SessionWorkout from './SessionWorkout';
 
 const RecordSessionWorkout = (props) => {
