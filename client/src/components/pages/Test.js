@@ -1,10 +1,9 @@
 import React from "react"
 
-import CreateSession from '../shared/CreateSession/CreateSession';
-
+import Results from '../shared/Results/Results'
 const Test = () => {
     return (
-       <CreateSession />  
+       <Results />  
     )
 }
 

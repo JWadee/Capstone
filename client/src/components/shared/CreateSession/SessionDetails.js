@@ -3,8 +3,6 @@ import {Jumbotron, Form, Row, Col, Button} from 'react-bootstrap';
 
 const SessionType = (props) => {
     const [disabled, setDisabled] = useState(true)
-    const [teams, setTeams] = useState([]);
-    const [clients, setClients] = useState([])
     const values = props.values;
     const [teamDisp, setTeamDisp] = useState();
     const [clientDisp, setClientDisp] = useState();
@@ -12,25 +10,6 @@ const SessionType = (props) => {
     const saveAndContinue = () => {
         props.nextStep()
     }
-    
-    
-    //Run on initial render, pull clients and teamse
-    useEffect(()=>{
-        const fetch_teams = async () => {
-            const response = await fetch('/teams/byTrainer?ID='+values.ID);
-            const data = await response.json();
-            setTeams(data)
-        }
-
-        const fetch_clients = async () => {
-            const response = await fetch('/trainerClients/byTrainer?ID='+values.ID);
-            const data = await response.json();
-            setClients(data)
-        }
-
-        fetch_teams();
-        fetch_clients();
-    },[])
 
     // Set team display when data loads
     useEffect(()=>{
@@ -41,7 +20,7 @@ const SessionType = (props) => {
                 <Col sm={10} md={4} lg={3}>
                 <Form.Control as="select" onChange={props.handleChange('teamID')} value={values.teamID}>
                     <option selected={true} disabled hidden>Choose a Team</option>
-                    {teams.map(team => {
+                    {values.teams.map(team => {
                     return( 
                         <option selected={team.intTeamID == values.teamID} key={team.intTeamID} value={team.intTeamID}>{team.strTeamName}</option>
                     )})}
@@ -50,7 +29,7 @@ const SessionType = (props) => {
             </Form.Group>
         )
         }
-    },[teams, values.typeID])
+    },[values.teams, values.typeID])
 
     // Set client display when data loads
     useEffect(()=>{
@@ -61,7 +40,7 @@ const SessionType = (props) => {
                 <Col sm={10} md={4} lg={3}>
                     <Form.Control as="select" onChange={props.handleChange('clientID')} value={values.clientID}>
                         <option selected={true} disabled hidden>Choose a Client</option>
-                        {clients.map(client => {
+                        {values.clients.map(client => {
                             return( 
                                 <option key={client.intAccountID} value={client.intAccountID}>{client.strFirstName +" "+client.strLastName}</option>
                             )
@@ -71,7 +50,7 @@ const SessionType = (props) => {
             </Form.Group>
         )
         }
-    },[clients, values.typeID])
+    },[values.clients, values.typeID])
  
     //Enable Continue button
     useEffect(()=>{
@@ -93,10 +72,10 @@ const SessionType = (props) => {
         }
     },[values.typeID, values.clientID, values.teamID])
 
-    //Options for exercise types drop down (map function runs for each object in the values.exerciseTypes array)
+    //Options for session types drop down (map function runs for each object in the values.types array)
     let types = values.types.map(type => {
             //if the ID of the dropdown is == state value then set that option to selected
-            if(type.intSessionTypeID == values.exerciseTypeID){
+            if(type.intSessionTypeID == values.typeID){
                 return <option selected key={type.intSessionTypeID} value={type.intSessionTypeID}>{type.strSessionType}</option>
             }else{
                 return <option  key={type.intSessionTypeID} value={type.intSessionTypeID}>{type.strSessionType}</option>
@@ -111,7 +90,7 @@ const SessionType = (props) => {
                 <Form.Group as={Row}>
                     <Form.Label column sm={{span:3, offset:2}}>Type:</Form.Label>
                     <Col sm={10} md={4} lg={3}>
-                        <Form.Control as="select" onChange={props.handleChange('typeID')} value={values.SessionTypeID}>
+                        <Form.Control as="select" onChange={props.handleChange('typeID')} value={values.typeID}>
                             <option selected disabled hidden>Choose a Type</option>
                             {types}
                         </Form.Control>

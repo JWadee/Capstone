@@ -15,7 +15,7 @@ function addSessionExercises(req, res) {
 
         let sql = "INSERT INTO session_exercises (intSessionID, intAccountID, intWorkoutExerciseID) " +
             "VALUES (?, ?, ?)";
-        let values = [req.body.accountid, req.body.accountid, req.body.workoutid];
+        let values = [req.body.sessionid, req.body.accountid, req.body.exerciseid];
 
         connection.query(sql, values, function (err, result) {
             connection.release();
@@ -41,9 +41,13 @@ function getSessionExercises(req, res) {
         }
         console.log("connected as id: " + connection.threadId);
 
-        let sql = "SELECT * FROM session_exercises";
+        let sql = "SELECT  se.intSessionExerciseID, e.strExerciseName, we.tmTargetTime, we.intTargetSets, strTargetDescription, e.intExerciseTypeID FROM session_exercises AS se "+
+                  "INNER JOIN workout_exercises AS we ON we.intWorkoutExerciseID = se.intWorkoutExerciseID "+
+                  "INNER JOIN exercises AS e ON e.intExerciseID = we.intExerciseID "+
+                  "WHERE we.intWorkoutID= ? and se.intSessionID = ?"
 
-        connection.query(sql, function (err, rows) {
+        let values = [req.query.workoutid, req.query.sessionid];
+        connection.query(sql, values, function (err, rows) {
             connection.release();
             if (!err) {
                 res.json(rows)
@@ -60,7 +64,7 @@ router.post(('/add'), function (req, res) {
     addSessionExercises(req, res);
 });
 
-router.get(('/'), function (req, res) {
+router.get(('/bySession'), function (req, res) {
     getSessionExercises(req, res);
 });
 

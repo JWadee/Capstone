@@ -2,31 +2,31 @@ import React, {useState, useEffect} from "react";
 import {ListGroup, Jumbotron, Nav, Row, Col} from 'react-bootstrap'
 import { connect } from 'react-redux';
 
-const TrainerClients = (props) => {
-    const [clients, setClients] = useState([]);
+const TrainerWorkouts = (props) => {
+    const [workouts, setWorkouts] = useState([]);
     // const match = useRouteMatch();
     const match = props.match;
 
     useEffect(()=>{
-        const get_clients = async() => {
-            const response = await fetch('/trainerClients/byTrainer?ID='+props.ID)   
+        const get_workouts = async() => {
+            const response = await fetch('/workouts/byTrainer?ID='+props.ID)   
                 .catch(err => console.log(err))
             const data = await response.json();
-            setClients(data);
+            setWorkouts(data);
         }
 
-        get_clients();
+        get_workouts();
     },[])
     
     return (
         <Jumbotron>
-            <h2>My Clients</h2><br />
+            <h2>My Workouts</h2><br />
             <hr />
             <ListGroup as={Row}>
                 <Col sm={{span:4, offset:4}}>
-                    {clients.map(client =>{
+                    {workouts.map(workout =>{
                         return(
-                            <ListGroup.Item key={client.intAccountID} action href={match.url+"/client/"+client.intAccountID}>{client.strFirstName +" "+client.strLastName}</ListGroup.Item>
+                            <ListGroup.Item key={workout.intWorkoutID} action href={match.url+"/workout/"+workout.intWorkoutID}>{workout.strWorkoutName}</ListGroup.Item>
                         ) 
                     })}
                 </Col>
@@ -42,4 +42,4 @@ const mapStateToProps = (state) => {
 }
 
 
-export default  connect(mapStateToProps)(TrainerClients);
+export default  connect(mapStateToProps)(TrainerWorkouts);

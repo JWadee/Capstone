@@ -31,7 +31,7 @@ function addWorkoutExercise(req, res) {
     })
 }
 
-function getWorkoutExercises(req, res) {
+function getByWorkout(req, res) {
     pool.getConnection(function (err, connection) {
         if (err) {
             connection.release();
@@ -40,13 +40,15 @@ function getWorkoutExercises(req, res) {
         }
         console.log("connected as id: " + connection.threadId);
 
-        let sql = "SELECT * FROM workout_exercises";
+        let sql = "SELECT * FROM workout_exercises AS we "+
+                  "INNER JOIN exercises AS e ON we.intExerciseID = e.intExerciseID WHERE intWorkoutID = ?";
+        let id = req.query.ID;
 
-        connection.query(sql, function (err, rows) {
+        connection.query(sql, id, function (err, rows) {
             connection.release();
             if (!err) {
                 res.json(rows)
-            }
+            }else(console.log(err))
         });
 
         connection.on('error', function (err) {
@@ -59,8 +61,8 @@ router.post(('/add'), function (req, res) {
     addWorkoutExercise(req, res);
 });
 
-router.get(('/'), function (req, res) {
-    getWorkoutExercises(req, res);
+router.get(('/byWorkout'), function (req, res) {
+    getByWorkout(req, res);
 });
 
 module.exports = router;
