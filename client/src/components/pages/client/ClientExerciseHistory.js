@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Jumbotron, Form, Row, Col, Button} from 'react-bootstrap';
+import {Jumbotron, Form, Row, Col} from 'react-bootstrap';
 import Results from '../../shared/Results/Results';
 
 

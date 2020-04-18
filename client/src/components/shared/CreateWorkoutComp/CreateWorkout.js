@@ -27,11 +27,10 @@ const CreateWorkout = (props) => {
     function Submit(e) {
         e.preventDefault();
 
-        let id = props.ID
-
+        let ownerid = props.ID
         fetch('/workouts/add', {
             method: 'POST',
-            body: JSON.stringify({ name, typeid, id }),
+            body: JSON.stringify({ name, typeid, ownerid }),
             headers: {
                 'Content-Type': 'application/json;charset=UTF-8'
             },
@@ -59,8 +58,7 @@ const CreateWorkout = (props) => {
             setNameError(
                 <Alert variant="danger">
                     Workout name must be more than 4 characters!
-                    </Alert>
-
+                </Alert>
             )
         }
         else setNameError()
