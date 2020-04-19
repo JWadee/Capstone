@@ -1,12 +1,11 @@
 import React from 'react';
-//import Create from '../shared/CreateWorkoutComp/CreateWorkout';
 
-import Routine from '../Routine';
+import CreateRoutine from '../shared/CreateRoutine';
 
 const MayraTest = () => {
 
     return (
-        <Routine/>
+        <CreateRoutine/>
     )
 
 }

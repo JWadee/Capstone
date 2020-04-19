@@ -13,7 +13,7 @@ import SignUp from './components/pages/signup/SignUp';
 import LogIn from './components/pages/LogIn';
 import Test from './components/pages/Test';
 import JesseTest from './components/pages/JesseTest';
-
+import MayraTest from './components/pages/Mayratest';
 function App() {
   return (
     <div className="App">
@@ -25,6 +25,7 @@ function App() {
           <Route exact path="/login" component={LogIn} />
           <Route path="/trainer" component={TrainerPage} />
           <Route path="/JesseTest" component={JesseTest} />
+          <Route exact path="/Mayra" component={MayraTest} />
         </Switch>
       </Router>
     </div>
