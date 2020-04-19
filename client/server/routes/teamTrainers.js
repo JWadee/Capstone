@@ -41,7 +41,9 @@ function getTeamTrainers(req, res) {
         }
         console.log("connected as id: " + connection.threadId);
 
-        let sql = "SELECT * FROM team_trainers";
+        let sql = "SELECT * FROM team_trainers "+
+                  "INNER JOIN accounts AS a ON a.intAccountID "+  
+                  "WHERE intTeamID = ?";
 
         connection.query(sql, function (err, rows) {
             connection.release();
@@ -60,7 +62,7 @@ router.post(('/add'), function (req, res) {
     addTeamTrainers(req, res);
 });
 
-router.get(('/'), function (req, res) {
+router.get(('/byTeam'), function (req, res) {
     getTeamTrainers(req, res);
 });
 
