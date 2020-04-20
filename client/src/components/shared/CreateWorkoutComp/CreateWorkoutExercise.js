@@ -1,24 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Jumbotron, Form, Row, Col, Button, Alert } from 'react-bootstrap'
 import { connect } from 'react-redux';
-import DateAndTime from "../CreateSession/DateAndTime";
+import { useRouteMatch } from 'react-router-dom';
 
 const CreateWorkoutExercise = (props) => {
-    const [workoutid, setWorkoutID] = useState(Number);
     const [exerciseid, setExerciseID] = useState(Number);
     const [sets, setSets] = useState(Number);
     const [time, setTime] = useState();
     const [desc, setDesc] = useState("");
-    const [typeid, setTypeID] = useState(Number);
     const [types, setTypes] = useState([]);
-    const [setsError, setSetsError] = useState();
     const [submitError, setSubmitError] = useState();
+    const match = useRouteMatch();
+
 
 
     useEffect(() => {
         async function fetch_wtypes() {
 
-            const response = await fetch("/workoutExercises")
+            const response = await fetch("/exercises")
                 .catch((error) => console.log(error))
 
             const data = await response.json();
@@ -29,14 +28,23 @@ const CreateWorkoutExercise = (props) => {
 
     }, [])
 
+
+
     function Submit(e) {
         e.preventDefault();
 
-        let id = props.ID
+
+        const body = {
+            workoutid: match.params.ID,
+            exerciseid: exerciseid,
+            time: time,
+            sets: sets,
+            desc: desc
+        }
 
         fetch('/workoutExercises/add', {
             method: 'POST',
-            body: JSON.stringify({ workoutid, exerciseid, time, sets, desc }),
+            body: JSON.stringify(body),
             headers: {
                 'Content-Type': 'application/json;charset=UTF-8'
             },
@@ -75,7 +83,7 @@ const CreateWorkoutExercise = (props) => {
                 <Form.Group as={Row} >
                     <Form.Label column sm={{ span: 3, offset: 2 }}>Exercise</Form.Label>
                     <Col sm={10} md={4} lg={3}>
-                            <Form.Control as="select" onChange={(e) => setTypeID(e.target.value)}>
+                            <Form.Control as="select" onChange={(e) => setExerciseID(e.target.value)}>
                             <option disabled hidden selected value={0}>Select Exercise</option>
                             {types.map((type) => {
                                 return (
@@ -88,7 +96,7 @@ const CreateWorkoutExercise = (props) => {
                 </Form.Group>
 
                 <Form.Group as={Row}>
-                    <Form.Label column sm={{ span: 3, offset: 2 }} >Target Time</Form.Label>
+                    <Form.Label column sm={{ span: 3, offset: 2 }} >Target Time (minutes)</Form.Label>
                     <Col sm={10} md={4} lg={3}>
                         <Form.Control type="text" value={time} onChange={(e) => setTime(e.target.value)}></Form.Control>
                     </Col>
