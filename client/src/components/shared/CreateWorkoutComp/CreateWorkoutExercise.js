@@ -114,7 +114,7 @@ const CreateWorkoutExercise = (props) => {
                 <Form.Group as={Row}>
                     <Form.Label column sm={{ span: 3, offset: 2 }} >Description</Form.Label>
                     <Col sm={10} md={4} lg={3}>
-                        <Form.Control type="text" value={desc} onChange={(e) => setDesc(e.target.value)}></Form.Control>
+                        <Form.Control as="textarea" rows="3" value={desc} onChange={(e) => setDesc(e.target.value)}></Form.Control>
                     </Col>
                 </Form.Group>
 
