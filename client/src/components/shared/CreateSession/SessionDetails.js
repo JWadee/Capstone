@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Jumbotron, Form, Row, Col, Button} from 'react-bootstrap';
+import {div, Form, Row, Col, Button} from 'react-bootstrap';
 
 const SessionType = (props) => {
     const [disabled, setDisabled] = useState(true)
@@ -13,7 +13,7 @@ const SessionType = (props) => {
 
     // Set team display when data loads
     useEffect(()=>{
-        if(values.typeID == 2){
+        if(values.typeID === 2){
         setTeamDisp(
             <Form.Group as={Row}>
                 <Form.Label column sm={{span:3, offset:2}}>Team:</Form.Label>
@@ -33,7 +33,7 @@ const SessionType = (props) => {
 
     // Set client display when data loads
     useEffect(()=>{
-        if(values.typeID == 3){
+        if(values.typeID === 3){
         setClientDisp(
             <Form.Group as={Row}>
                 <Form.Label column sm={{span:3, offset:2}}>Client:</Form.Label>
@@ -54,17 +54,17 @@ const SessionType = (props) => {
  
     //Enable Continue button
     useEffect(()=>{
-        if(values.typeID == 1){
+        if(values.typeID === 1){
             setClientDisp();            
             setTeamDisp();
             setDisabled(false);
-        }else if(values.typeID == 2){
+        }else if(values.typeID === 2){
             console.log(values.teamID)
             if(values.teamID > 0){
                 setDisabled(false);
             }else setDisabled(true);
             setClientDisp();
-        }else if(values.typeID == 3){
+        }else if(values.typeID === 3){
             if(values.clientID > 0){
                 setDisabled(false);
             }else setDisabled(true);
@@ -83,7 +83,7 @@ const SessionType = (props) => {
     })
 
     return (
-        <Jumbotron>
+        <div>
             <h2>Add a Session</h2><br />
             <hr></hr>
             <Form>
@@ -104,7 +104,7 @@ const SessionType = (props) => {
                     </Col>
                 </Form.Group>  
             </Form>
-        </Jumbotron>    
+        </div>    
     );
 };
 

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Jumbotron, Button, Row, Col, Modal} from 'react-bootstrap';
+import {div, Button, Row, Col, Modal} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import history from '../../../utils/history';
 
@@ -330,11 +330,11 @@ const ActiveSession = (props) => {
     },[condDisp, day, date, session, workout])
 
     return (
-        <Jumbotron fluid>
+        <div fluid>
             {mainDisp}
             {deleteModal}
             {startModal}
-        </Jumbotron>
+        </div>
     );
 };
 

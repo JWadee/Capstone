@@ -14,13 +14,9 @@ function addTrainerClientNote(req,res){
       let sql = "INSERT INTO Trainer_Client_Notes (intTrainerClientID, strNote) "+
                 "VALUES (?,?)";
 
-      let values =[
+      let values = [ req.body.trainerclientID, req.body.note ];
 
-       req.body.intTrainerClientID,
-       req.body.strNote,
-       
-      ];
-      connection.query(sql, value, function(err, result) {
+      connection.query(sql, values, function(err, result) {
         connection.release();
         if(!err) {
             console.log(result)
@@ -76,7 +72,7 @@ function getTrainerClientNotesByClient(req,res){
   
       let sql = "SELECT * FROM Trainer_Client_Notes WHERE intTrainerClientID = ?";
 
-      let id = req.query.id;
+      let id = req.query.ID;
   
       connection.query(sql, id, function(err, rows) {
         connection.release();
@@ -146,6 +142,32 @@ function getTrainerClients(req, res) {
     })
 }
 
+function getByClientAndTrainer(req, res) {
+    pool.getConnection(function (err, connection) {
+        if (err) {
+            connection.release();
+            res.json({ "code": 100, "status": "Error in database connection" });
+            return;
+        }
+        console.log("connected as id: " + connection.threadId);
+
+        let sql = "SELECT * FROM trainer_clients "+
+                  "WHERE intClientID = ? AND intTrainerID = ?"  
+
+        let values = [req.query.clientid, req.query.trainerid]
+
+        connection.query(sql, values, function (err, rows) {
+            connection.release();
+            if (!err) {
+                res.json(rows)
+            }
+        });
+
+        connection.on('error', function (err) {
+            res.json({ "code": 100, "status": "Error in database connection" });
+        })
+    })
+}
 router.post(('/add'), function (req, res) {
     addTrainerClient(req, res);
 });
@@ -158,12 +180,16 @@ router.get(('/byTrainer'), function (req, res) {
     getTrainerClients(req, res);
 });  
 
+router.get(('/byTrainer/byClient'), function (req, res) {
+    getByClientAndTrainer(req, res);
+});  
+
 router.get(('/statuses'), function (req, res) {
     getTrainerClientStatuses(req, res);
 });
 
 
-  router.get('/notes/byTrainer', function(req, res) { 
+router.get('/notes/byTrainerClient', function(req, res) { 
     getTrainerClientNotesByClient(req, res);
 });
 

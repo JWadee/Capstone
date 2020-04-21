@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from "react";
-import {ListGroup, Jumbotron, Row, Col} from 'react-bootstrap'
+import {div, Row, Col, Table} from 'react-bootstrap'
 import { connect } from 'react-redux';
+import history from '../../../utils/history';
 
 const TrainerTeams = (props) => {
     const [teams, setTeams] = useState([]);
-    // const match = useRouteMatch();
     const match = props.match;
 
     useEffect(()=>{
@@ -16,22 +16,37 @@ const TrainerTeams = (props) => {
         }
 
         fetch_teams();
-    },[])
+    },[props.ID])
+
+    const goToTeam = (teamid) => {
+        //Push to workout component
+        history.push('/trainer/my-teams/team/'+teamid);
+    }
     
     return (
-        <Jumbotron>
-            <h2>My Teams</h2><br />
-            <hr />
-            <ListGroup as={Row}>
-                <Col sm={{span:4, offset:4}}>
-                    {teams.map(team =>{
-                        return(
-                            <ListGroup.Item key={team.intTeamID} action href={match.url+"/team/"+team.intTeamID}>{team.strTeamName}</ListGroup.Item>
-                        ) 
-                    })}
-                </Col>
-            </ListGroup>
-        </Jumbotron>
+        <div>
+            <Row>
+                <Col sm={{span: 6, offset: 3}}>
+                    <Table striped bordered hover>
+                        <thead>
+                            <tr>
+                                <th><h3>My Teams</h3></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {teams.map(team =>{
+                                return(
+                                    <tr onClick={()=>goToTeam(team.intTeamID)} key={team.intTeamID}>
+                                        <td>
+                                            {team.strTeamName}
+                                        </td>
+                                    </tr>         
+                            )})}
+                        </tbody>
+                    </Table>
+                </Col> 
+            </Row>
+        </div>
     );
 };
 

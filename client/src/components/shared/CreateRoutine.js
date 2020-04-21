@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Jumbotron, Form, Row, Col, Button, Alert } from 'react-bootstrap'
+import { div, Form, Row, Col, Button, Alert } from 'react-bootstrap'
 import { connect } from 'react-redux';
 
 const CreateRoutine = (props) => {
@@ -68,7 +68,7 @@ const CreateRoutine = (props) => {
     }
 
     return (
-        <Jumbotron>
+        <div>
         <h2>Create a Routine</h2><br />
         <hr></hr>
         <Form title="Create a Routine" onSubmit={(e) => Submit(e)}>
@@ -101,7 +101,7 @@ const CreateRoutine = (props) => {
             </Form.Group>
         </Form>
 
-    </Jumbotron>
+    </div>
 );
 };
 const mapStateToProps = (state) => {

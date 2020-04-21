@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Jumbotron, Form, Row, Col, Button, Alert} from 'react-bootstrap'
+import {div, Form, Row, Col, Button, Alert} from 'react-bootstrap'
 import { useHistory } from "react-router-dom";
 import { connect } from 'react-redux';
 
@@ -132,7 +132,7 @@ const LogIn = (props) => {
     },[props.accountType])
     
     return (
-        <Jumbotron>
+        <div>
             <h2>Log In</h2><br />
             <hr></hr>
             <Form title="Log In" onSubmit={(e)=>verifyData(e)}> 
@@ -165,7 +165,7 @@ const LogIn = (props) => {
                 </Form.Group>
             </Form>
             
-        </Jumbotron>
+        </div>
     );
 };
 

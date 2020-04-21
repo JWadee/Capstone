@@ -25,6 +25,10 @@ import TrainerRoutines from './TrainerRoutines';
 import Routine from "../../shared/Routine";
 import AddWorkouttoRoutine from './AddWorkouttoRoutine';
 import TrainerTeams from './TrainerTeams';
+import Team from '../../shared/team/Team';
+import AddClientNote from '../client/AddClientNote';
+import AddTeamMember from '../../shared/team/AddTeamMember';
+import AddTeamTrainer from '../../shared/team/AddTeamTrainer';
 
 const TrainerPage = ({match}) => {
 
@@ -63,9 +67,13 @@ const TrainerPage = ({match}) => {
                 <Route path={"/trainer/new-client"} exact component={NewClient} />
                 <Route path={"/trainer/my-clients"} exact component={TrainerClients} />
                 <Route path={"/trainer/my-clients/client/:ID"} exact component={ClientPage}/>
+                <Route path={"/trainer/my-clients/client/:ID/:TCID/add-note"} exact component={AddClientNote}/>
                 <Route path={"/trainer/my-clients/client/:ID/exercise-history"} exact component={ClientExerciseHistory}/>
                 <Route path={"/trainer/new-team"} exact component={NewTeam}/>
                 <Route path={"/trainer/my-teams"} exact component={TrainerTeams}/>
+                <Route path={"/trainer/my-teams/team/:ID"} exact component={Team}/>
+                <Route path={"/trainer/my-teams/team/:ID/add-member"} exact component={AddTeamMember}/>
+                <Route path={"/trainer/my-teams/team/:ID/add-trainer"} exact component={AddTeamTrainer}/>
                 <Route path={"/trainer/add-exercise"} exact component={CreateExercise}/>
                 <Route path={"/trainer/my-workouts"} exact component={TrainerWorkouts}/>
                 <Route path={"/trainer/my-workouts/workout/:ID"} exact component={Workout}/>

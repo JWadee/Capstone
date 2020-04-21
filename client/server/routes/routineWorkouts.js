@@ -15,7 +15,7 @@ function addRoutineWorkouts(req, res) {
         let sql = "INSERT INTO routine_workouts (intRoutineID, intWorkoutID) " +
             "VALUES (?, ?)";
         let values = [req.body.routineid, req.body.workoutid];
-
+        console.log(req.body)
         connection.query(sql, values, function (err, result) {
             connection.release();
             if (!err) {
@@ -40,7 +40,9 @@ function getByRoutine(req, res) {
         }
         console.log("connected as id: " + connection.threadId);
 
-        let sql = "SELECT * FROM routine_workouts WHERE intRoutineID = ? ";
+        let sql = "SELECT rw.*, w.strWorkoutName FROM routine_workouts AS rw "+
+                  "INNER JOIN workouts AS w ON w.intWorkoutID = rw.intWorkoutID "+
+                  "WHERE intRoutineID = ? ";
         let id = req.query.ID
 
         connection.query(sql, id, function (err, rows) {

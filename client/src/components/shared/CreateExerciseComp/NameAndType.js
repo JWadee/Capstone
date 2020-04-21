@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Jumbotron, Form, Row, Col, Button} from 'react-bootstrap';
+import {div, Form, Row, Col, Button} from 'react-bootstrap';
 
 const NameAndType = (props) => {
     const [disabled, setDisabled] = useState(true)
@@ -30,7 +30,7 @@ const NameAndType = (props) => {
 
     return (
 
-        <Jumbotron>
+        <div>
             <h2>Exercise Information</h2><br />
             <hr></hr>
             <Form>
@@ -55,7 +55,7 @@ const NameAndType = (props) => {
                     </Col>
                 </Form.Group>  
             </Form>
-        </Jumbotron>    
+        </div>    
     );
 };
 

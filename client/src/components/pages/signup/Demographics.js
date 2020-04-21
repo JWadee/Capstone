@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Jumbotron, Form, Row, Col, Button, Alert, Image} from 'react-bootstrap';
+import {div, Form, Row, Col, Button, Alert, Image} from 'react-bootstrap';
 import bodytypes from '../../../images/bodytypes.jpg';
 
 const Demographics = (props) => {
@@ -60,7 +60,7 @@ const Demographics = (props) => {
     }
 
     return(
-        <Jumbotron> 
+        <div> 
             <h2>Demographics</h2><br />
             <hr></hr>
             <Form>
@@ -131,7 +131,7 @@ const Demographics = (props) => {
                     </Col>
                 </Form.Group>     
             </Form>
-        </Jumbotron>
+        </div>
     );
 };
 

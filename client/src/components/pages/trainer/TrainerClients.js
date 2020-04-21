@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
-import {ListGroup, Jumbotron, Nav, Row, Col} from 'react-bootstrap'
+import {div, Table, Row, Col} from 'react-bootstrap'
 import { connect } from 'react-redux';
+import history from '../../../utils/history';
 
 const TrainerClients = (props) => {
     const [clients, setClients] = useState([]);
@@ -18,20 +19,34 @@ const TrainerClients = (props) => {
         get_clients();
     },[])
     
+    const goToClient = (clientid) => {
+        //Push to workout component
+        history.push('/trainer/my-clients/client/'+clientid);
+    }
+
     return (
-        <Jumbotron>
-            <h2>My Clients</h2><br />
-            <hr />
-            <ListGroup as={Row}>
-                <Col sm={{span:4, offset:4}}>
-                    {clients.map(client =>{
-                        return(
-                            <ListGroup.Item key={client.intAccountID} action href={match.url+"/client/"+client.intAccountID}>{client.strFirstName +" "+client.strLastName}</ListGroup.Item>
-                        ) 
-                    })}
-                </Col>
-            </ListGroup>
-        </Jumbotron>
+        <div>
+            <Row>
+                <Col sm={{span: 6, offset: 3}}>
+                    <Table striped bordered hover>
+                        <thead>
+                            <tr>
+                                <th><h3>My Clients</h3></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {clients.map((client)=>{ return (
+                                <tr onClick={()=>goToClient(client.intAccountID)} key={client.intAccountID}>
+                                    <td>
+                                        {client.strFirstName +" "+client.strLastName}
+                                    </td>
+                                </tr>         
+                            )})}
+                        </tbody>
+                    </Table>
+                </Col> 
+            </Row>
+        </div>
     );
 };
 

@@ -32,7 +32,7 @@ function addTeamTrainers(req, res) {
     })
 }
 
-function getTeamTrainers(req, res) {
+function getByTeam(req, res) {
     pool.getConnection(function (err, connection) {
         if (err) {
             connection.release();
@@ -41,15 +41,18 @@ function getTeamTrainers(req, res) {
         }
         console.log("connected as id: " + connection.threadId);
 
-        let sql = "SELECT * FROM team_trainers "+
-                  "INNER JOIN accounts AS a ON a.intAccountID "+  
+        let sql = "SELECT tt.*, a.strFirstName, a.strLastName, a.intAccountID FROM team_trainers AS tt "+
+                  "INNER JOIN accounts AS a ON a.intAccountID = tt.intAccountID "+  
                   "WHERE intTeamID = ?";
+        let teamid = req.query.teamid;
 
-        connection.query(sql, function (err, rows) {
+        connection.query(sql, teamid, function (err, rows) {
             connection.release();
             if (!err) {
                 res.json(rows)
-            }
+            }else(
+                console.log(err)
+            )
         });
 
         connection.on('error', function (err) {
@@ -63,7 +66,7 @@ router.post(('/add'), function (req, res) {
 });
 
 router.get(('/byTeam'), function (req, res) {
-    getTeamTrainers(req, res);
+    getByTeam(req, res);
 });
 
 module.exports = router;

@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from "react";
-import { Jumbotron, Form, Row, Col, Button, Alert } from 'react-bootstrap'
+import React, {useState} from "react";
+import { div, Form, Row, Col, Button, Alert } from 'react-bootstrap'
 import { connect } from 'react-redux';
 
 const NewTeam = (props) => {
@@ -14,7 +14,7 @@ const NewTeam = (props) => {
             setNameError(
                 <Alert variant="danger">
                     Routine name must be more than 4 characters!
-                    </Alert>
+                </Alert>
             )
         }else{
             setNameError()
@@ -43,12 +43,10 @@ const NewTeam = (props) => {
                 )
             })
         } 
-
-    
     }
 
     return (
-        <Jumbotron>
+        <div>
             <h2>Create a Routine</h2><br />
             <hr></hr>
             <Form title="Create a Team" onSubmit={(e) => Submit(e)}> 
@@ -67,7 +65,7 @@ const NewTeam = (props) => {
                 </Form.Group>
             </Form>
             
-        </Jumbotron>
+        </div>
     );
 };
 

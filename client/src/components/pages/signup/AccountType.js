@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Jumbotron, Form, Row, Col, Button, Alert, Image} from 'react-bootstrap'
+import {div, Form, Row, Col, Button, Alert, Image} from 'react-bootstrap'
 
 
 const AccountType = (props) => {
@@ -19,7 +19,7 @@ const AccountType = (props) => {
     },[props.values]) 
 
     return(
-        <Jumbotron>
+        <div>
             <h2>Account Type</h2><br />
             <hr></hr>
             <Form>
@@ -41,7 +41,7 @@ const AccountType = (props) => {
                     </Col>
                 </Form.Group>  
             </Form>
-        </Jumbotron>
+        </div>
     );
 };
 

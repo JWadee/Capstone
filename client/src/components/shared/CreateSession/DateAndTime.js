@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Jumbotron, Form, Row, Col, Button} from 'react-bootstrap';
+import {div, Form, Row, Col, Button} from 'react-bootstrap';
 
 // CSS Modules, react-datepicker-cssmodules.css
 // import 'react-datepicker/dist/react-datepicker-cssmodules.css';
@@ -28,7 +28,7 @@ const DateAndTime = (props) =>{
     },[values.date])
 
     return (
-        <Jumbotron>
+        <div>
             <h2>Add a Session</h2><br />
             <hr></hr>
             <Form>
@@ -105,7 +105,7 @@ const DateAndTime = (props) =>{
                     </Col>
                 </Form.Group>  
             </Form>
-        </Jumbotron>  
+        </div>  
     
     );
 }

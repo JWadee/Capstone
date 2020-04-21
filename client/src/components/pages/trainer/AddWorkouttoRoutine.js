@@ -1,131 +1,83 @@
 import React, {useState, useEffect} from "react";
-import {Jumbotron, Form, Row, Col, Button, Alert} from 'react-bootstrap'
+import {div, Form, Row, Col, Button, Alert} from 'react-bootstrap'
 import { connect } from 'react-redux';
+import history from '../../../utils/history';
+import { useRouteMatch } from "react-router-dom";
 
 const AddWorkouttoRoutine = (props) => {
-    const [workout, setWorkout] = useState('');
-    const [workoutID, setWorkoutID] = useState(-1);
-    const [workoutTypeID, setWorkoutTypeID] = useState(Number);
-    const [errorMessage, setErrorMessage] = useState();
-    const [mainDisp, setMainDisp] = useState();
+    const [workouts, setWorkouts] = useState([]);
+    const [workoutID, setWorkoutID] = useState();
+    const [disabled, setDisabled] = useState(true)
+    const match = useRouteMatch();
 
+    //Run on initial render to fetch trainers workouts
+    useEffect(()=> {
+        const fetch_workouts = async () => {
+            const response = await fetch('/workouts/byTrainer?ID='+props.ID);
+            const data = await response.json();
+            setWorkouts(data)
+        }
+        fetch_workouts();
+    },[])
 
+    //Set disabled based on workoutID
     useEffect(()=>{
-        setMainDisp(
-            <Jumbotron>
+        if(workoutID > 0){
+            setDisabled(false)
+        }
+    },[workoutID])
+
+    const submit = async (e) => {
+        //prevent form from clearing
+        e.preventDefault();
+
+        //vars for POST request
+        const data={
+            routineid: match.params.ID,
+            workoutid: workoutID
+        };
+        const url = '/routineWorkouts/add';
+        const options =  {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json;charset=UTF-8'
+            }
+        }
+
+        //POST request to create routine workout record
+        fetch(url, options)
+            .then(()=>{
+                //Push back to Routine component
+                history.push("/trainer/my-routines/routine/"+match.params.ID);
+            })
+            .catch((err)=> console.log(err));
+    }
+
+    return (
+        <div>
             <h2>Add Workout to Routine</h2><br />
             <hr></hr>
             <Form title="Add Workout to Routine"> 
                 <Form.Group as={Row}>
                     <Form.Label column sm={{span:3, offset:2}}>Workout</Form.Label>
                     <Col sm={10} md={4} lg={3}>
-                        <Form.Control type="text" onChange={e=> setWorkout(e.target.value)}></Form.Control>
-                        {errorMessage}
+                        <Form.Control as="select" onChange={e=> setWorkoutID(e.target.value)} defaultValue={-1}>
+                            <option disabled hidden value={-1}>Choose Workout</option>
+                            {workouts.map(workout => {
+                                return (
+                                <option value={workout.intWorkoutID} key={workout.intWorkoutID}>{workout.strWorkoutName}</option>
+                                )
+                            })}
+                        </Form.Control>
                     </Col>
                 </Form.Group>
-                
-            <Form.Group as={Row}>
-             <Form.Label column sm={{span:3, offset:2}}>Routine</Form.Label>
-             <Col sm={10} md={4} lg={3}>
-                 <Form.Control as="select" value="Choose...">                             
-                    <option>Choose Routine</option>
-                    </Form.Control>
-                    </Col>
-                    </Form.Group>    
-
-                    <Form.Group as={Row}>
+                <Form.Group as={Row}>
                     <Col sm={{ span: 6, offset: 4  }}>
-                        <Button type="submit" onClick={(e) => submit(e)} >Add Workout</Button>
+                        <Button type="submit" disabled={disabled} onClick={(e) => submit(e)}>Add Workout</Button>
                     </Col>
                 </Form.Group>
-             </Form>
-             </Jumbotron>
-       )
-    },[errorMessage])
-
-    //function to get account workout
-    const getID = async () => {
-        const response = await fetch('/accounts/byWorkout?workout='+workout);
-        const data = await response.json();
-        setWorkoutID(data.ID)
-    }
-
-    //function to get account by ID 
-    const getAccount = async () => {
-        if(workoutID > 0){
-            const response = await fetch('/accounts/byID?ID='+workoutID);
-            const data = await response.json();
-            console.log(data)
-            setWorkoutTypeID(data[0].intAccountTypeID);
-        }else if (workoutID == 0){
-            setErrorMessage(<Alert variant="danger"> Workout do not exists. </Alert>)
-        }
-    }
-
-
-
-    //Run whenever workout ID is set
-    useEffect(()=>{
-        if(workoutID > -1){
-            getAccount();
-        }
-    },[workoutID])
-
-    const submit = async (e) => {
-        // let exp = await getID();
-        e.preventDefault();
-        await getID();
-    }
-   
-
-   
-    
-    const addWorkout = async() => {
-        const body = {
-            trainerID: props.ID, 
-            workoutID: workoutID
-        }
-
-        //api parameters to create game
-        const url ='/trainerClients/add'
-        const options = {
-                    method:'POST',
-                    headers:{
-                        'Content-Type': 'application/json;charset=UTF-8'
-                    }, 
-                    body: JSON.stringify(body)
-        }
-
-        //call api
-        fetch(url, options)
-            .catch(error=>{
-                console.log(error)
-                setMainDisp(
-                    <Jumbotron>
-                        <h4>There was an error on our end. Please try again.</h4>
-                    </Jumbotron>
-                )
-                return;
-            }).then(()=> {
-                    setMainDisp(
-                    <Jumbotron>
-                        <h4>Workout Added</h4>
-                    </Jumbotron>
-                    )
-            })
-    }
-
-    useEffect(()=>{
-        if(workoutTypeID === 2){
-            addWorkout();                
-        }else if(workoutTypeID > 0 && workoutTypeID < 5){
-            setErrorMessage(<Alert variant="danger"> Workout does not exists.</Alert>)
-        } 
-    },[workoutTypeID])
-
-    return (
-        <div>
-            {mainDisp}
+            </Form>
         </div>
     );
 };

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Jumbotron, Form, Row, Col, Button, Alert} from 'react-bootstrap'
+import {div, Form, Row, Col, Button, Alert} from 'react-bootstrap'
 import { connect } from 'react-redux';
 
 const NewClient = (props) => {
@@ -12,7 +12,7 @@ const NewClient = (props) => {
 
     useEffect(()=>{
         setMainDisp(
-            <Jumbotron>
+            <div>
             <h2>Add a Client</h2><br />
             <hr></hr>
             <Form title="Add a Client"> 
@@ -29,7 +29,7 @@ const NewClient = (props) => {
                     </Col>
                 </Form.Group>
             </Form>
-            </Jumbotron>
+            </div>
         )
     },[errorMessage])
 
@@ -91,16 +91,16 @@ const NewClient = (props) => {
             .catch(error=>{
                 console.log(error)
                 setMainDisp(
-                    <Jumbotron>
+                    <div>
                         <h4>There was an error on our end. Please try again.</h4>
-                    </Jumbotron>
+                    </div>
                 )
                 return;
             }).then(()=> {
                     setMainDisp(
-                    <Jumbotron>
+                    <div>
                         <h4>Client Added</h4>
-                    </Jumbotron>
+                    </div>
                     )
             })
     }

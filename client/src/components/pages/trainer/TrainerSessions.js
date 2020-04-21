@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Jumbotron, ListGroup, Row, Col} from 'react-bootstrap';
+import {div, ListGroup, Row, Col} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { useRouteMatch } from "react-router-dom";
 
@@ -15,7 +15,7 @@ const TrainerSessions = (props) => {
         };
 
         fetch_sessions();
-    },[])
+    },[props.ID])
 
     const getDay = (session) =>{
         const date = new Date(session.dtmDate);
@@ -71,7 +71,7 @@ const TrainerSessions = (props) => {
 
 
     return (
-        <Jumbotron fluid>
+        <div fluid>
             <h2>My Schedule</h2><br />
             <hr />
         
@@ -95,7 +95,7 @@ const TrainerSessions = (props) => {
                     )
                 })}
             </ListGroup>
-        </Jumbotron>
+        </div>
     );
 };
 

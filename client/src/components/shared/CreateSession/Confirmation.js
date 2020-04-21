@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Jumbotron, Form, Row, Col, Button, ListGroup, ListGroupItem} from 'react-bootstrap';
+import {div, Form, Row, Col, Button, ListGroup, ListGroupItem} from 'react-bootstrap';
 
 const Confirmation = (props) => {
     const [mainDisp, setMainDisp] = useState()
@@ -104,7 +104,7 @@ const Confirmation = (props) => {
 
     useEffect(()=>{
         setMainDisp(
-            <Jumbotron>
+            <div>
                 <h2>Confirmation</h2><br />
                 <hr></hr>
                 <ListGroup>                    
@@ -123,7 +123,7 @@ const Confirmation = (props) => {
                         <Button onClick={(e)=> submit(e)}>Confirm</Button>
                     </Col>
                 </Row>
-            </Jumbotron>)
+            </div>)
         }, [condDisp, workoutDisp, typeDisp])
 
     return (

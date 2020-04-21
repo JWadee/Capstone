@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Jumbotron, Form, Row, Col, Button} from 'react-bootstrap';
+import {div, Form, Row, Col, Button} from 'react-bootstrap';
 
 const SessionWorkout = (props) => {
     const [disabled, setDisabled] = useState(true);
@@ -36,7 +36,7 @@ const SessionWorkout = (props) => {
     },[values.workoutID]);
 
     return (
-        <Jumbotron>
+        <div>
             <h2>Choose a Workout</h2><br />
             <hr></hr>
             <Form>
@@ -58,7 +58,7 @@ const SessionWorkout = (props) => {
                     </Col>
                 </Form.Group>  
             </Form>
-        </Jumbotron>    
+        </div>    
     );
 };
 

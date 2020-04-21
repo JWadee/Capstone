@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {Jumbotron, Form, Row, Col} from 'react-bootstrap';
+import {div, Form, Row, Col} from 'react-bootstrap';
 import Results from '../../shared/Results/Results';
 
 
 const ClientExerciseHistory = () => {
     const [exercises, setExercises] = useState([]);
-    const [exerciseID, setExerciseID] = useState();
+    const [exerciseid, setExerciseid] = useState();
     const [disp, setDisp] = useState();
 
 
@@ -20,15 +20,19 @@ const ClientExerciseHistory = () => {
         fetch_exercises();
     },[])
 
+    useEffect(()=>{
+        let results = React.createElement(Results, {exerciseid})
+        setDisp(results)
+    },[exerciseid])
     
     return (
-        <Jumbotron>
+        <div>
             <h2>Exercise History</h2><br />
             <hr></hr>
             <Row>
                 <Form>
                     <Col>
-                        <Form.Control as="select" defaultValue={0} onChange={(e) => setExerciseID(e.target.value)}>
+                        <Form.Control as="select" defaultValue={0} onChange={(e) => setExerciseid(e.target.value)}>
                             <option disabled hidden value={0}>Select Exercise</option>
                                 {exercises.map((exercise) => {
                                     return (
@@ -41,10 +45,10 @@ const ClientExerciseHistory = () => {
             </Row>
             <Row>
                 <Col>
-                    <Results exerciseid={exerciseID} />
+                    {disp}
                 </Col>
             </Row>
-        </Jumbotron>
+        </div>
     )
 
 }

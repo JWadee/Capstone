@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Jumbotron, Form, Row, Col, Button, Alert} from 'react-bootstrap'
+import {div, Form, Row, Col, Button, Alert} from 'react-bootstrap'
 const validator = require('validator');
 
 const SignUp = (props) => {
@@ -88,7 +88,7 @@ const SignUp = (props) => {
 
 
     return(
-        <Jumbotron>
+        <div>
             <h2>Personal Information</h2><br />
             <hr></hr>
             <Form>
@@ -129,7 +129,7 @@ const SignUp = (props) => {
                     </Col>
                 </Form.Group>     
             </Form>
-        </Jumbotron>
+        </div>
     );
 };
 

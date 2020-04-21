@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import { connect } from 'react-redux';
-import {Jumbotron, Form, Row, Col, Button, Modal} from 'react-bootstrap';
+import {div, Form, Row, Col, Button, Modal} from 'react-bootstrap';
 import history from '../../../utils/history';
 
 const EditSession = (props) => {
@@ -226,7 +226,7 @@ const EditSession = (props) => {
         case false:
         return (
             <>
-            <Jumbotron>
+            <div>
                 <h2>Edit Session</h2><br />
                 <hr></hr>
                 <Form>
@@ -319,7 +319,7 @@ const EditSession = (props) => {
                         </Col>
                     </Form.Group>  
                 </Form>
-            </Jumbotron>    
+            </div>    
             {modal}
             </>
         )

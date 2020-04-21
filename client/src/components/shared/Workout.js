@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {useRouteMatch} from "react-router-dom";
-import { Jumbotron, Row, Col, Button } from "react-bootstrap";
+import { div, Row, Col, Button, Table} from "react-bootstrap";
 
 
 const Workout = () => {
@@ -28,29 +28,36 @@ const Workout = () => {
     },[])
 
     return (
-        <Jumbotron>
+        <div>
             {
                 workout != null ? <h2>{workout[0].strWorkoutName}</h2> : <></>
             }
             <br />
             <hr />
-            {exercises.map((exercise)=>{ return (
-                <Row key={exercise.intExerciseID}>
-                    <Col>
-                        <p>{exercise.strExerciseName}</p> 
-                    </Col>
-                    <Col>
-                        <p>{exercise.strTargetDescription}</p>   
-                    </Col>
-                </Row>                
-            )})}
+            <Table striped bordered hover>
+                <thead>
+                    <tr>
+                        <th>Exercise</th>
+                        <th>Description</th>
+                    </tr>                    
+                </thead>
+                <tbody>
+                    {exercises.map((exercise)=>{ return (
+                        <tr key={exercise.intExerciseID}>
+                            <td>{exercise.strExerciseName}</td>
+                            <td>{exercise.strTargetDescription}</td>
+                        </tr>                
+                    )})}
+                </tbody>
+            </Table>
+
             <Row>
                 <Col >
                     <Button href={match.url+"/add-exercise"}>Add Exercise</Button>
                 </Col>
             </Row>        
 
-        </Jumbotron>
+        </div>
     )
 
 }

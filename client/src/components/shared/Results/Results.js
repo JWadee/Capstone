@@ -9,13 +9,15 @@ const Results = (props) => {
     const [sessions, setSessions] = useState([]);
     const [data, setData] = useState([]);
     const [results, setResults] = useState([]);
-    const [graph, setGraph] = useState();
     const [exercise, setExercise] = useState([]);
     const [processed, setProcessed] = useState(1);
     const match = useRouteMatch();
 
     //Run on initial render, load all results (including date of session) for exercise by account id, and fetch the exercise
     useEffect(()=>{
+      setLabels([]);
+      setSessions([]);
+      setData([])
       //Declare functions to fetch results, and the exercise
       const fetch_results = async ()=> {
         const response = await fetch('/sessionResults/byClient/byExercise?exerciseid='+props.exerciseid+'&clientid='+match.params.ID);
@@ -32,7 +34,7 @@ const Results = (props) => {
       //Call functions
       fetch_results();
       fetch_exercise();
-    },[props.exerciseid])
+    },[props.exerciseid, match.params.ID])
 
     //Function to format date to dd-mm-yyyy
     const formatDate = (date) => {

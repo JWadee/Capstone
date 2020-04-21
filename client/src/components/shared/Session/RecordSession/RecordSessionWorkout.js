@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Accordion, Card,Row, Col, Button, ListGroup, Jumbotron} from "react-bootstrap";
+import {Accordion, Card,Row, Col, Button, ListGroup, div} from "react-bootstrap";
 import { Route, Switch, useRouteMatch} from "react-router-dom";
 import { connect } from 'react-redux';
 
@@ -28,9 +28,9 @@ const RecordSessionWorkout = (props) => {
     };
 
     return (
-        <Jumbotron>
+        <div>
             {disp}
-        </Jumbotron>
+        </div>
     );
 };
 

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Jumbotron, ListGroup, Row, Col} from 'react-bootstrap';
+import {div, ListGroup, Row, Col} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { useRouteMatch } from "react-router-dom";
 
@@ -114,7 +114,7 @@ const InProgressSessions = (props) => {
 
 
     return (
-        <Jumbotron fluid>
+        <div fluid>
             <h2>Sessions In Progress</h2><br />
             <hr />
         
@@ -140,7 +140,7 @@ const InProgressSessions = (props) => {
                     )
                 })}
             </ListGroup>
-        </Jumbotron>
+        </div>
     );
 };
 

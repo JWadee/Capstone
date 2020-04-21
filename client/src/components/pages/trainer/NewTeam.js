@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import { Jumbotron, Form, Row, Col, Button, Alert } from 'react-bootstrap'
+import { div, Form, Row, Col, Button, Alert } from 'react-bootstrap'
 import { connect } from 'react-redux';
 
 const NewTeam = (props) => {
@@ -69,7 +69,7 @@ const NewTeam = (props) => {
     }
 
     return (
-        <Jumbotron>
+        <div>
             <h2>Create a Team</h2><br />
             <hr></hr>
             <Form title="Create a Team" onSubmit={(e) => Submit(e)}> 
@@ -83,8 +83,8 @@ const NewTeam = (props) => {
                 <Form.Group as={Row} >
                     <Form.Label column sm={{span:3, offset:2}}>Team Type</Form.Label>
                     <Col sm={10} md={4} lg={3}>
-                        <Form.Control as="select" onChange={(e) => setTypeID(e.target.value)}>
-                            <option disabled hidden selected value={0}>Select Team Type </option>
+                        <Form.Control as="select" defaultValue={0} onChange={(e) => setTypeID(e.target.value)}>
+                            <option disabled hidden  value={0}>Select Team Type </option>
                             {types.map((type) => {
                                 return(
                                     <option key={type.intTeamTypeID} value={type.intTeamTypeID}>{type.strTeamType}</option>
@@ -101,7 +101,7 @@ const NewTeam = (props) => {
                 </Form.Group>
             </Form>
             
-        </Jumbotron>
+        </div>
     );
 };
 

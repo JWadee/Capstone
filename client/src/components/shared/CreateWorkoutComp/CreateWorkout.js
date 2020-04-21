@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Jumbotron, Form, Row, Col, Button, Alert } from 'react-bootstrap'
+import { div, Form, Row, Col, Button, Alert } from 'react-bootstrap'
 import { connect } from 'react-redux';
 
 const CreateWorkout = (props) => {
@@ -67,7 +67,7 @@ const CreateWorkout = (props) => {
     }
 
     return (
-        <Jumbotron>
+        <div>
             <h2>Create a Workout</h2><br />
             <hr></hr>
             <Form title="Create a Workout" onSubmit={(e) => Submit(e)}>
@@ -100,7 +100,7 @@ const CreateWorkout = (props) => {
                 </Form.Group>
             </Form>
 
-        </Jumbotron>
+        </div>
     );
 };
 
