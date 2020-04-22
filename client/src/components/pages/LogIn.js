@@ -127,7 +127,7 @@ const LogIn = (props) => {
 
     useEffect(()=>{
         if(props.accountType === 1){
-            history.push("/trainer")
+            history.push("/trainer/dashboard")
         }
     },[props.accountType])
     
