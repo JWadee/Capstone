@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {Navbar, NavDropdown, Nav} from "react-bootstrap";
 import { Route, Switch } from "react-router-dom";
 import { connect } from 'react-redux';
@@ -29,41 +29,26 @@ import Team from '../../shared/team/Team';
 import AddClientNote from '../client/AddClientNote';
 import AddTeamMember from '../../shared/team/AddTeamMember';
 import AddTeamTrainer from '../../shared/team/AddTeamTrainer';
-
+import About from '../About';
+import Dashboard from './dashboard/Dashboard';
 const TrainerPage = ({match}) => {
 
     return (
         <div>
             <Navbar bg="light" expand="lg">
-                <Navbar.Brand href="#home">Training</Navbar.Brand>
+                <Navbar.Brand href="#home">Trace Fitness</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
-                        <NavDropdown title="Clients" id="basic-nav-dropdown">
-                            <NavDropdown.Item href={match.url+"/my-clients"}>My Clients</NavDropdown.Item>
-                            <NavDropdown.Item href={match.url+"/new-client"}>Add a Client</NavDropdown.Item>
-                        </NavDropdown>
-                        <NavDropdown title="Training" id="basic-nav-dropdown">
-                            <NavDropdown.Item href={match.url+"/add-routine"}>Create a Routine</NavDropdown.Item>
-                            <NavDropdown.Item href={match.url+"/add-workout"} >Create a Workout</NavDropdown.Item>
-                            <NavDropdown.Item href={match.url+"/add-exercise"}>Add an Exercise</NavDropdown.Item>
-                            <NavDropdown.Item href={match.url+"/my-workouts"} >My Workouts</NavDropdown.Item>
-                            <NavDropdown.Item href={match.url+"/my-routines"} >My Routines</NavDropdown.Item>
-                        </NavDropdown>
-                        <NavDropdown title="Schedule" id="basic-nav-dropdown">
-                            <NavDropdown.Item href={match.url+"/sessions"}>My Schedule</NavDropdown.Item>
-                            <NavDropdown.Item href={match.url+"/sessions/in-progress"}>Sessions In Progress</NavDropdown.Item>
-                            <NavDropdown.Item href={match.url+"/add-session"}>Add a Session</NavDropdown.Item>
-                        </NavDropdown>
-                        <NavDropdown title="Teams" id="basic-nav-dropdown">
-                            <NavDropdown.Item href={match.url+"/new-team"}>Add a Team</NavDropdown.Item>
-                            <NavDropdown.Item href={match.url+"/my-teams"}>My Teams</NavDropdown.Item>
-                        </NavDropdown>
+                        <Nav.Link href="/trainer/dashboard">Dashboard</Nav.Link>
+                        <Nav.Link href="/trainer/about">About</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>
             
             <Switch>
+                <Route path={"/trainer/about"} exact component={About} />
+                <Route path={"/trainer/dashboard"} exact component={Dashboard}/>
                 <Route path={"/trainer/new-client"} exact component={NewClient} />
                 <Route path={"/trainer/my-clients"} exact component={TrainerClients} />
                 <Route path={"/trainer/my-clients/client/:ID"} exact component={ClientPage}/>
