@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {div, Form, Row, Col, Button, Alert, Image} from 'react-bootstrap'
+import {Form, Row, Col, Button, Alert, Image} from 'react-bootstrap'
 
 
 const AccountType = (props) => {
@@ -29,7 +29,7 @@ const AccountType = (props) => {
                                 //Don't display admin account
                                 if(type.strAccountType != 'Admin'){
                                     return(
-                                        <Form.Check inline label={type.strAccountType} type="radio" name="type" checked={props.values.accountTypeID == type.intAccountTypeID} value={type.intAccountTypeID} onChange={props.handleChange('accountType')}/>
+                                        <Form.Check key={type.intAccountTypeID} inline label={type.strAccountType} type="radio" name="type" checked={props.values.accountTypeID == type.intAccountTypeID} value={type.intAccountTypeID} onChange={props.handleChange('accountType')}/>
                                     )
                                 }
                             })}

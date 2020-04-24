@@ -70,9 +70,8 @@ const MuscleAndGroup = (props) => {
     return (
 
         
-        <div>
-            <h2>Exercise Details</h2><br />
-            <hr></hr>
+        <div className="component">
+            <h2>Exercise Details</h2>
             <Form>
                 <Form.Group as={Row}>
                     <Form.Label column sm={{span:3, offset:2}}>Muscle Group:</Form.Label>

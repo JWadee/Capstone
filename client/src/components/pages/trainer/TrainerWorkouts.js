@@ -1,12 +1,11 @@
 import React, {useState, useEffect} from "react";
-import {div, Table, Row, Col} from 'react-bootstrap'
+import {Table, Row, Col} from 'react-bootstrap'
 import { connect } from 'react-redux';
 import history from '../../../utils/history';
 
 const TrainerWorkouts = (props) => {
     const [workouts, setWorkouts] = useState([]);
-    // const match = useRouteMatch();
-    const match = props.match;
+
 
     useEffect(()=>{
         const get_workouts = async() => {
@@ -25,10 +24,10 @@ const TrainerWorkouts = (props) => {
     }
     
     return (
-        <div>
+        <div className="component">
             <Row>
                 <Col sm={{span: 6, offset: 3}}>
-                    <Table striped bordered hover>
+                    <Table bordered hover>
                         <thead>
                             <tr>
                                 <th><h3>My Workouts</h3></th>

@@ -47,11 +47,10 @@ const Team = () => {
     }
 
     return (
-        <div>
+        <div className="component">
             {
                 team != null ? <h2>{team[0].strTeamName}</h2> : <></>
             }
-            <br />
             <Row>
                 <Col md={{span: 3, offset:1}}>
                     <Table bordered hover >
@@ -74,7 +73,7 @@ const Team = () => {
                         <tfoot>
                             <tr>
                                 <td>
-                                    <Button onClick={()=>addTrainer()} as={Col} sm={{span:3}}>add <IoIosAddCircleOutline /></Button>
+                                    <Button onClick={()=>addTrainer()} ><h5> <IoIosAddCircleOutline /></h5></Button>
                                 </td>
                             </tr>
                         </tfoot>
@@ -102,7 +101,7 @@ const Team = () => {
                         <tfoot>
                             <tr>
                                 <td>
-                                    <Button onClick={()=>addMember()} as={Col} sm={{span:3}}>add <IoIosAddCircleOutline /></Button>
+                                    <Button onClick={()=>addMember()}><h5><IoIosAddCircleOutline /></h5></Button>
                                 </td>
                             </tr>
                         </tfoot>

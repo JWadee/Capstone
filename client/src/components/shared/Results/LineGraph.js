@@ -1,5 +1,6 @@
 import React from 'react'
 import {Line} from 'react-chartjs-2';
+import { withRouter } from 'react-router-dom';
 
 
 const LineGraph = (props) => {

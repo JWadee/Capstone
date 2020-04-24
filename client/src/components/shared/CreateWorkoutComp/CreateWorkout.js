@@ -67,9 +67,8 @@ const CreateWorkout = (props) => {
     }
 
     return (
-        <div>
-            <h2>Create a Workout</h2><br />
-            <hr></hr>
+        <div className="component">
+            <h2>Create a Workout</h2>
             <Form title="Create a Workout" onSubmit={(e) => Submit(e)}>
                 <Form.Group as={Row}>
                     <Form.Label column sm={{ span: 3, offset: 2 }} >Workout Name</Form.Label>

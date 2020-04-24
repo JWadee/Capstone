@@ -83,7 +83,7 @@ const AddTeamTrainer = (props) => {
     }
     
     return (
-        <div>
+        <div className="component">
             <h2>Add a Trainer</h2>
             <Form title="Add a Client"> 
                 <Form.Group as={Row}>

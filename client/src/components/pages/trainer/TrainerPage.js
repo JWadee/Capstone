@@ -3,6 +3,8 @@ import {Navbar, NavDropdown, Nav} from "react-bootstrap";
 import { Route, Switch } from "react-router-dom";
 import { connect } from 'react-redux';
 
+//CSS
+import '../../../css/trainerpage.css';
 
 //Components
 import TrainerClients from './TrainerClients';
@@ -35,7 +37,7 @@ const TrainerPage = ({match}) => {
 
     return (
         <div>
-            <Navbar bg="light" expand="lg">
+            <Navbar className="trainerNav" expand="lg">
                 <Navbar.Brand href="#home">Trace Fitness</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">

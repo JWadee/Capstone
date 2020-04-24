@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {div, Table, Row, Col} from 'react-bootstrap'
+import {Table, Row, Col} from 'react-bootstrap'
 import { connect } from 'react-redux';
 import history from '../../../utils/history';
 
@@ -25,25 +25,27 @@ const TrainerClients = (props) => {
     }
 
     return (
-        <div>
+        <div className="component">
             <Row>
                 <Col sm={{span: 6, offset: 3}}>
-                    <Table striped bordered hover>
-                        <thead>
-                            <tr>
-                                <th><h3>My Clients</h3></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {clients.map((client)=>{ return (
-                                <tr onClick={()=>goToClient(client.intAccountID)} key={client.intAccountID}>
-                                    <td>
-                                        {client.strFirstName +" "+client.strLastName}
-                                    </td>
-                                </tr>         
-                            )})}
-                        </tbody>
-                    </Table>
+                    <div className="tableWrapper">
+                        <Table bordered hover>
+                            <thead>
+                                <tr>
+                                    <th><h3>My Clients</h3></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {clients.map((client)=>{ return (
+                                    <tr onClick={()=>goToClient(client.intAccountID)} key={client.intAccountID}>
+                                        <td>
+                                            {client.strFirstName +" "+client.strLastName}
+                                        </td>
+                                    </tr>         
+                                )})}
+                            </tbody>
+                        </Table>
+                    </div>
                 </Col> 
             </Row>
         </div>

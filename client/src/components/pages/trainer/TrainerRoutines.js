@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {div, Row, Col, Table} from 'react-bootstrap';
+import {Row, Col, Table} from 'react-bootstrap';
 import { useRouteMatch } from "react-router-dom";
 import { connect } from 'react-redux';
 import history from '../../../utils/history';
@@ -24,10 +24,10 @@ const TrainerRoutines = (props) => {
     }
     
     return (
-        <div fluid>
+        <div className="component">
             <Row>
                 <Col sm={{span: 6, offset: 3}}>
-                    <Table striped bordered hover>
+                    <Table bordered hover>
                         <thead>
                             <tr>
                                 <th><h3>My Routines</h3></th>

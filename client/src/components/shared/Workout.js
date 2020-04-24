@@ -28,17 +28,15 @@ const Workout = () => {
     },[])
 
     return (
-        <div>
+        <div className="component">
             {
                 workout != null ? <h2>{workout[0].strWorkoutName}</h2> : <></>
             }
-            <br />
-            <hr />
-            <Table striped bordered hover>
+            <Table bordered hover>
                 <thead>
                     <tr>
-                        <th>Exercise</th>
-                        <th>Description</th>
+                        <th><h4>Exercise</h4></th>
+                        <th><h4>Description</h4></th>
                     </tr>                    
                 </thead>
                 <tbody>

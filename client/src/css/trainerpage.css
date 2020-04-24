@@ -1,0 +1,21 @@
+.trainerNav {
+    margin-bottom: 15px;
+    background-color: #0B0C10;
+}
+
+.card {
+    margin:15px;
+    border-radius: 25px;
+    background-color: #1F2833;
+}
+
+.nav-link, .navbar-brand{
+    color: #66FCF1!important;
+}
+
+.session a{
+    background-color: #1F2833 ;
+    margin-top: 5px;
+    border: 1px solid #66FCF1;
+    color: white;
+}

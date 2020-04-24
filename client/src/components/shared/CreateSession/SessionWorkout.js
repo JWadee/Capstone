@@ -36,9 +36,8 @@ const SessionWorkout = (props) => {
     },[values.workoutID]);
 
     return (
-        <div>
-            <h2>Choose a Workout</h2><br />
-            <hr></hr>
+        <div className="component">
+            <h2>Choose a Workout</h2>
             <Form>
                 <Form.Group as={Row}>
                     <Form.Label column sm={{span:3, offset:2}}>Type:</Form.Label>

@@ -17,9 +17,9 @@ const SignUp = () => {
     const [feet, setFeet] = useState();
     const [inches, setInches] = useState();
     const [weight, setWeight] = useState();
-    const [raceID, setRaceID] = useState();
-    const [genderID, setGenderID] = useState();
-    const [bodyTypeID, setBodyTypeID] = useState();
+    const [raceID, setRaceID] = useState(0);
+    const [genderID, setGenderID] = useState(0);
+    const [bodyTypeID, setBodyTypeID] = useState(0);
     const [accountTypes, setAccountTypes] = useState([]);
     const [genders, setGenders] = useState([]);
     const [races, setRaces] = useState([]);

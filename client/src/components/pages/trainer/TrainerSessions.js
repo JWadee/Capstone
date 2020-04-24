@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {div, ListGroup, Row, Col} from 'react-bootstrap';
+import {ListGroup, Row, Col} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { useRouteMatch } from "react-router-dom";
 
@@ -71,10 +71,8 @@ const TrainerSessions = (props) => {
 
 
     return (
-        <div fluid>
-            <h2>My Schedule</h2><br />
-            <hr />
-        
+        <div className="component">
+            <h2>My Schedule</h2>
             <ListGroup as={Row}>
                 {sessions.map((session)=>{
                     let strDay = getDay(session);
@@ -82,7 +80,7 @@ const TrainerSessions = (props) => {
                     let team =  fetch_team(session);
 
                     return(
-                    <Col sm={{span:4, offset:4}} key={session.intSessionID}>
+                    <Col sm={{span:4, offset:4}} key={session.intSessionID} className="session">
                         <ListGroup.Item action key={session.intSessionID} href={match.url+"/session/"+session.intSessionID}>
                             <div>
                                 <p>{strDay +", "+formatted_date}</p>

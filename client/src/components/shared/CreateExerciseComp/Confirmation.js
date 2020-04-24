@@ -104,9 +104,8 @@ const Confirmation = (props) => {
 
     useEffect(()=>{
         setMainDisp(
-            <div>
-                <h2>Confirmation</h2><br />
-                <hr></hr>
+            <div className="component">
+                <h2>Confirmation</h2>
                 <ListGroup>
                     <ListGroup.Item>Exercise Name: {values.name}</ListGroup.Item>
                     {typeDisp}

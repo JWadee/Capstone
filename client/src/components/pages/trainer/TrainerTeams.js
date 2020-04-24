@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {div, Row, Col, Table} from 'react-bootstrap'
+import {Row, Col, Table} from 'react-bootstrap'
 import { connect } from 'react-redux';
 import history from '../../../utils/history';
 
@@ -24,10 +24,10 @@ const TrainerTeams = (props) => {
     }
     
     return (
-        <div>
+        <div className="component">
             <Row>
                 <Col sm={{span: 6, offset: 3}}>
-                    <Table striped bordered hover>
+                    <Table bordered hover>
                         <thead>
                             <tr>
                                 <th><h3>My Teams</h3></th>

@@ -28,9 +28,8 @@ const DateAndTime = (props) =>{
     },[values.date])
 
     return (
-        <div>
-            <h2>Add a Session</h2><br />
-            <hr></hr>
+        <div className="component">
+            <h2>Add a Session</h2>
             <Form>
                 <Form.Group as={Row}>
                     <Form.Label column sm={{span:3, offset:2}}>Date:</Form.Label>

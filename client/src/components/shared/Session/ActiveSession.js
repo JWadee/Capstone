@@ -115,8 +115,7 @@ const ActiveSession = (props) => {
     //Variable to contain display for session information
     const sessionDisp = (
         <div>
-            <h2>Session Details</h2><br />
-            <hr />
+            <h2>Session Details</h2>
             <div>
                 <div><p>When: {day}, {date} </p></div>
             </div>
@@ -330,7 +329,7 @@ const ActiveSession = (props) => {
     },[condDisp, day, date, session, workout])
 
     return (
-        <div fluid>
+        <div className="component">
             {mainDisp}
             {deleteModal}
             {startModal}

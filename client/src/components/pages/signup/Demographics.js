@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {div, Form, Row, Col, Button, Alert, Image} from 'react-bootstrap';
+import {Form, Row, Col, Button, Alert, Image} from 'react-bootstrap';
 import bodytypes from '../../../images/bodytypes.jpg';
 
 const Demographics = (props) => {
@@ -86,11 +86,11 @@ const Demographics = (props) => {
                     <Form.Label column sm={{span:3, offset:2}}>Body Type:</Form.Label>
                     <Col sm={10} md={4} lg={3}>
                         <Form.Control as="select" onChange={props.handleChange('bodyType')} value={values.bodyTypeID}>
-                            <option selected disabled hidden>Choose a Body Type</option>
-                                {props.values.bodyTypes.map(type =>{
-                                    return(
-                                        <option selected={type.intBodyTypeID == values.bodyTypeID} key={type.intBodyTypeID} value={type.intBodyTypeID}>{type.strBodyType}</option>   
-                                    )
+                            <option value={0} disabled hidden>Choose a Body Type</option>
+                            {props.values.bodyTypes.map(type =>{
+                                return(
+                                    <option  key={type.intBodyTypeID} value={type.intBodyTypeID}>{type.strBodyType}</option>   
+                                )
                             })}
                         </Form.Control>
                         <Image src={bodytypes} fluid />
@@ -100,10 +100,10 @@ const Demographics = (props) => {
                     <Form.Label column sm={{span:3, offset:2}}>Race:</Form.Label>
                     <Col sm={10} md={4} lg={3}>
                         <Form.Control as="select" onChange={props.handleChange('race')} value={values.raceID}>
-                            <option selected disabled hidden>Choose a Race</option>
+                            <option value={0} disabled hidden>Choose a Race</option>
                             {props.values.races.map(race =>{
                                 return(
-                                    <option selected={race.intRaceID == values.raceID} key={race.intRaceID} value={race.intRaceID}>{race.strRace}</option>   
+                                    <option key={race.intRaceID} value={race.intRaceID}>{race.strRace}</option>   
                                 )
                             })}
                         </Form.Control>
@@ -113,10 +113,10 @@ const Demographics = (props) => {
                     <Form.Label column sm={{span:3, offset:2}}>Gender:</Form.Label>
                     <Col sm={10} md={4} lg={3}>
                         <Form.Control as="select" onChange={props.handleChange('gender')} value={values.genderID}>
-                            <option selected disabled hidden>Choose a Gender</option>
+                            <option value={0} disabled hidden>Choose a Gender</option>
                             {props.values.genders.map(gender =>{
                                 return(
-                                    <option selected={gender.intGenderID == values.genderID} key={gender.intGenderID} value={gender.intGenderID}>{gender.strGender}</option>   
+                                    <option key={gender.intGenderID} value={gender.intGenderID}>{gender.strGender}</option>   
                                 )
                             })}
                         </Form.Control>

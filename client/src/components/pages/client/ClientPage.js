@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from "react";
-import {Button, Row, Col, Card, div} from 'react-bootstrap'
+import {Button, Row, Col, Card, Tab, Tabs} from 'react-bootstrap'
 import { useRouteMatch } from "react-router-dom";
-import { IoIosAddCircleOutline } from "react-icons/io";
 import history from '../../../utils/history';
 import { connect } from 'react-redux';
 
@@ -46,6 +45,8 @@ const ClientPage = (props) => {
         }   
     },[trainerClient])
 
+
+
     //go to add note component
     const addNote = () => {
         //Push to AddClientNote Component
@@ -56,56 +57,54 @@ const ClientPage = (props) => {
     useEffect(()=>{
         if(client != null){
             setClientDisp(
-                <>  
-                    <h3>Client: {client[0].strFirstName+" "+client[0].strLastName}</h3>
-                    <Row>
-                        <Card sm={{span:3, offset:1}} as={Col}>
-                            <Card.Header as={Row}>
-                                <Col sm={{span:12}}>
-                                    <Card.Title >Demographics</Card.Title>
-                                </Col>
-                            </Card.Header>
-                            <Card.Body> 
-                                <Card.Text>
+                <Row>  
+                    <Col md={{span:3, offset:3}}>
+                        <Row>
+                            <h3>{client[0].strFirstName+" "+client[0].strLastName}</h3> 
+                        </Row>
+                        <Row><p>{client[0].strEmail}</p></Row>
+                        <Row>
+                            <Button href={'/trainer/my-clients/client/'+match.params.ID+'/exercise-history'}>Exercise History</Button>
+                            <Button onClick={()=>addNote()}>Add Note</Button>
+                        </Row>
+                    </Col>
+                    <Col md={{span:3}}>
+                        <Tabs defaultActiveKey="demographics" id="uncontrolled-tab-example">
+                            <Tab eventKey="demographics" title="Demographics">
+                                <p>
                                     Height: {client[0].decHeight} inches
-                                </Card.Text>
-                                <Card.Text>
+                                </p>
+                                <p>
                                     Weight: {client[0].decWeight} lbs
-                                </Card.Text>
-                                <Card.Text>
-                                    Gender: {client[0].decWeight} 
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                        <Card sm={{span:3, offset:1}} as={Col}>
-                            <Card.Header as={Row}>
-                                <Col sm={{span:9}}>
-                                    <Card.Title >Notes</Card.Title>
-                                </Col>
-                                <Button onClick={()=>addNote()} as={Col} sm={{span:3}}>Add <IoIosAddCircleOutline /></Button>
-                            </Card.Header>
-                            <Card.Body>
+                                </p>
+                                <p>
+                                    Gender: {client[0].intGenderID} 
+                                </p>
+                                <p>
+                                    Body Type: {client[0].intBodyTypeID} 
+                                </p>
+                            </Tab>
+                            <Tab eventKey="notes" title="Notes">
                                 {notes.map(note=>{
                                     return(
-                                        <Card.Text key={note.intTrainerClientNoteID}>
+                                        <p key={note.intTrainerClientNoteID}>
                                             {note.strNote}
-                                        </Card.Text>
+                                        </p>
                                     )
                                 })}
-                            </Card.Body>
-                        </Card>
-                        <Col sm={{span:4}}>
-                            <Button href={'/trainer/my-clients/client/'+match.params.ID+'/exercise-history'}>Exercise History</Button>
-                        </Col>
+                            </Tab>
+                        </Tabs>
+                    </Col>
+                    <Row>
                     </Row>
-                </>
+                </Row>
             )
         }
     },[client, notes])
     
 
     return (
-        <div>
+        <div className="component">
             {clientDisp}
         </div>
     );

@@ -5,6 +5,7 @@ import history from "./utils/history";
 //CSS
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './css/custom.css';
 
 //Components
 import TrainerPage from './components/pages/trainer/TrainerPage';
@@ -14,6 +15,7 @@ import LogIn from './components/pages/LogIn';
 import Test from './components/pages/Test';
 import JesseTest from './components/pages/JesseTest';
 import MayraTest from './components/pages/Mayratest';
+
 function App() {
   return (
     <div className="App">

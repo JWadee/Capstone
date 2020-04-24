@@ -62,7 +62,7 @@ const AddTeamMember = (props) => {
     }
     
     return (
-        <div>
+        <div className="component">
             <h2>Add a Member</h2>
             <Form title="Add a Member"> 
                 <Form.Group as={Row}>

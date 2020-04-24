@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {div, Form, Row, Col, Button, Alert} from 'react-bootstrap'
+import {Form, Row, Col, Button, Alert} from 'react-bootstrap'
 const validator = require('validator');
 
 const SignUp = (props) => {
@@ -11,10 +11,10 @@ const SignUp = (props) => {
 
     const values = props.values;
 
-    const saveAndContinue = (e) => {
+    const saveAndContinue = async (e) => {
         e.preventDefault()
 
-        let verified = verify();
+        let verified = await verify();
 
         if(verified === true){
             props.nextStep()
@@ -27,26 +27,27 @@ const SignUp = (props) => {
     }
 
     //function to check if email exists in database
-    async function checkEmail(){
+    const checkEmail = async() => {
         //fetch user by email and store in response
-        const response = await fetch('/account/byEmail?email='+values.email)
-            .catch((error) => console.log(error))
+        const response = await fetch('/accounts/byEmail?email='+values.email)
         //wait for response and store json (if email exists response will = 1 if not then 0)
         const data = await response.json();   
-        return data;      
+        return data.ID;      
     }
 
-    const verify = () => {
+    const verify = async () => {
         let fnameCheck = false;
         let lnameCheck = false; 
         let emailCheck = false;
         let passCheck = false; 
-        let emailAvail = checkEmail();
+        let existingID = await checkEmail();
 
         if(validator.isEmail(values.email) === false){
             setEmailError(<Alert variant="danger">Please enter a valid email address.</Alert>)
-        }else if(emailAvail === 1){
+            emailCheck = false;
+        }else if(existingID > 0){
             setEmailError(<Alert variant="danger">There is already an account with this email.</Alert>)
+            emailCheck = false
         }else{
             setEmailError();
             emailCheck = true;

@@ -161,7 +161,7 @@ const EditSession = (props) => {
                 <Form.Control as="select" onChange={(e)=>setTeamID(e.target.value)} value={teamID}>
                     {teams.map(team => {
                     return( 
-                        <option selected={team.intTeamID == teamID} key={team.intTeamID} value={team.intTeamID}>{team.strTeamName}</option>
+                        <option key={team.intTeamID} value={team.intTeamID}>{team.strTeamName}</option>
                     )})}                    
                     {teamID === null ? <option selected disabled hidden>Choose a Team</option> :null}
                 </Form.Control>
@@ -226,7 +226,7 @@ const EditSession = (props) => {
         case false:
         return (
             <>
-            <div>
+            <div className="component">
                 <h2>Edit Session</h2><br />
                 <hr></hr>
                 <Form>
@@ -324,7 +324,11 @@ const EditSession = (props) => {
             </>
         )
         case(true):
-            return (<h2>Session Updated</h2>)
+            return (
+                <div className="component">
+                    <h2>Session Updated</h2>
+                </div>
+                )
     }
         
 }

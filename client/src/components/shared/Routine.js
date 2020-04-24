@@ -27,18 +27,16 @@ const Routine = () => {
     },[])
 
     return (
-        <div>
+        <div className="component">
             {
                 routine != null ? <h2>{routine[0].strRoutineName}</h2> : <></>
             }
-            <br />
-            <hr />
             <Row>
                 <Col sm={{span: 6, offset: 3}}>
-                    <Table striped bordered hover>
+                    <Table bordered hover>
                         <thead>
                             <tr>
-                                <th>Workouts</th>
+                                <th><h4>Workouts</h4></th>
                             </tr>
                         </thead>
                         <tbody>

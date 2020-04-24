@@ -41,7 +41,7 @@ const AddClientNote = () => {
     }
 
     return (
-        <div>
+        <div class="component">
             <h3>Add a Note</h3>
             <Form>
                 <Form.Group as={Col} md={{span:6, offset:3}}>

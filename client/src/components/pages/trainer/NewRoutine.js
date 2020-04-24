@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { div, Form, Row, Col, Button, Alert } from 'react-bootstrap'
+import { Form, Row, Col, Button, Alert } from 'react-bootstrap'
 import { connect } from 'react-redux';
 
 const NewTeam = (props) => {
@@ -46,9 +46,8 @@ const NewTeam = (props) => {
     }
 
     return (
-        <div>
-            <h2>Create a Routine</h2><br />
-            <hr></hr>
+        <div className="component">
+            <h2>Create a Routine</h2>
             <Form title="Create a Team" onSubmit={(e) => Submit(e)}> 
                 <Form.Group as={Row}>
                     <Form.Label column sm={{span:3, offset:2}} >Routine Name</Form.Label>

@@ -26,9 +26,8 @@ const Instructions = (props) => {
 
     return (
         
-        <div>
-            <h2>Exercise Instructions</h2><br />
-            <hr></hr>
+        <div className="component">
+            <h2>Exercise Instructions</h2>
             <Form>
                 <Form.Group >
                     <Form.Label>Instructions:</Form.Label>

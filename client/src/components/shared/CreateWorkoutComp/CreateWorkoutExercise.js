@@ -75,9 +75,8 @@ const CreateWorkoutExercise = (props) => {
     
 
     return (
-        <div>
-            <h2>Add Workout Exercise</h2><br />
-            <hr></hr>
+        <div className="component">
+            <h2>Add Workout Exercise</h2>
             <Form title="Add Workout Exercise" onSubmit={(e) => Submit(e)}>
               
                 <Form.Group as={Row} >
@@ -120,7 +119,7 @@ const CreateWorkoutExercise = (props) => {
 
                 <Form.Group as={Row}>
                     <Col sm={{ span: 6, offset: 3 }}>
-                        <Button type="submit" onClick={(e) => Submit(e)}>Add Workout</Button>
+                        <Button type="submit" onClick={(e) => Submit(e)}>Add Exercise</Button>
                         {submitError}
                     </Col>
                 </Form.Group>

@@ -1,79 +1,45 @@
 import React, {useState, useEffect} from "react";
-import {div, Form, Row, Col, Button, Alert} from 'react-bootstrap'
+import {Form, Row, Col, Button, Alert} from 'react-bootstrap'
 import { connect } from 'react-redux';
+import history from '../../../utils/history';
 
 const NewClient = (props) => {
     const [email, setEmail] = useState('');
-    const [clientID, setClientID] = useState(-1);
-    const [clientTypeID, setClientTypeID] = useState(Number);
     const [errorMessage, setErrorMessage] = useState();
-    const [mainDisp, setMainDisp] = useState();
 
+    
+    /*////
+        submit function ----
+            Step 1: Get accountID by Email, if exists set accountID, else set error message
+            Step 2: Check if account type is client, yes = add client, no = set error message
+    ////*/
 
-    useEffect(()=>{
-        setMainDisp(
-            <div>
-            <h2>Add a Client</h2><br />
-            <hr></hr>
-            <Form title="Add a Client"> 
-                <Form.Group as={Row}>
-                    <Form.Label column sm={{span:3, offset:2}}>Email</Form.Label>
-                    <Col sm={10} md={4} lg={3}>
-                        <Form.Control type="text" onChange={e=> setEmail(e.target.value)}></Form.Control>
-                        {errorMessage}
-                    </Col>
-                </Form.Group>
-                <Form.Group as={Row}>
-                    <Col sm={{ span: 6, offset: 3  }}>
-                        <Button type="submit" onClick={(e) => submit(e)} >Find Client</Button>
-                    </Col>
-                </Form.Group>
-            </Form>
-            </div>
-        )
-    },[errorMessage])
-
-    //function to get account ID by email
+    //function to get account ID by email, returns id or (if not existing the fetch returns 0)
     const getID = async () => {
         const response = await fetch('/accounts/byEmail?email='+email);
-        const data = await response.json();
-        setClientID(data.ID)
+        let data = await response.json();
+        return data.ID
     }
 
-    //function to get account by ID 
-    const getAccount = async () => {
-        if(clientID > 0){
-            const response = await fetch('/accounts/byID?ID='+clientID);
-            const data = await response.json();
-            console.log(data)
-            setClientTypeID(data[0].intAccountTypeID);
-        }else if (clientID == 0){
-            setErrorMessage(<Alert variant="danger">No client account exists with this email.</Alert>)
+    //function to check account type, returns 1 if client, 0 if account doesn't exist or is not a client account
+    const getType = async (id) => {
+        if(id > 0){
+            const response = await fetch('/accounts/byID?ID='+id);
+            let data = await response.json();
+            let type = data[0].intAccountTypeID
+            if(type === 2){
+                return(1)
+            }else return(0)
+        }else if (id === 0){
+            return(0)
         }
     }
 
-
-
-    //Run whenever client ID is set
-    useEffect(()=>{
-        if(clientID > -1){
-            getAccount();
-        }
-    },[clientID])
-
-    const submit = async (e) => {
-        // let exp = await getID();
-        e.preventDefault();
-        await getID();
-    }
-   
-
-   
-    
-    const addClient = async() => {
+    //Function to add trainer client record to database
+    const addClient = async (clientid) => {
         const body = {
             trainerID: props.ID, 
-            clientID: clientID
+            clientID: clientid
         }
 
         //api parameters to create game
@@ -88,34 +54,52 @@ const NewClient = (props) => {
 
         //call api
         fetch(url, options)
-            .catch(error=>{
+            .then(()=> {
+                history.push('/trainer/my-clients')
+            }).catch(error=>{
                 console.log(error)
-                setMainDisp(
-                    <div>
-                        <h4>There was an error on our end. Please try again.</h4>
-                    </div>
-                )
-                return;
-            }).then(()=> {
-                    setMainDisp(
-                    <div>
-                        <h4>Client Added</h4>
-                    </div>
-                    )
             })
     }
+    const submit = async (e) => {
+        //prevent form from clearing
+        e.preventDefault();
+        
+        //call getID 
+        getID().then(id=>{
+            //then call getType
+            getType(id).then(submit =>{
+                //then either call addClient or set errormessage
+                if(submit === 1){
+                    addClient(id)
+                }else{
+                    setErrorMessage(<Alert variant="danger">No client account exists with this email.</Alert>)
+                }
+            })
+        });
+    }
+   
 
-    useEffect(()=>{
-        if(clientTypeID === 2){
-            addClient();                
-        }else if(clientTypeID > 0 && clientTypeID < 5){
-            setErrorMessage(<Alert variant="danger">No client account exists with this email.</Alert>)
-        } 
-    },[clientTypeID])
+   
+    
+
 
     return (
-        <div>
-            {mainDisp}
+        <div className="component">
+            <h2>Add a Client</h2>
+            <Form title="Add a Client"> 
+                <Form.Group as={Row}>
+                    <Form.Label column sm={{span:3, offset:2}}>Email</Form.Label>
+                    <Col sm={10} md={4} lg={3}>
+                        <Form.Control type="text" onChange={e=> setEmail(e.target.value)}></Form.Control>
+                        {errorMessage}
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Col sm={{ span: 6, offset: 3  }}>
+                        <Button type="submit" onClick={(e) => submit(e)} >Find Client</Button>
+                    </Col>
+                </Form.Group>
+            </Form>
         </div>
     );
 };

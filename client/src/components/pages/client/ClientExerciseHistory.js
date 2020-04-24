@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {div, Form, Row, Col} from 'react-bootstrap';
+import {Form, Row, Col} from 'react-bootstrap';
 import Results from '../../shared/Results/Results';
 
 
@@ -26,9 +26,8 @@ const ClientExerciseHistory = () => {
     },[exerciseid])
     
     return (
-        <div>
-            <h2>Exercise History</h2><br />
-            <hr></hr>
+        <div className="component">
+            <h2>Exercise History</h2>
             <Row>
                 <Form>
                     <Col>

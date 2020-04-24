@@ -114,10 +114,8 @@ const InProgressSessions = (props) => {
 
 
     return (
-        <div fluid>
-            <h2>Sessions In Progress</h2><br />
-            <hr />
-        
+        <div className="component">
+            <h2>Sessions In Progress</h2>
             <ListGroup as={Row}>
                 {sessions.map((session)=>{
                     let strDay = getDay(session);

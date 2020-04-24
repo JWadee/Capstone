@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {div, Form, Row, Col, Button, Alert} from 'react-bootstrap'
+import {Form, Row, Col, Button, Alert} from 'react-bootstrap'
 import { connect } from 'react-redux';
 import history from '../../../utils/history';
 import { useRouteMatch } from "react-router-dom";
@@ -55,9 +55,8 @@ const AddWorkouttoRoutine = (props) => {
     }
 
     return (
-        <div>
-            <h2>Add Workout to Routine</h2><br />
-            <hr></hr>
+        <div className="component">
+            <h2>Add Workout to Routine</h2>
             <Form title="Add Workout to Routine"> 
                 <Form.Group as={Row}>
                     <Form.Label column sm={{span:3, offset:2}}>Workout</Form.Label>
