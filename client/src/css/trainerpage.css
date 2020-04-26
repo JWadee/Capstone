@@ -7,6 +7,7 @@
     margin:15px;
     border-radius: 25px;
     background-color: #1F2833;
+    border: 1px solid #45A29E;
 }
 
 .nav-link, .navbar-brand{

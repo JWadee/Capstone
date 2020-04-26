@@ -11,13 +11,20 @@ const Results = (props) => {
     const [results, setResults] = useState([]);
     const [exercise, setExercise] = useState([]);
     const [processed, setProcessed] = useState(1);
+    const [recordWeight, setRecordWeight] = useState(0);
+    const [recordSet, setRecordSet] = useState('');
+
     const match = useRouteMatch();
 
     //Run on initial render, load all results (including date of session) for exercise by account id, and fetch the exercise
     useEffect(()=>{
+      //clear old data
       setLabels([]);
       setSessions([]);
       setData([])
+      setRecordWeight(0);
+      setRecordSet('');
+
       //Declare functions to fetch results, and the exercise
       const fetch_results = async ()=> {
         const response = await fetch('/sessionResults/byClient/byExercise?exerciseid='+props.exerciseid+'&clientid='+match.params.ID);
@@ -73,6 +80,12 @@ const Results = (props) => {
 
     //Function to check results and find 
     const checkResult = (result) => {
+      //check for best set 
+      if(result.decWeight > recordWeight){
+        setRecordWeight(result.decWeight);
+        setRecordSet('Record Set: '+result.decWeight+'lbs x'+result.intReps);
+      }
+
       //Check sessions array for id
       let index = sessions.indexOf(result.intSessionID);
       //if sessions has session id => update data array ELSE add new data point and date(label)
@@ -96,12 +109,17 @@ const Results = (props) => {
 
     return (
       <Row>
-        <Col sm={9}>
+        <Col sm={8}>
           {results.length === processed && results.length > 0 && exercise.length > 0 ? 
             <LineGraph labels={labels} data={data} name={exercise[0].strExerciseName}/>
               :
             <></>
           }
+        </Col>
+        <Col sm={4}>
+          <div>{recordSet}</div>
+          <div>Times Completed: {sessions.length}</div>
+
         </Col>
       </Row>
     );

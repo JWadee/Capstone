@@ -2,15 +2,18 @@ body{
     background-color:#0B0C10;
     height:100%;
     color:white;
-    /* background-image: url("../images/Trace\ Fitness\ Logo.png");
-    background-repeat: no-repeat;
-    background-position: center; */
+
   }
 
 .btn {
+    border: 1px solid #66FCF1;
     border-radius: 12px;
     color: white;
     background-color: black;
+}
+
+.btn:hover{
+    background-color: #45A29E;
 }
 
 .nav-tabs .nav-item.nav-link.active{
@@ -22,15 +25,18 @@ body{
     overflow-y: auto;
 }
 
-table{
-    background-color: #C5C6C7;
+th{
+    background-color: #282828;
+    color: #66FCF1;
 }
-th, tr{
+
+tr{
     background-color: #1F2833;
 }
 
 td{
     color:white;
+    padding: 0px;
 }
 
 .component{
@@ -38,10 +44,11 @@ td{
     border-radius: 25px;
     background-color: #1F2833;
     padding: 25px;
+    border: 1px solid #45A29E;
 }
 
 h2, h3, h4{
-    color:#66FCF1;
+    color:white;
 }
 
 .list-group-item{
@@ -50,4 +57,9 @@ h2, h3, h4{
 
 .modal-content{
     background-color: #1F2833;
+} 
+
+/* For Navbar collapsed button */
+.navbar-toggler{
+    background-color:  #66FCF1;
 }

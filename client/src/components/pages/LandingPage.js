@@ -1,12 +1,13 @@
 import React from "react";
-import {Row, Col, Button} from "react-bootstrap"
+import {Row, Col, Button, Image} from "react-bootstrap"
+import logo from "../../images/Logo.png"
 //Component
 
 const LandingPage = () => {
     return (
         <Row>
-            <Col xs md={{span:2, offset:5}}>
-                <h1>Fitness Tracker</h1>
+            <Col xs md={{span:6, offset:3}}>
+                <Image src={logo} rounded />
                 <Button href="/SignUp" variant="secondary" block>SIGN UP</Button>
                 <Button href="/LogIn" variant="primary" block>LOG IN</Button>
             </Col>
