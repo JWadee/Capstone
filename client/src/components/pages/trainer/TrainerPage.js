@@ -2,7 +2,8 @@ import React, {useEffect, useState} from "react";
 import {Navbar, NavDropdown, Nav} from "react-bootstrap";
 import { Route, Switch } from "react-router-dom";
 import { connect } from 'react-redux';
-
+import {IoIosLogOut} from 'react-icons/io';
+import history from '../../../utils/history';
 //CSS
 import '../../../css/trainerpage.css';
 
@@ -33,7 +34,21 @@ import AddTeamMember from '../../shared/team/AddTeamMember';
 import AddTeamTrainer from '../../shared/team/AddTeamTrainer';
 import About from '../About';
 import Dashboard from './dashboard/Dashboard';
-const TrainerPage = ({match}) => {
+
+
+const TrainerPage = (props) => {
+
+    //Run to check if user is logged in
+    useEffect(() => {
+        if(props.ID === null){
+            history.push("/")
+        }
+    },[props])
+
+    const Logout = ()=> {
+        props.setAccountID(null);
+        props.setAccountType(null);
+    }
 
     return (
         <div>
@@ -44,6 +59,8 @@ const TrainerPage = ({match}) => {
                     <Nav className="mr-auto">
                         <Nav.Link href="/trainer/dashboard">Dashboard</Nav.Link>
                         <Nav.Link href="/trainer/about">About</Nav.Link>
+                        <Nav.Link onClick={()=> Logout()}>Logout <IoIosLogOut /></Nav.Link>
+
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>
@@ -87,5 +104,14 @@ const mapStateToProps = (state) => {
     }
 }
 
+  
+const mapDispatchToProps = ( dispatch ) => {
+    return{
+      setAccountID: (ID) => { dispatch({type: 'SET_ACCOUNT_ID', ID: ID})},
+      setAccountType: (accountType) => { dispatch({type: 'SET_TYPE', accountType: accountType})}
+    }
+}
 
-export default  connect(mapStateToProps)(TrainerPage);
+
+
+export default  connect(mapStateToProps, mapDispatchToProps)(TrainerPage);

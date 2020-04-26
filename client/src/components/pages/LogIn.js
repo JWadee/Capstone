@@ -132,9 +132,8 @@ const LogIn = (props) => {
     },[props.accountType])
     
     return (
-        <div>
-            <h2>Log In</h2><br />
-            <hr></hr>
+        <div className="component">
+            <h2>Log In</h2>
             <Form title="Log In" onSubmit={(e)=>verifyData(e)}> 
                 <Form.Group as={Row}>
                     <Form.Label column sm={{span:3, offset:2}} >Email</Form.Label>
