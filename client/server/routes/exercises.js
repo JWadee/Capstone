@@ -12,13 +12,17 @@ function addExercise(req,res){
       }
       console.log("connected as id: " + connection.threadId);
   
-      let sql = "INSERT INTO exercises (strExerciseName, intMuscleID, intExerciseTypeID, strDescription) "+
-                "VALUES (?,?,?,?)";
+      let sql = "INSERT INTO exercises (strExerciseName, intMuscleID, intExerciseTypeID, strDescription, recordTime, recordDistance, recordReps, recordWeight) "+
+                "VALUES (?,?,?,?,?,?,?,?)";
       let values = [
         req.body.name,
         req.body.muscleID,
         req.body.exerciseTypeID,
-        req.body.desc
+        req.body.desc,
+        req.body.recTime, 
+        req.body.recDistance,
+        req.body.recReps,
+        req.body.recWeight
       ];
       
       connection.query(sql, values, function(err, result) {

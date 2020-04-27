@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Card, Col, Row, Button, Form} from "react-bootstrap";
+import {Col, Row, Button, Form} from "react-bootstrap";
 import {useRouteMatch} from "react-router-dom";
 
 import SessionWorkout from './SessionWorkout';
@@ -7,10 +7,13 @@ import SessionWorkout from './SessionWorkout';
 
 const RecordSessionExercise = (props) => {
     const [disp, setDisp] = useState();
-    const [time, setTime] = useState();
+    const [hours, setHours] = useState(Number);
+    const [minutes, setMinutes] = useState(Number);
+    const [seconds, setSeconds] = useState(Number);
     const [reps, setReps] = useState([]);
     const [weights, setWeights] = useState([]);
-    const [distance, setDistance] = useState();
+    const [distance, setDistance] = useState(Number);
+    const [fields, setFields] = useState('');
 
     const match = useRouteMatch();
     const exercise = props.exercise;
@@ -30,54 +33,127 @@ const RecordSessionExercise = (props) => {
         setWeights(tempArr)
     }
 
+    /*run when exercise changes, determine fields to record 
+        t  = time
+        td = time and distance
+        r  = reps 
+        rw = reps and weight
+    */
+    useEffect(()=>{
+        if(exercise.recordTime === 1){
+            if(exercise.recordDistance === 1){
+                setFields('td');
+            }else setFields('t');
+        }else if (exercise.recordReps === 1){
+            if(exercise.recordWeight === 1){
+                setFields('rw');
+            }else setFields('r');
+        };
+    },[exercise])
+
     //Run whenever component variables affecting the display change
     useEffect(()=>{
-        if(exercise.tmTargetTime != null){
-            setDisp(
-                <>
+        let sets = [];
+        for(let i = 1; i <= exercise.intTargetSets; i++){
+            sets.push(i)
+        }
+        switch (fields){
+            case 't':
+                setDisp(
                     <Form.Group as={Row}>
-                        <Form.Label column sm={{span:3, offset:2}}>Time:</Form.Label>
-                        <Col sm={10} md={4} lg={3}>
-                            <Form.Control type="text" onChange={setTime('time')} value={time} />
+                        <Form.Label column sm={{span:3}}>Time (hh:mm:ss):</Form.Label>
+                        <Col sm={3} md={2} lg={2}>
+                            <Form.Control type="number" onChange={(e)=>setHours(e.target.value)} value={hours} />
+                        </Col>:
+                        <Col sm={3} md={2} lg={2}>
+                            <Form.Control type="number" onChange={(e)=>setMinutes(e.target.value)} value={minutes} />
+                        </Col>:                               
+                        <Col sm={3} md={2} lg={2}>
+                            <Form.Control type="number" onChange={(e)=>setSeconds(e.target.value)} value={seconds} />
                         </Col>
                     </Form.Group>
-                </>
-            )
-        }else if(exercise.intTargetSets != null){
-            let sets = [];
-            for(let i = 1; i <= exercise.intTargetSets; i++){
-                sets.push(i)
-            }
-            setDisp(
-                <>
-                    {sets.map(set=>{
-                        return(
-                            <Form.Group as={Row} key={set}>
-                                <Form.Label column sm={{span:2}}>Set {set}:</Form.Label>
-                                <Form.Label column sm={{span:2}}>Reps</Form.Label>
-                                <Col sm={2}>
-                                    <Form.Control type="number" onChange={(e)=>pushToReps(e, set)} value={reps[set-1]} />
-                                </Col>
-                                <Col sm={2}>
-                                    <Form.Control type="text"  value={time} onChange={(e)=>pushToWeights(e, set)} />
-                                </Col>
-                                <Form.Label column sm={{span:2}}>Weight (lbs)</Form.Label>
+                )
+                break;
+            case 'td':
+                console.log('here')
+                setDisp(
+                    <>
+                        <Form.Group as={Row}>
+                            <Form.Label column sm={{span:3}}>Time (hh:mm:ss):</Form.Label>
+                            <Col sm={3} md={2} lg={2}>
+                                <Form.Control type="number" onChange={(e)=>setHours(e.target.value)} value={hours} />
+                            </Col>:
+                            <Col sm={3} md={2} lg={2}>
+                                <Form.Control type="number" onChange={(e)=>setMinutes(e.target.value)} value={minutes} />
+                            </Col>:                               
+                            <Col sm={3} md={2} lg={2}>
+                                <Form.Control type="number" onChange={(e)=>setSeconds(e.target.value)} value={seconds} />
+                            </Col>
+                        </Form.Group>
+                        <Form.Group as={Row} >
+                            <Form.Label column sm={{span:3}}>Distance (mi): </Form.Label>
+                            <Col sm={3}>
+                                <Form.Control type="number" onChange={(e)=>setDistance(e.target.value)} value={distance} />
+                            </Col>
+                        </Form.Group>
+                    </>
+                )
+                break;
+            case 'r':
+                setDisp(
+                    <>
+                        {sets.map(set=>{
+                            return(
+                                <Form.Group as={Row} key={set}>
+                                    <Form.Label column sm={{span:2}}>Set {set}:</Form.Label>
+                                    <Form.Label column sm={{span:2}}>Reps</Form.Label>
+                                    <Col sm={2}>
+                                        <Form.Control type="number" onChange={(e)=>pushToReps(e, set)} value={reps[set-1]} />
+                                    </Col>        
+                                </Form.Group>
+                            )
+                        })}
+                    </>
+                )
+                break;
+            case 'rw':
+                console.log('hereee')
 
-                            </Form.Group>
-                        )
-                    })}
+                setDisp(
+                    <>
+                        {sets.map(set=>{
+                            return(
+                                <>
+                                    <Form.Group as={Row} key={set}>
+                                        <Form.Label column sm={{span:2}}>Set {set}:</Form.Label>
+                                        <Col sm={2}>
+                                            <Form.Control type="number" onChange={(e)=>pushToReps(e, set)} value={reps[set-1]} />
+                                        </Col>
+                                        <Form.Label column sm={{span:2}}>Reps</Form.Label>
 
-                </>
-            )
+                                        <Col sm={2}>
+                                            <Form.Control type="text"  value={weights[set-1]} onChange={(e)=>pushToWeights(e, set)} />
+                                        </Col>
+                                        <Form.Label column sm={{span:2}}>Weight (lbs)</Form.Label>
+        
+                                    </Form.Group>
+                                </>
+                            )
+                        })}
+                    </>
+                )
+                break;
         }
-    },[time, reps, weights, distance])
+
+    },[fields, hours, minutes, seconds, reps, weights, distance])
+
 
     const submit = async () => {
         
-        if(exercise.tmTargetTime != null){
+        if(exercise.recordTime === 1){
             let data = {
                 exerciseid: exercise.intSessionExerciseID,
-                time: time,
+                time: hours+":"+minutes+":"+seconds,
                 distance: distance,
                 weight: null,
                 reps: null
@@ -114,7 +190,7 @@ const RecordSessionExercise = (props) => {
     }
 
     return (
-        <>
+        <div>
             <h2>{exercise.strExerciseName}</h2><br />
             <hr />
             <Form>
@@ -128,7 +204,7 @@ const RecordSessionExercise = (props) => {
                     </Col>
                 </Form.Group>
             </Form>
-        </>
+        </div>
     );
 };
 

@@ -1,12 +1,14 @@
 import React, {useState, useEffect} from "react";
-import {div, Form, Row, Col, Button, ListGroup} from 'react-bootstrap';
+import {Row, Col, Button, ListGroup} from 'react-bootstrap';
 
 const Confirmation = (props) => {
     const [mainDisp, setMainDisp] = useState()
-    const [muscleDisp, setMuscleDisp] = useState();
+    const [muscleDisp, setMuscleDisp] = useState(<h1>h</h1>);
     const [groupDisp, setGroupDisp] = useState();
     const [typeDisp, setTypeDisp] = useState();
     const [StrFlxEx, setStrFlcEx] = useState();
+    const [recDisp, setRecDisp] = useState();
+
     const values = props.values;
 
     const verify = () => {
@@ -15,7 +17,11 @@ const Confirmation = (props) => {
                 name : values.name,
                 muscleID : values.muscleID,
                 exerciseTypeID : values.exerciseTypeID,
-                desc : values.desc
+                desc : values.desc,
+                recTime: values.recTime,
+                recDistance:values.recDistance,
+                recReps:values.recReps,
+                recWeight: values.recWeight
             }            
             return data;
         }else{
@@ -23,7 +29,11 @@ const Confirmation = (props) => {
                 name : values.name,
                 muscleID : null,
                 exerciseTypeID : values.exerciseTypeID,
-                desc : values.desc
+                desc : values.desc,
+                recTime: values.recTime,
+                recDistance:values.recDistance,
+                recReps:values.recReps,
+                recWeight: values.recWeight
             }
             return data;
         }
@@ -66,40 +76,60 @@ const Confirmation = (props) => {
         props.prevStep();
     }
 
-    //Run on initial render, check if Flexibility or Strength exercise and set state variable 
+    //Run on initial render, check if Flexibility or Strength exercise and set state variable, recording display 
     useEffect(()=>{
-        if(values.exerciseTypeID == 2 || values.exerciseTypeID == 4) setStrFlcEx(true)
-        else setStrFlcEx(false);
+        if(values.exerciseTypeID == 2 || values.exerciseTypeID == 4){
+            setStrFlcEx(true);
+        }else setStrFlcEx(false);
     },[])
+
+    useEffect(()=>{
+        //set record display
+        if(values.recReps === true){
+            if(values.recWeight === true){
+                setRecDisp(<ListGroup.Item>Record: Reps and Weight</ListGroup.Item>)
+            }else{
+                setRecDisp(<ListGroup.Item>Record: Reps</ListGroup.Item>)
+            }
+        }else if(values.recTime === true){
+            if(values.recDistance === true){
+                setRecDisp(<ListGroup.Item>Record: Time and Distance</ListGroup.Item>)
+            }else{
+                setRecDisp(<ListGroup.Item>Record: Time</ListGroup.Item>)
+            }
+        }else{
+            setRecDisp(<ListGroup.Item>Record: No results recorded</ListGroup.Item>)
+        }
+    },[values])
     
     useEffect(()=>{
-        if(StrFlxEx){
-            let groupIndex; 
-            let group = values.muscleGroups.find(function(item, i){
-                if(item.intMuscleGroupID === values.muscleGroupID){
-                    groupIndex = i;
-                    return item;
-                }
-            });
-            let muscleIndex; 
-            let muscle = values.muscles.find(function(item, i){
-                if(item.intMuscleID === values.muscleID){
-                    muscleIndex = i;
-                    return item;
-                }
-            });
+        let type = values.exerciseTypes.find(function(item){
+            if(item.intExerciseTypeID === values.exerciseTypeID){
+                return item;
+            }
+        });
 
+        if(StrFlxEx === true){
+            let group = values.muscleGroups.find(function(item){
+                if(item.intMuscleGroupID === values.muscleGroupID){
+                    return item;
+                }
+            });
+            let muscle = values.muscles.find(function(item){
+                if(item.intMuscleID === values.muscleID){
+                    return item;
+                }
+            });
+            setTypeDisp(<ListGroup.Item>Type: {type.strExerciseType}</ListGroup.Item>)
             setGroupDisp(<ListGroup.Item>Muscle Group: {group.strMuscleGroup}</ListGroup.Item>)
             setMuscleDisp(<ListGroup.Item>Muscle: {muscle.strMuscle}</ListGroup.Item>)
             
         }else{
+            setTypeDisp(<ListGroup.Item>Type: {type.strExerciseType}</ListGroup.Item>)
             setGroupDisp();
             setMuscleDisp();
         }
 
-        if(values.exerciseTypeID == values.exerciseTypes.intExerciseTypeID){
-            setTypeDisp(<ListGroup.Item>Type: {values.exerciseTypes.strExerciseType}</ListGroup.Item>)
-        }
     },[StrFlxEx])
 
     useEffect(()=>{
@@ -109,6 +139,7 @@ const Confirmation = (props) => {
                 <ListGroup>
                     <ListGroup.Item>Exercise Name: {values.name}</ListGroup.Item>
                     {typeDisp}
+                    {recDisp}
                     {groupDisp}
                     {muscleDisp}
                     <ListGroup.Item>Instructions: {values.desc}</ListGroup.Item>

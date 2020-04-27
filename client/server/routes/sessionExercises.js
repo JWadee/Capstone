@@ -41,7 +41,9 @@ function getSessionExercises(req, res) {
         }
         console.log("connected as id: " + connection.threadId);
 
-        let sql = "SELECT  se.intSessionExerciseID, e.strExerciseName, we.tmTargetTime, we.intTargetSets, strTargetDescription, e.intExerciseTypeID FROM session_exercises AS se "+
+        let sql = "SELECT  se.intSessionExerciseID, e.strExerciseName, e.recordReps, e.recordWeight, e.recordTime, e.recordDistance, "+
+                  "we.tmTargetTime, we.intTargetSets, strTargetDescription, e.intExerciseTypeID "+
+                  "FROM session_exercises AS se "+
                   "INNER JOIN workout_exercises AS we ON we.intWorkoutExerciseID = se.intWorkoutExerciseID "+
                   "INNER JOIN exercises AS e ON e.intExerciseID = we.intExerciseID "+
                   "WHERE we.intWorkoutID= ? and se.intSessionID = ?"

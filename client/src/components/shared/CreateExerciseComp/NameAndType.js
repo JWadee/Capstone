@@ -1,35 +1,48 @@
 import React, {useState, useEffect} from "react";
-import {div, Form, Row, Col, Button} from 'react-bootstrap';
+import {Form, Row, Col, Button} from 'react-bootstrap';
 
 const NameAndType = (props) => {
     const [disabled, setDisabled] = useState(true)
+    const [condDisp, setCondDisp] = useState()
     const values = props.values;
 
     const saveAndContinue = () => {
         props.nextStep()
     }
     
-    /* Run anytime values prop changes
-       Check that exercise has a name anf that type is selected*/
+    /* ----- Run anytime values prop changes -----
+       --Check that exercise has a name anf that type is selected
+       --Check record, set conditional disp
+    */
     useEffect(()=> {
-        // if name is not empty and type is selected allow enable continue button
-        if(values.name.length > 0 && values.exerciseTypeID > 0){
+        // if name is not empty, type is selected, and record is selected allow enable continue button
+        if(values.name.length > 0 && values.exerciseTypeID > 0 && values.record.length > 1){
             setDisabled(false);
         }else setDisabled(true);
+
+        //Set cond disp based on record
+        if(values.record === '' || values.record === 'neither'){
+            setCondDisp();
+        }else if(values.record === 'reps'){
+            setCondDisp(
+                <Form.Group as={Row}>
+                    <Col>
+                        <Form.Check label="Record Weight" type="checkbox" checked={values.additionalRecord} onChange={props.handleChange('additionalrecord')}/>
+                    </Col>
+                </Form.Group>    
+            )
+        }else if(values.record === 'time'){
+            setCondDisp(
+                <Form.Group as={Row}>
+                    <Col>
+                        <Form.Check label="Record Distance" type="checkbox" checked={values.additionalRecord} onChange={props.handleChange('additionalrecord')}/>
+                    </Col>
+                </Form.Group>    
+            )
+        }
     },[values])
 
-    //Options for exercise types drop down (map function runs for each object in the values.exerciseTypes array)
-    let types = values.exerciseTypes.map(exerciseType => {
-            //if the ID of the dropdown is == state value then set that option to selected
-            if(exerciseType.intExerciseTypeID == values.exerciseTypeID){
-                return <option selected key={exerciseType.intExerciseTypeID} value={exerciseType.intExerciseTypeID}>{exerciseType.strExerciseType}</option>
-            }else{
-                return <option  key={exerciseType.intExerciseTypeID} value={exerciseType.intExerciseTypeID}>{exerciseType.strExerciseType}</option>
-            }
-    })
-
     return (
-
         <div className="component">
             <h2>Exercise Information</h2>
             <Form>
@@ -43,11 +56,27 @@ const NameAndType = (props) => {
                     <Form.Label column sm={{span:3, offset:2}}>Type:</Form.Label>
                     <Col sm={10} md={4} lg={3}>
                         <Form.Control as="select" onChange={props.handleChange('type')} value={values.exerciseTypeID}>
-                            <option selected disabled hidden>Choose a Type</option>
-                            {types}
+                            <option value={0} disabled hidden>Choose a Type</option>
+                            {values.exerciseTypes.map(type => {
+                                return(
+                                    <option key={type.intExerciseTypeID} value={type.intExerciseTypeID}>{type.strExerciseType}</option>
+                                )
+                            })}
+                        </Form.Control>
+                    </Col>
+                </Form.Group>            
+                <Form.Group as={Row}>
+                    <Form.Label column sm={{span:3, offset:2}}>What to Record: </Form.Label>
+                    <Col sm={10} md={4} lg={3} >
+                        <Form.Control as="select" onChange={props.handleChange('record')} value={values.record}>
+                            <option value={''} disabled hidden>Select One</option>
+                            <option value={'reps'}>Reps</option>
+                            <option value={'time'}>Time</option>
+                            <option value={'neither'}>Neither</option>
                         </Form.Control>
                     </Col>
                 </Form.Group>
+                {condDisp}
                 <Form.Group as={Row}>
                     <Col sm={{ span: 12 }}>
                         <Button disabled={disabled} onClick={(e)=> saveAndContinue(e)}>Save and Continue</Button>

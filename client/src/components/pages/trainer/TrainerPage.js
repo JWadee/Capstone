@@ -45,6 +45,7 @@ const TrainerPage = (props) => {
         }
     },[props])
 
+    //Function to logout, and reset redux
     const Logout = ()=> {
         props.setAccountID(null);
         props.setAccountType(null);

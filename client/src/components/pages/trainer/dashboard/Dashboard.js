@@ -1,5 +1,9 @@
 import React from 'react'
 import {Row, Col, Card, Button, Navbar} from 'react-bootstrap'
+import {IoIosContact} from 'react-icons/io';
+import {AiOutlineSchedule} from 'react-icons/ai';
+import {RiTeamLine} from 'react-icons/ri';
+import {GiMuscleUp} from 'react-icons/gi';
 
 const Dashboard = () => {
 
@@ -8,7 +12,7 @@ const Dashboard = () => {
             <Row> 
                 <Col md={{span: 3}}>
                     <Card className="dashCard">
-                        <Card.Header as="h5">Scheduling</Card.Header>
+                        <Card.Header as="h5">Scheduling <AiOutlineSchedule /></Card.Header>
                         <Card.Body>
                             <Card.Text>
                                 <Button href={"/trainer/sessions"} variant="outline-primary">My Schedule</Button>
@@ -24,7 +28,7 @@ const Dashboard = () => {
                 </Col>
                 <Col md={{span: 3}}>
                     <Card className="dashCard">
-                        <Card.Header as="h5">Clients</Card.Header>
+                        <Card.Header as="h5">Clients <IoIosContact /></Card.Header>
                         <Card.Body>
                             <Card.Text>
                                 <Button  href={"/trainer/new-client"}  variant="outline-primary">Add a Client</Button>
@@ -37,7 +41,7 @@ const Dashboard = () => {
                 </Col>
                 <Col md={{span: 3}}>
                     <Card className="dashCard">
-                        <Card.Header as="h5">Teams</Card.Header>
+                        <Card.Header as="h5">Teams <RiTeamLine /></Card.Header>
                         <Card.Body>
                             <Card.Text>
                                 <Button href={"/trainer/my-teams"} variant="outline-primary">My Teams</Button>
@@ -50,7 +54,7 @@ const Dashboard = () => {
                 </Col>
                 <Col md={{span: 3}}>
                     <Card className="dashCard">
-                        <Card.Header as="h5">Training</Card.Header>
+                        <Card.Header as="h5">Training <GiMuscleUp /></Card.Header>
                         <Card.Body>
                             <Card.Text>
                                 <Button href={"/trainer/add-routine"} variant="outline-primary">Create a Routine</Button>

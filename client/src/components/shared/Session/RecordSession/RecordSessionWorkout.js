@@ -28,7 +28,7 @@ const RecordSessionWorkout = (props) => {
     };
 
     return (
-        <div>
+        <div className="component">
             {disp}
         </div>
     );
