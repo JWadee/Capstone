@@ -55,6 +55,31 @@ function getRaces(req,res){
     })
 }
 
+function getRaceByID(req,res){
+  pool.getConnection(function(err, connection){
+    if(err) {
+      connection.release();
+      res.json({"code": 100, "status": "Error in database connection"});
+      return;
+    }
+    console.log("connected as id: " + connection.threadId);
+
+    let sql = "SELECT * FROM races WHERE intRaceID = ?";
+    let id = req.query.id;
+
+    connection.query(sql, id, function(err, rows) {
+      connection.release();
+      if(!err) {
+        res.json(rows)
+      }
+    });    
+    
+    connection.on('error', function(err){
+      res.json({"code": 100, "status": "Error in database connection"});
+    })
+  })
+}
+
 router.post(('/add'), function(req, res){
     addRace(req, res);
 });
@@ -63,4 +88,7 @@ router.get(('/'), function(req, res) {
     getRaces(req, res);
 });
 
+router.get(('/byID'), function(req, res) { 
+  getRaceByID(req, res);
+});
 module.exports = router;

@@ -11,6 +11,9 @@ const ClientPage = (props) => {
     const [clientDisp, setClientDisp] = useState();
     const [notes, setNotes] = useState([]);
     const [disp, setDisp] = useState(null);
+    const [bodyType, setBodyType] = useState('');
+    const [gender, setGender] = useState('');
+    const [race, setRace] = useState('');
 
     const match = useRouteMatch();
 
@@ -45,7 +48,34 @@ const ClientPage = (props) => {
         }   
     },[trainerClient])
 
+    //Set bodytype and gender display, fetch and set race display
+    useEffect(()=>{
+        if(client != null){
+            if(client[0].intGenderID === 1){
+                setGender('Male');
+            }else setGender('Female');
 
+            if(client[0].intBodyTypeID === 1){
+                setBodyType('Endomorph')
+            }else if(client[0].intBodyTypeID === 2){
+                setBodyType('Ectomorph')
+
+            }else if(client[0].intBodyTypeID === 3){
+                setBodyType('Mesomorph')
+            }
+
+
+            
+            const fetch_race = async () =>{
+                const response = await fetch('/races/byID?id='+client[0].intRaceID);
+                const data = await response.json();
+                setRace(data[0].strRace)
+            }
+
+            fetch_race();
+        }
+
+    },[client])
 
     //go to add note component
     const addNote = () => {
@@ -78,10 +108,13 @@ const ClientPage = (props) => {
                                     Weight: {client[0].decWeight} lbs
                                 </p>
                                 <p>
-                                    Gender: {client[0].intGenderID} 
+                                    Gender: {gender} 
                                 </p>
                                 <p>
-                                    Body Type: {client[0].intBodyTypeID} 
+                                    Body Type: {bodyType} 
+                                </p>
+                                <p>
+                                    Race: {race} 
                                 </p>
                             </Tab>
                             <Tab eventKey="notes" title="Notes">

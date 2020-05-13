@@ -27,19 +27,17 @@ const SessionExercise = (props) => {
     },[results])
 
     return (    
-        <>
-            <Row key={exercise.intSessionExerciseID}>
-                <Col>
-                    <p>{exercise.strExerciseName}</p> 
-                </Col>
-                <Col>
-                    <p>{exercise.strTargetDescription}</p>   
-                </Col>
-                <Col>
-                    {condDisp}
-                </Col>
-            </Row>
-        </>
+        <Row key={exercise.intSessionExerciseID}>
+            <Col>
+                <p>{exercise.strExerciseName}</p> 
+            </Col>
+            <Col>
+                <p>{exercise.strTargetDescription}</p>   
+            </Col>
+            <Col>
+                {condDisp}
+            </Col>
+        </Row>
     );
 };
 

@@ -1,15 +1,19 @@
 import React, {useState, useEffect} from "react";
 import {Col, Row, Button, Form} from "react-bootstrap";
 import {useRouteMatch} from "react-router-dom";
+import TimePicker from 'rc-time-picker';
+import 'rc-time-picker/assets/index.css';
+import styled from "styled-components";
 
 import SessionWorkout from './SessionWorkout';
-
 
 const RecordSessionExercise = (props) => {
     const [disp, setDisp] = useState();
     const [hours, setHours] = useState(Number);
     const [minutes, setMinutes] = useState(Number);
     const [seconds, setSeconds] = useState(Number);
+    const [pickerValue, setPickerValue] = useState(Date);
+    const [time, setTime] = useState();
     const [reps, setReps] = useState([]);
     const [weights, setWeights] = useState([]);
     const [distance, setDistance] = useState(Number);
@@ -63,38 +67,25 @@ const RecordSessionExercise = (props) => {
                     <Form.Group as={Row}>
                         <Form.Label column sm={{span:3}}>Time (hh:mm:ss):</Form.Label>
                         <Col sm={3} md={2} lg={2}>
-                            <Form.Control type="number" onChange={(e)=>setHours(e.target.value)} value={hours} />
-                        </Col>:
-                        <Col sm={3} md={2} lg={2}>
-                            <Form.Control type="number" onChange={(e)=>setMinutes(e.target.value)} value={minutes} />
-                        </Col>:                               
-                        <Col sm={3} md={2} lg={2}>
-                            <Form.Control type="number" onChange={(e)=>setSeconds(e.target.value)} value={seconds} />
+                            <TimePicker showHour={true} showMinute={true} showSecond={true} onChange={(value)=>setPickerValue(value._d)}/>
                         </Col>
                     </Form.Group>
                 )
                 break;
             case 'td':
-                console.log('here')
                 setDisp(
                     <>
                         <Form.Group as={Row}>
                             <Form.Label column sm={{span:3}}>Time (hh:mm:ss):</Form.Label>
                             <Col sm={3} md={2} lg={2}>
-                                <Form.Control type="number" onChange={(e)=>setHours(e.target.value)} value={hours} />
-                            </Col>:
-                            <Col sm={3} md={2} lg={2}>
-                                <Form.Control type="number" onChange={(e)=>setMinutes(e.target.value)} value={minutes} />
-                            </Col>:                               
-                            <Col sm={3} md={2} lg={2}>
-                                <Form.Control type="number" onChange={(e)=>setSeconds(e.target.value)} value={seconds} />
+                                <TimePicker showHour={true} showMinute={true} showSecond={true} onChange={(value)=>setPickerValue(value._d)}/>
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row} >
                             <Form.Label column sm={{span:3}}>Distance (mi): </Form.Label>
                             <Col sm={3}>
                                 <Form.Control type="number" onChange={(e)=>setDistance(e.target.value)} value={distance} />
-                            </Col>
+                            </Col> 
                         </Form.Group>
                     </>
                 )
@@ -117,8 +108,6 @@ const RecordSessionExercise = (props) => {
                 )
                 break;
             case 'rw':
-                console.log('hereee')
-
                 setDisp(
                     <>
                         {sets.map(set=>{
@@ -130,12 +119,10 @@ const RecordSessionExercise = (props) => {
                                             <Form.Control type="number" onChange={(e)=>pushToReps(e, set)} value={reps[set-1]} />
                                         </Col>
                                         <Form.Label column sm={{span:2}}>Reps</Form.Label>
-
                                         <Col sm={2}>
                                             <Form.Control type="text"  value={weights[set-1]} onChange={(e)=>pushToWeights(e, set)} />
                                         </Col>
                                         <Form.Label column sm={{span:2}}>Weight (lbs)</Form.Label>
-        
                                     </Form.Group>
                                 </>
                             )
@@ -147,34 +134,62 @@ const RecordSessionExercise = (props) => {
 
     },[fields, hours, minutes, seconds, reps, weights, distance])
 
+    //Run when picker value is set 
+    useEffect(()=>{
+        if(pickerValue instanceof Date){
+            setTime(pickerValue.getHours()+":"+pickerValue.getMinutes()+":"+pickerValue.getSeconds())
+        }
+    },[pickerValue])
 
     const submit = async () => {
-        
-        if(exercise.recordTime === 1){
-            let data = {
-                exerciseid: exercise.intSessionExerciseID,
-                time: hours+":"+minutes+":"+seconds,
-                distance: distance,
-                weight: null,
-                reps: null
-            }
-            fetch('/sessionResults/add', {
-                method: 'POST',
-                body: data,
-                headers: {
-                    'Content-Type': 'application/json;charset=UTF-8'
-                },
-            }).then(props.change_display(<SessionWorkout sessionid={match.params.sessionid} change_display={props.change_display}/>))
-            .catch(err => console.log(err));
+        let data;
+        switch(fields){
+            case 'r':
+                for(let i=0; i < exercise.intTargetSets; i++){
+                    let data ={
+                        exerciseid: exercise.intSessionExerciseID,
+                        time: null,
+                        distance: null,
+                        weight: weights[i],
+                        reps: reps[i]
+                    }
+                    fetch('/sessionResults/add', {
+                        method: 'POST',
+                        body: JSON.stringify(data),
+                        headers: {
+                            'Content-Type': 'application/json;charset=UTF-8'
+                        },
+                    });
+                };
+                props.change_display(<SessionWorkout sessionid={match.params.sessionid} change_display={props.change_display}/>)
             
-        }else if(exercise.intTargetSets != null){
-            for(let i=0; i < exercise.intTargetSets; i++){
-                let data ={
+                break;
+            case 'rw':
+                for(let i=0; i < exercise.intTargetSets; i++){
+                    let data ={
+                        exerciseid: exercise.intSessionExerciseID,
+                        time: null,
+                        distance: null,
+                        weight: weights[i],
+                        reps: reps[i]
+                    }
+                    fetch('/sessionResults/add', {
+                        method: 'POST',
+                        body: JSON.stringify(data),
+                        headers: {
+                            'Content-Type': 'application/json;charset=UTF-8'
+                        },
+                    });
+                };
+                props.change_display(<SessionWorkout sessionid={match.params.sessionid} change_display={props.change_display}/>)
+                break;
+            case 't':
+                data = {
                     exerciseid: exercise.intSessionExerciseID,
-                    time: null,
+                    time: time, 
                     distance: null,
-                    weight: weights[i],
-                    reps: reps[i]
+                    weight: null,
+                    reps: null
                 }
                 fetch('/sessionResults/add', {
                     method: 'POST',
@@ -182,11 +197,28 @@ const RecordSessionExercise = (props) => {
                     headers: {
                         'Content-Type': 'application/json;charset=UTF-8'
                     },
-                });
-            };
-            props.change_display(<SessionWorkout sessionid={match.params.sessionid} change_display={props.change_display}/>)
+                }).then(props.change_display(<SessionWorkout sessionid={match.params.sessionid} change_display={props.change_display}/>))
+                .catch(err => console.log(err));
+                break;
+            case 'td':
+                data = {
+                    exerciseid: exercise.intSessionExerciseID,
+                    time: time,
+                    distance: distance,
+                    weight: null,
+                    reps: null
+                }
+                console.log(data)
+                fetch('/sessionResults/add', {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'application/json;charset=UTF-8'
+                    },
+                }).then(props.change_display(<SessionWorkout sessionid={match.params.sessionid} change_display={props.change_display}/>))
+                .catch(err => console.log(err));
+                break;
         }
-
     }
 
     return (

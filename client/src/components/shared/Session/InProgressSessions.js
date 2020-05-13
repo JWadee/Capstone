@@ -125,7 +125,7 @@ const InProgressSessions = (props) => {
                     let team =  fetch_team(session);
 
                     return(
-                    <Col sm={{span:4, offset:4}} key={session.intSessionID}>
+                    <Col sm={{span:4, offset:4}} key={session.intSessionID} className="session">
                         <ListGroup.Item action key={session.intSessionID} href={"/trainer/sessions/session/"+session.intSessionID+"/record/workout/"+session.intWorkoutID}>
                             <div>
                                 <p>{strDay +", "+formatted_date}</p>

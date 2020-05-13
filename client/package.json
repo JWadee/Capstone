@@ -12,6 +12,7 @@
     "bootstrap": "^4.4.1",
     "chart.js": "^2.9.3",
     "nodemon": "^2.0.2",
+    "rc-time-picker": "^3.7.3",
     "react": "^16.12.0",
     "react-bootstrap": "^1.0.0-beta.16",
     "react-burger-menu": "^2.6.13",
@@ -25,6 +26,7 @@
     "redux": "^4.0.5",
     "redux-persist": "^6.0.0",
     "semantic-ui-react": "^0.88.2",
+    "styled-components": "^5.1.0",
     "validator": "^12.2.0"
   },
   "scripts": {

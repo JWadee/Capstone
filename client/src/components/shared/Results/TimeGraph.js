@@ -1,14 +1,13 @@
 import React from 'react'
 import {Line} from 'react-chartjs-2';
-import { withRouter } from 'react-router-dom';
 
 
-const LineGraph = (props) => {
+const TimeGraph = (props) => {
     const graphConfig = {
-        labels: props.labels,
+        labels: props.xaxis,
         datasets: [
           {
-            label: 'Tonnage',
+            label: 'Time (minutes)',
             fill: true,
             lineTension: 0.1,
             backgroundColor: 'rgba(75,192,192,0.4)',
@@ -48,7 +47,10 @@ const LineGraph = (props) => {
                 yAxes: [{
                   scaleLabel: {
                     display: true,
-                    labelString: 'lbs'
+                    labelString: 'minutes'
+                  },
+                  ticks: {
+                    beginAtZero: true
                   }
                 }]
             },
@@ -60,4 +62,4 @@ const LineGraph = (props) => {
 
 }
 
-export default LineGraph
+export default TimeGraph

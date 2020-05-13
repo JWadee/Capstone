@@ -71,7 +71,8 @@ function getByClientByExercise(req, res) {
                   "INNER JOIN session_exercise_results AS ser ON se.intSessionExerciseID = ser.intSessionExerciseID "+
                   "INNER JOIN workout_exercises AS we ON we.intWorkoutExerciseID = se.intWorkoutExerciseID "+
                   "INNER JOIN exercises AS e on e.intExerciseID = we.intExerciseID "+
-                  "WHERE s.intClientID = ? AND e.intExerciseID = ?";
+                  "WHERE s.intClientID = ? AND e.intExerciseID = ? "+
+                  "ORDER BY s.dtmDate ASC";
 
         let values  = [req.query.clientid, req.query.exerciseid]; 
 
@@ -89,6 +90,7 @@ function getByClientByExercise(req, res) {
 }
 
 router.post(('/add'), function (req, res) {
+    console.log('here')
     addSessionResults(req, res);
 });
 

@@ -63,3 +63,24 @@ h2, h3, h4{
 .navbar-toggler{
     background-color:  #66FCF1;
 }
+
+/*For rc-time-picker*/
+
+.rc-time-picker-panel-select li{
+    color: black!important;
+}
+
+/* For Results tables in exercise history */
+.tableBodyScroll tbody {
+    display: block;
+    max-height: 300px;
+    overflow-y: scroll;
+  }
+  
+  .tableBodyScroll thead,
+  tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+
